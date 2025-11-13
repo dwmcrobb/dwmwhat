@@ -57,17 +57,51 @@ extern "C" {
 
 using namespace std;
 
-#if 0
-namespace Crap {
-  namespace Pkg {
-    const char  *p = "raw pointer to char";
-    std::string  junk("junk content");
-  }
-}
-#endif
-
 #define DWMWHAT_COPYRIGHT  "Daniel McRobb 2025 " DWM_PKG_SYM_JACKOLANTERN \
   DWM_PKG_SYM_GHOST " "
+
+static string as_json(const string & s)
+{ return string("\"" + s + "\""); }
+
+template <typename T>
+static string as_json(const vector<T> & v);
+template <typename F, typename S>
+static string as_json(const map<F,S> & m);
+
+template <typename F, typename S>
+static string as_json(const pair<F,S> & p)
+{ return as_json(p.first) + ": " + as_json(p.second); }
+
+template <typename F, typename S>
+static string as_json(const map<F,S> & m)
+{
+  string  s("{ ");
+  string  comma;
+  for (const auto & e : m) {
+    s += comma;
+    s += as_json(e.first) + ":" + as_json(e.second);
+    comma=", ";
+  }
+  s += " }";
+  return s;
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
+template <typename T>
+static string as_json(const vector<T> & v)
+{
+  string  s("[");
+  string comma;
+  for (const auto & e : v) {
+    s += comma;
+    s += as_json(e);
+    comma = ",";
+  }
+  s += "]";
+  return s;
+}
 
 //  The lower level map maps the raw string to its JSON string.
 //  The top level map just has two keys: "pkgs" and "others"
@@ -82,11 +116,11 @@ static std::string MapToJson(std::map<std::string,std::string> & result)
   std::string  comma;
   
   for (const auto & field : result) {
-    rc += comma + " ";
-    rc += "\"" + field.first + "\": \"" + field.second + "\"";
+    rc += comma;
+    rc += "\"" + field.first + "\":\"" + field.second + "\"";
     comma = ",";
   }
-  rc += " }";
+  rc += "}";
   return rc;
 }
 
@@ -142,7 +176,7 @@ static bool ParseAsDwmPkgInfo(const std::string & v,
 //----------------------------------------------------------------------------
 static string OtherToJson(const string & other)
 {
-  return string("{ \"id\": \"" + other + "\" }");
+  return string("{\"id\":\"" + other + "\"}");
 }
 
 //----------------------------------------------------------------------------
@@ -198,29 +232,29 @@ static void PrintPackages(const PkgMap & pkgMap, bool showJson)
   }
 
   if (! pkgMap.empty()) {
-    cout << "{\n";
-    
     auto it = pkgMap.find("pkgs");
     if (it != pkgMap.end()) {
-      cout << "  \"pkgs\": [";
+      cout << "\"pkgs\":[";
       string  comma;
       for (const auto pkg : it->second) {
-        std::cout << comma << "\n    " << pkg.second;
+        std::cout << comma << pkg.second;
         comma = ",";
       }
-      cout << "\n  ]";
+      cout << "]";
     }
-    it = pkgMap.find("others");
-    if (it != pkgMap.end()) {
-      cout << ",\n  \"others\": [";
+    auto oit = pkgMap.find("others");
+    if (oit != pkgMap.end()) {
+      if (it != pkgMap.end()) {
+        cout << ',';
+      }
+      cout << "\"others\":[";
       string comma;
-      for (const auto other : it->second) {
-        cout << comma << "\n    " << other.second;
+      for (const auto other : oit->second) {
+        cout << comma << other.second;
         comma = ",";
       }
-      cout << "\n  ]";
+      cout << "]";
     }
-    cout << "\n}\n";
   }
   
   return;
@@ -339,18 +373,18 @@ static void DumpPackagesJson()
   auto pkgs = GetPackages();
   
   if (! pkgs.empty()) {
-    cout << "[\n";
+    cout << "[";
     bool  first = true;
     for (auto & pkg : pkgs) {
       if (! first) {
-        cout << ",\n  " << pkg.second.second;
+        cout << "," << pkg.second.second;
       }
       else {
         cout << "  " << pkg.second.second;
         first = false;
       }
     }
-    cout << "\n]\n";
+    cout << "]";
   }
   return;
 }
@@ -429,16 +463,49 @@ int main(int argc, char *argv[])
   }
 
   int  rc = 0;
+  vector<pair<string,PkgMap>>  pkgMaps;
+  
   for (int arg = optind; arg < argc; ++arg) {
     pair<char *,size_t>  mf = MapFile(argv[arg]);
     if (mf.first) {
       vector<string>  sccsStrings = FindSccsStrings(mf.first, mf.second);
       PkgMap  pkgMap;
       GetPkgMap(sccsStrings, pkgMap);
-      PrintPackages(pkgMap, showAsJson);
+      pkgMaps.push_back({argv[arg],pkgMap});
+      // PrintPackages(pkgMap, showAsJson);
 
       munmap(mf.first, mf.second);
     }
   }
+
+  if (! pkgMaps.empty()) {
+    if (showAsJson) {
+#if 0
+      cout << as_json(pkgMaps) << '\n';
+#else
+      cout << "[";
+      string comma;
+      for (const auto & f : pkgMaps) {
+        std::cout << comma
+                  << "{"
+                  << "\"file\":\"" << f.first << "\",";
+        PrintPackages(f.second, showAsJson);
+        std::cout << "}";
+        comma = ",";
+      }
+      cout << "]\n";
+#endif
+    }
+    else {
+      for (const auto & f : pkgMaps) {
+        if (pkgMaps.size() > 1) {
+          cout << f.first << ":\n";
+        }
+        PrintPackages(f.second, false);
+      }
+    }
+    
+  }
+  
   return rc;
 }
