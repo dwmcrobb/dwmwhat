@@ -60,49 +60,6 @@ using namespace std;
 #define DWMWHAT_COPYRIGHT  "Daniel McRobb 2025 " DWM_WHAT_SYM_JACKOLANTERN \
   DWM_WHAT_SYM_GHOST " "
 
-static string as_json(const string & s)
-{ return string("\"" + s + "\""); }
-
-template <typename T>
-static string as_json(const vector<T> & v);
-template <typename F, typename S>
-static string as_json(const map<F,S> & m);
-
-template <typename F, typename S>
-static string as_json(const pair<F,S> & p)
-{ return as_json(p.first) + ": " + as_json(p.second); }
-
-template <typename F, typename S>
-static string as_json(const map<F,S> & m)
-{
-  string  s("{ ");
-  string  comma;
-  for (const auto & e : m) {
-    s += comma;
-    s += as_json(e.first) + ":" + as_json(e.second);
-    comma=", ";
-  }
-  s += " }";
-  return s;
-}
-
-//----------------------------------------------------------------------------
-//!  
-//----------------------------------------------------------------------------
-template <typename T>
-static string as_json(const vector<T> & v)
-{
-  string  s("[");
-  string comma;
-  for (const auto & e : v) {
-    s += comma;
-    s += as_json(e);
-    comma = ",";
-  }
-  s += "]";
-  return s;
-}
-
 //  The lower level map maps the raw string to its JSON string.
 //  The top level map just has two keys: "pkgs" and "others"
 using PkgMap = map<string,map<string,string>>;
@@ -131,10 +88,10 @@ static bool ParseAsDwmPkgInfo(const std::string & v,
                               std::map<std::string,std::string> & result)
 {
   bool  rc = false;
-  const static std::string  pkgTypes("(" DWM_WHAT_TYPE_HDR
+  const static std::string  pkgTypes("((" DWM_WHAT_TYPE_HDR
                                      "|" DWM_WHAT_TYPE_LIB
                                      "|" DWM_WHAT_TYPE_EXE
-                                     "|" DWM_WHAT_TYPE_DOC ")");
+                                     "|" DWM_WHAT_TYPE_DOC ")+)");
   static const std::string  pkgStatus("(" DWM_WHAT_STATUS_DEV
                                       "|" DWM_WHAT_STATUS_RC
                                       "|" DWM_WHAT_STATUS_REL ")");
@@ -156,15 +113,20 @@ static bool ParseAsDwmPkgInfo(const std::string & v,
     rgx(rgxstr,std::regex::ECMAScript|std::regex::optimize);
   std::smatch sm;
   if (std::regex_match(v, sm, rgx)) {
-    if (sm.size() == 10) {
+#if 0
+    for (size_t i = 0; i < sm.size(); ++i) {
+      cerr << "sm[" << i << "]: " << sm[i].str() << '\n';
+    }
+#endif
+    if (sm.size() == 11) {
       result.clear();
       result["type"] = sm[1].str();
-      result["status"] = sm[2].str();
-      result["name"] = sm[3].str();
-      result["version"] = sm[4].str();
-      result["copyright"] = sm[6].str();
-      result["date"] = sm[7].str();
-      result["other"] = sm[9].str();
+      result["status"] = sm[3].str();
+      result["name"] = sm[4].str();
+      result["version"] = sm[5].str();
+      result["copyright"] = sm[7].str();
+      result["date"] = sm[8].str();
+      result["other"] = sm[10].str();
       rc = true;
     }
   }

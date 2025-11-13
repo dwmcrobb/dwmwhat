@@ -263,8 +263,8 @@ namespace Dwm {
     };
 
     inline constexpr const Info __attribute__((used))
-    info(DWM_WHAT_TYPE_HDR, @DWM_WHAT_STATUS@, "DwmWhat", "@DWM_VERSION@",
-         "Daniel McRobb " DWM_WHAT_SYM_GHOST, "mcplex.net");
+    info(DWM_WHAT_TYPE_EXE DWM_WHAT_TYPE_HDR, @DWM_WHAT_STATUS@, "DwmWhat",
+         "@DWM_VERSION@", "Daniel McRobb " DWM_WHAT_SYM_GHOST, "mcplex.net");
     
   }  // namespace What
 
