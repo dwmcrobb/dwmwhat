@@ -5,7 +5,7 @@ $(dwm_include $(abspath $(libIncDir)/../../Makefile.vars))
 
 libIncHdrNames    := $(dwm_files $(libIncDir),.+\.hh)
 libIncHdrs        := $(libIncHdrNames:%.hh=$(libIncDir)/%.hh)
-libIncTarPrepHdrs := $(libIncHdrNames:%=${TARDIR}/include/libDwmPkg/%)
+libIncTarPrepHdrs := $(libIncHdrNames:%=${TARDIR}/include/DwmWhat/%)
 
 TARTARGETS        += $(libIncTarPrepHdrs)
 DISTCLEANTARGETS  += $(libIncTarPrepHdrs)
@@ -18,7 +18,7 @@ TARTARGETS        := $(libIncTarPrepHdrs)
 DISTCLEANTARGETS  := $(libIncTarPrepHdrs)
 endif
 
-${TARDIR}/include/libDwmPkg/%.hh: $(libIncDir)/%.hh
+${TARDIR}/include/DwmWhat/%.hh: $(libIncDir)/%.hh
 	$(abspath $(libIncDir)/../../install-sh) -c -m 444 $< $@
 
 $(dwm_include $(abspath $(libIncDir)/../../Makefile.rules))
