@@ -53,12 +53,12 @@ extern "C" {
 #include <regex>
 #include <vector>
 
-#include "DwmPkg.hh"
+#include "DwmWhat.hh"
 
 using namespace std;
 
-#define DWMWHAT_COPYRIGHT  "Daniel McRobb 2025 " DWM_PKG_SYM_JACKOLANTERN \
-  DWM_PKG_SYM_GHOST " "
+#define DWMWHAT_COPYRIGHT  "Daniel McRobb 2025 " DWM_WHAT_SYM_JACKOLANTERN \
+  DWM_WHAT_SYM_GHOST " "
 
 static string as_json(const string & s)
 { return string("\"" + s + "\""); }
@@ -131,13 +131,13 @@ static bool ParseAsDwmPkgInfo(const std::string & v,
                               std::map<std::string,std::string> & result)
 {
   bool  rc = false;
-  const static std::string  pkgTypes("(" DWM_PKG_TYPE_HDR
-                                     "|" DWM_PKG_TYPE_LIB
-                                     "|" DWM_PKG_TYPE_EXE
-                                     "|" DWM_PKG_TYPE_DOC ")");
-  static const std::string  pkgStatus("(" DWM_PKG_STATUS_DEV
-                                      "|" DWM_PKG_STATUS_RC
-                                      "|" DWM_PKG_STATUS_REL ")");
+  const static std::string  pkgTypes("(" DWM_WHAT_TYPE_HDR
+                                     "|" DWM_WHAT_TYPE_LIB
+                                     "|" DWM_WHAT_TYPE_EXE
+                                     "|" DWM_WHAT_TYPE_DOC ")");
+  static const std::string  pkgStatus("(" DWM_WHAT_STATUS_DEV
+                                      "|" DWM_WHAT_STATUS_RC
+                                      "|" DWM_WHAT_STATUS_REL ")");
   static const std::string  pkgDate("((Jan|Feb|Mar|Apr|May|Jun"
                                     "|Jul|Aug|Sep|Oct|Nov|Dec)"
                                     " [ 123][0-9] [0-9][0-9][0-9][0-9])");
@@ -146,10 +146,10 @@ static bool ParseAsDwmPkgInfo(const std::string & v,
                                    + pkgStatus
                                    + " (.+)"                 // pkg name
                                    + " (.+)"                 // pkg version
-                                   + " (" DWM_PKG_SYM_COPYRIGHT ")"
+                                   + " (" DWM_WHAT_SYM_COPYRIGHT ")"
                                    + " (.+) "                // copyright
                                    + pkgDate + " "           // date
-                                   + DWM_PKG_SYM_OTHER
+                                   + DWM_WHAT_SYM_OTHER
                                    // + " (.*)\\0");            // other
                                    + " (.*)");               // other
   static const std::regex
@@ -351,14 +351,14 @@ static vector<string> FindSccsStrings(const char * map, size_t size)
   return rc;
 }
 
-#if defined(DWM_PKG_CAN_USE_REFLECTION)
+#if defined(DWM_WHAT_CAN_USE_REFLECTION)
 
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
 static auto GetPackages()
 {
-  auto pkgs = Dwm::Pkg::get_packages<^^Dwm>();
+  auto pkgs = Dwm::What::get_packages<^^Dwm>();
   std::ranges::sort(pkgs);
   auto u = std::ranges::unique(pkgs);
   pkgs.erase(u.begin(), u.end());
@@ -442,7 +442,7 @@ int main(int argc, char *argv[])
   }
 
   if (showVersion) {
-#if defined(DWM_PKG_CAN_USE_REFLECTION)
+#if defined(DWM_WHAT_CAN_USE_REFLECTION)
     if (showVerbose) {
       DumpPackagesJson();
     }
@@ -452,11 +452,11 @@ int main(int argc, char *argv[])
 #else
     if (showVerbose) {
       std::cout << "[\n"
-                << "  " << Dwm::Pkg::info.as_json() << '\n'
+                << "  " << Dwm::What::info.as_json() << '\n'
                 << "]\n";
     }
     else {
-      std::cout << Dwm::Pkg::info.data_view() << '\n';
+      std::cout << Dwm::What::info.data_view() << '\n';
     }
 #endif
     return 0;

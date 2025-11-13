@@ -1,4 +1,4 @@
-AC_INIT([libDwmPkg],[m4_esyscmd_s(./getvers.sh -v)],[dwmcrobb@me.com],[libDwmPkg],[http://www.mcplex.net])
+AC_INIT([DwmWhat],[m4_esyscmd_s(./getvers.sh -v)],[dwmcrobb@me.com],[DwmWhat],[http://www.mcplex.net])
 AC_PREFIX_DEFAULT(/usr/local)
 
 AC_PROG_CC
@@ -68,13 +68,13 @@ fi
 
 echo libPrefix ${libPrefix}
 
-PKG_CFLAGS=`dwmgmk_uniqleft ${PTHREADCXXFLAGS} -I${libPrefix}/include/libDwmPkg ${EXTINCS}`
+PKG_CFLAGS=`dwmgmk_uniqleft ${PTHREADCXXFLAGS} -I${libPrefix}/include/DwmWhat ${EXTINCS}`
 AC_SUBST(PKG_CFLAGS)
 
 DWM_PREREQ_PATH(htmlman,share/htmlman,[HTML manpage path])
 
-DWM_SET_PKGVARS(libDwmPkg,[libDwmPkg-0.0.0])
-DWM_GET_TAG([libDwmPkg])
+DWM_SET_PKGVARS(DwmWhat,[DwmWhat-0.0.0])
+DWM_GET_TAG([DwmWhat])
 
 AC_CHECK_PROG([MANDOC], [mandoc], [mandoc], [])
 
@@ -87,10 +87,10 @@ AC_ARG_ENABLE([docs],[AS_HELP_STRING([--enable-docs],[build documentation])],
 	      [BUILD_DOCS="yes"], [])
 AC_SUBST(BUILD_DOCS)
 
-DWM_PKG_STATUS=`./getvers.sh -S`
-AC_SUBST(DWM_PKG_STATUS)
+DWM_WHAT_STATUS=`./getvers.sh -S`
+AC_SUBST(DWM_WHAT_STATUS)
 
-AC_CONFIG_FILES([Makefile.vars packaging/libDwmPkg.pc
+AC_CONFIG_FILES([Makefile.vars packaging/DwmWhat.pc
                  packaging/fbsd_manifest packaging/debcontrol doc/Doxyfile
-		 classes/include/DwmPkgInfo.hh])
+		 classes/include/DwmWhatInfo.hh])
 AC_OUTPUT

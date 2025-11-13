@@ -1,7 +1,8 @@
-# libDwmPkg
+# DwmWhat
 
 A small header-only C++ library for embedding package information in
-compiled code.
+compiled code, and a utility to search for the information in compiled
+code much like the very old `what` utility from SCCS.
 
 ## Platforms
 - macOS
@@ -17,7 +18,7 @@ compiled code.
 - [`mkdebcontrol`](https://github.com/dwmcrobb/mkdebcontrol) for Ubuntu
   and other Debian package platforms
 
-## `class Dwm::Pkg::Info`
+## `class Dwm::What::Info`
 This is the primary class template in the library, and normally the
 only type a user will instantiate from the library.
 
@@ -26,7 +27,7 @@ template <std::size_t P, std::size_t S, std::size_t N,
           std::size_t V, std::size_t C, std::size_t O>
 class Info {
 public:
-   consteval Info(const char (&pkgtype)[P], const char (&status)[S],
+   consteval Info(const char (&whattype)[P], const char (&status)[S],
                   const char (&name)[N], const char (&version)[V],
                   const char (&cpyright)[C], const char (&other)[O]);
 
@@ -43,7 +44,7 @@ public:
 ```
 ### Usage
 Typical usage for a library is to just add a single instance
-of a `Dwm::Pkg::Info` in a header file you expect to be included
+of a `Dwm::What::Info` in a header file you expect to be included
 by users of your library.  It can be deep in a nested namespace,
 and of course shouldn't be in the top level global namespace.
 For example, for version 1.0.0 of a library package "MyPackageName":
@@ -51,8 +52,8 @@ For example, for version 1.0.0 of a library package "MyPackageName":
 ```
 namespace MyPackageName {
   namespace pkg {
-    inline constexpr const Dwm::Pkg::Info __attribute__((used))
-       info(DWM_PKG_TYPE_LIB, DWM_PKG_STATUS_REL, "MyPackageName",
+    inline constexpr const Dwm::What::Info __attribute__((used))
+       info(DWM_WHAT_TYPE_LIB, DWM_WHAT_STATUS_REL, "MyPackageName",
             "1.0.0", "My Name", "other stuff");
   }
 }
@@ -69,7 +70,7 @@ Things of note here:
   regardless of whether or not the linked code accesses it.
 
 #### Constructor arguments, in order
-- **`pkgtype`**
+- **`whattype`**
     > The type of the package.  See the supported package types below.
 - **`status`**
     > The status of the package.  See the support package status choices
@@ -92,28 +93,28 @@ Package types are just string literals, but I provide macros for
 some useful ones, which are UTF-8 code points for symbols I find
 useful in my own software.  Note that currently `dwmwhat` depends
 on the use of only these package types if you want canonical JSON
-output from `dwmwhat` for embedded instances of `Dwm::Pkg::Info`.
+output from `dwmwhat` for embedded instances of `Dwm::What::Info`.
 
-- **`DWM_PKG_TYPE_LIB`** (📚)
+- **`DWM_WHAT_TYPE_LIB`** (📚)
     > A library package, containing compiled or otherwise executable content.
-- **`DWM_PKG_TYPE_HDR`** (＃)
+- **`DWM_WHAT_TYPE_HDR`** (＃)
     > A header package, common in the C++ world.
-- **`DWM_PKG_TYPE_EXE`** (🤖)
+- **`DWM_WHAT_TYPE_EXE`** (🤖)
     > A package for one or more executables.
-- **`DWM_PKG_TYPE_DOC`** (📄)
+- **`DWM_WHAT_TYPE_DOC`** (📄)
     > A package of documentation.
 
 ### Package status
-- **`DWM_PKG_STATUS_DEV`** (❗)
+- **`DWM_WHAT_STATUS_DEV`** (❗)
     > Not tagged, not reproducible... should not be used in production.
-- **`DWM_PKG_STATUS_RC`** (👷)
+- **`DWM_WHAT_STATUS_RC`** (👷)
     > A release candidate.  Reproducible (presumably tagged too).
-- **`DWM_PKG_STATUS_REL`** (✅)
+- **`DWM_WHAT_STATUS_REL`** (✅)
     > An official release.
 
-## `Dwm::Pkg::SegmentedLiteral`
+## `Dwm::What::SegmentedLiteral`
 This class template is the more generic segmented string literal class
-template.  `Dwm::Pkg::Info` inherits from `Dwm::Pkg::SegmentedLiteral`.
+template.  `Dwm::What::Info` inherits from `Dwm::What::SegmentedLiteral`.
 The idea here is to provide a means of constructing a contiguous
 string literal at compile time from N other string literals and a
 delimiter that is placed between each given string literal, without
@@ -152,7 +153,7 @@ displays the strings on stdout, one per line.  It is similar to the old
      
 ```
 % dwmwhat `which dwmwhat`
-＃ ✅ libDwmPkg 0.0.3 ©️  Daniel McRobb 👻 Nov 11 2025  mcplex.net
+＃ ✅ DwmWhat 0.0.3 ©️  Daniel McRobb 👻 Nov 11 2025  mcplex.net
 ```
 
 ```
@@ -161,18 +162,25 @@ Bash version 5.2.37(1) release GNU
 ```
 
 It can also produce JSON output for the strings it finds.  If the
-strings came from instances of `Dwm::Pkg::Info`, they will be parsed
+strings came from instances of `Dwm::What::Info`, they will be parsed
 and presented in decomposed form.
 
 ```
-% dwmwhat -j `which dwmwhat`
-{
-  "pkgs": [
-    {
-      "copyright": "Daniel McRobb 👻", "date": "Nov 11 2025",
-      "name": "libDwmPkg", "other": "mcplex.net", "status": "✅",
-      "type": "＃", "version": "0.0.3"
-    }
-  ]
-}
+% dwmwhat -j `which dwmwhat` | json_pp
+[
+   {
+      "file" : "/usr/local/bin/dwmwhat",
+      "pkgs" : [
+         {
+            "copyright" : "Daniel McRobb 👻",
+            "date" : "Nov 13 2025",
+            "name" : "DwmWhat",
+            "other" : "mcplex.net",
+            "status" : "✅",
+            "type" : "＃",
+            "version" : "0.0.7"
+         }
+      ]
+   }
+]
 ```

@@ -36,58 +36,58 @@
 //---------------------------------------------------------------------------
 //!  \file TestInfo.cc
 //!  \author Daniel W. McRobb
-//!  \brief Unit tests for Dwm::Pkg::Info
+//!  \brief Unit tests for Dwm::What::Info
 //---------------------------------------------------------------------------
 
 #include <cassert>
 #include <iostream>
 #include <regex>
 
-#include "DwmPkgInfo.hh"
+#include "DwmWhatInfo.hh"
 
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
-inline constexpr const Dwm::Pkg::Info __attribute__((used))
-g_info1(DWM_PKG_TYPE_HDR, DWM_PKG_STATUS_RC, "g_info1", "0.0.1",
-         "Daniel McRobb " DWM_PKG_SYM_GHOST, "mcplex.net");
+inline constexpr const Dwm::What::Info __attribute__((used))
+g_info1(DWM_WHAT_TYPE_HDR, DWM_WHAT_STATUS_RC, "g_info1", "0.0.1",
+         "Daniel McRobb " DWM_WHAT_SYM_GHOST, "mcplex.net");
 
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
 int main(int argc, char *argv[])
 {
-  assert(Dwm::Pkg::info.name() == "libDwmPkg");
-  assert(! Dwm::Pkg::info.type().empty());
-  assert(! Dwm::Pkg::info.version().empty());
-  assert(! Dwm::Pkg::info.status().empty());
-  assert(! Dwm::Pkg::info.copyright().empty());
-  assert(Dwm::Pkg::info.other() == "mcplex.net");
+  assert(Dwm::What::info.name() == "DwmWhat");
+  assert(! Dwm::What::info.type().empty());
+  assert(! Dwm::What::info.version().empty());
+  assert(! Dwm::What::info.status().empty());
+  assert(! Dwm::What::info.copyright().empty());
+  assert(Dwm::What::info.other() == "mcplex.net");
   
-  assert(g_info1.type() == DWM_PKG_TYPE_HDR);
-  assert(g_info1.status() == DWM_PKG_STATUS_RC);
+  assert(g_info1.type() == DWM_WHAT_TYPE_HDR);
+  assert(g_info1.status() == DWM_WHAT_STATUS_RC);
   assert(g_info1.name() == "g_info1");
   assert(g_info1.version() == "0.0.1");
-  assert(g_info1.copyright() == "Daniel McRobb " DWM_PKG_SYM_GHOST);
+  assert(g_info1.copyright() == "Daniel McRobb " DWM_WHAT_SYM_GHOST);
   assert(g_info1.other() == "mcplex.net");
 
-  static constexpr const Dwm::Pkg::Info __attribute__((used))
-    maininfo1(DWM_PKG_TYPE_EXE, DWM_PKG_STATUS_DEV, "maininfo1", "1.0.0",
-              "Daniel McRobb " DWM_PKG_SYM_GHOST,
-              DWM_PKG_SYM_RP_TRIANGLE " mcplex.net");
+  static constexpr const Dwm::What::Info __attribute__((used))
+    maininfo1(DWM_WHAT_TYPE_EXE, DWM_WHAT_STATUS_DEV, "maininfo1", "1.0.0",
+              "Daniel McRobb " DWM_WHAT_SYM_GHOST,
+              DWM_WHAT_SYM_RP_TRIANGLE " mcplex.net");
 
-  assert(maininfo1.type() == DWM_PKG_TYPE_EXE);
-  assert(maininfo1.status() == DWM_PKG_STATUS_DEV);
+  assert(maininfo1.type() == DWM_WHAT_TYPE_EXE);
+  assert(maininfo1.status() == DWM_WHAT_STATUS_DEV);
   assert(maininfo1.name() == "maininfo1");
   assert(maininfo1.version() == "1.0.0");
   assert(maininfo1.copyright()
-         == "Daniel McRobb " DWM_PKG_SYM_GHOST);
-  assert(maininfo1.other() == DWM_PKG_SYM_RP_TRIANGLE " mcplex.net");
+         == "Daniel McRobb " DWM_WHAT_SYM_GHOST);
+  assert(maininfo1.other() == DWM_WHAT_SYM_RP_TRIANGLE " mcplex.net");
   assert(maininfo1.data_view() ==
-         DWM_PKG_TYPE_EXE " " DWM_PKG_STATUS_DEV " maininfo1 1.0.0 "
-         DWM_PKG_SYM_COPYRIGHT " Daniel McRobb " DWM_PKG_SYM_GHOST " "
-         __DATE__ " " DWM_PKG_SYM_OTHER " "
-         DWM_PKG_SYM_RP_TRIANGLE " mcplex.net");
+         DWM_WHAT_TYPE_EXE " " DWM_WHAT_STATUS_DEV " maininfo1 1.0.0 "
+         DWM_WHAT_SYM_COPYRIGHT " Daniel McRobb " DWM_WHAT_SYM_GHOST " "
+         __DATE__ " " DWM_WHAT_SYM_OTHER " "
+         DWM_WHAT_SYM_RP_TRIANGLE " mcplex.net");
   
   assert(maininfo1 != g_info1);
   assert(g_info1 < maininfo1);

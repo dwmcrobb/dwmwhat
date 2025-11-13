@@ -1,6 +1,6 @@
-name: "libDwmPkg"
+name: "DwmWhat"
 version: "@TAGVERSION@"
-origin: "devel/libDwmPkg"
+origin: "devel/DwmWhat"
 prefix: "@prefix@"
 www: "http://www.rfdm.com"
 maintainer: "dwmcrobb@me.com"

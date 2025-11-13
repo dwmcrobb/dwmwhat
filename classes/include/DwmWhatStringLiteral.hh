@@ -34,13 +34,13 @@
 //===========================================================================
 
 //---------------------------------------------------------------------------
-//!  \file DwmPkgStringLiteral.hh
+//!  \file DwmWhatStringLiteral.hh
 //!  \author Daniel W. McRobb
 //!  \brief NOT YET DOCUMENTED
 //---------------------------------------------------------------------------
 
-#ifndef _DWMPKGSTRINGLITERAL_HH_
-#define _DWMPKGSTRINGLITERAL_HH_
+#ifndef _DWMWHATSTRINGLITERAL_HH_
+#define _DWMWHATSTRINGLITERAL_HH_
 
 #include <algorithm>
 #include <array>
@@ -49,7 +49,7 @@
 
 namespace Dwm {
 
-  namespace Pkg {
+  namespace What {
     
     //------------------------------------------------------------------------
     //!  A structural class literal to hold a string literal so we can pass
@@ -91,8 +91,8 @@ namespace Dwm {
       return SL.data;
     }
     
-  }  // namespace Pkg
+  }  // namespace What
 
 }  // namespace Dwm
 
-#endif  // _DWMPKGSTRINGLITERAL_HH_
+#endif  // _DWMWHATSTRINGLITERAL_HH_

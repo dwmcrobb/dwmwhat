@@ -36,19 +36,19 @@
 //---------------------------------------------------------------------------
 //!  \file TestSegmentedLiteral.cc
 //!  \author Daniel W. McRobb
-//!  \brief Unit tests for Dwm::Pkg::SegmentedLiteral
+//!  \brief Unit tests for Dwm::What::SegmentedLiteral
 //---------------------------------------------------------------------------
 
 #include <cassert>
 #include <cstring>
 #include <iostream>
 
-#include "DwmPkgSegmentedLiteral.hh"
+#include "DwmWhatSegmentedLiteral.hh"
 
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
-inline constexpr const Dwm::Pkg::SegmentedLiteral
+inline constexpr const Dwm::What::SegmentedLiteral
 TestSegmentedLiteral(" ","@(#)","TestSegmentedLiteral","",
                      "Copyright Daniel McRobb 2025",__DATE__,__TIME__);
 
@@ -57,23 +57,23 @@ TestSegmentedLiteral(" ","@(#)","TestSegmentedLiteral","",
 //----------------------------------------------------------------------------
 int main(int argc, char *argv[])
 {
-  constexpr Dwm::Pkg::SegmentedLiteral  allEmpty("","","","");
+  constexpr Dwm::What::SegmentedLiteral  allEmpty("","","","");
   std::string_view  sv = allEmpty.view();
   assert(sv.size() == 0);
   assert(sv == "");
   
-  constexpr Dwm::Pkg::SegmentedLiteral  justEnoughArgs("","b");
+  constexpr Dwm::What::SegmentedLiteral  justEnoughArgs("","b");
   assert(justEnoughArgs.view().size() == 1);
   assert(justEnoughArgs.view() == "b");
   
-  constexpr Dwm::Pkg::SegmentedLiteral  delimsOnly(" ","","","");
+  constexpr Dwm::What::SegmentedLiteral  delimsOnly(" ","","","");
   assert(delimsOnly.view().size() == 2);
   assert(delimsOnly.nth(0) == "");
   assert(delimsOnly.nth(1) == "");
   assert(delimsOnly.nth(2) == "");
   assert(delimsOnly.view() == "  ");
   
-  constexpr Dwm::Pkg::SegmentedLiteral  emptyDelim("","abc","defg","hijkl");
+  constexpr Dwm::What::SegmentedLiteral  emptyDelim("","abc","defg","hijkl");
   assert(emptyDelim.view().size()
          == strlen("abc") + strlen("defg") + strlen("hijkl"));
   assert(emptyDelim.nth(0) == "abc");

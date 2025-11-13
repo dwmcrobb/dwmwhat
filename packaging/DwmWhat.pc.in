@@ -1,9 +1,9 @@
 prefix=@prefix@
 exec_prefix=${prefix}
 libdir=${exec_prefix}/lib
-includedir=${prefix}/include/libDwmPkg
+includedir=${prefix}/include/DwmWhat
 
-Name: libDwmPkg
+Name: DwmWhat
 Description: Tiny C++ library for embedding package information in binaries
 Version: @TAGVERSION@
 Requires: @PC_REQ_PKGS@

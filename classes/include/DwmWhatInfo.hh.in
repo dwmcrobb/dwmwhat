@@ -34,91 +34,91 @@
 //===========================================================================
 
 //---------------------------------------------------------------------------
-//!  \file DwmPkgInfo.hh
+//!  \file DwmWhatInfo.hh
 //!  \author Daniel W. McRobb
-//!  \brief Dwm::Pkg::Info class template and associated support code
+//!  \brief Dwm::What::Info class template and associated support code
 //---------------------------------------------------------------------------
 
-#ifndef _DWMPKGINFO_HH_
-#define _DWMPKGINFO_HH_
+#ifndef _DWMWHATINFO_HH_
+#define _DWMWHATINFO_HH_
 
 #include <cstdint>
 #include <cstdlib>
 #include <cstring>
 
-#include "DwmPkgSegmentedLiteral.hh"
+#include "DwmWhatSegmentedLiteral.hh"
 
 //----------------------------------------------------------------------------
 //!  Just some macros for UTF-8 encodings of some unicode characters
 //----------------------------------------------------------------------------
-#define DWM_PKG_SYM_ALARM_CLOCK       "\xE2\x8F\xB0"            // alarm clock
-#define DWM_PKG_SYM_ALIEN             "\xF0\x9F\x91\xBD"        // alien
-#define DWM_PKG_SYM_BLUE_CIRCLE       "\xF0\x9F\x94\xB5"
-#define DWM_PKG_SYM_BOOKS             "\xF0\x9F\x93\x9A"
-#define DWM_PKG_SYM_CALENDAR          "\xF0\x9F\x93\x86"  // tear-off Calendar
-#define DWM_PKG_SYM_CAUTION_SIGN      "\xE2\x98\xA1"
-#define DWM_PKG_SYM_CHANGE_TETRA      "\xF0\x9D\x8C\xA1"  // change tetragram
-#define DWM_PKG_SYM_CHECK_MARK        "\xE2\x9C\x93"
-#define DWM_PKG_SYM_CONSTRUCT_WORKER  "\xF0\x9F\x91\xB7"
-#define DWM_PKG_SYM_CONSTRUCT_ZONE    "\xF0\x9F\x9A\xA7"
-#define DWM_PKG_SYM_COPYRIGHT         "\xC2\xA9\xEF\xB8\x8F "
-#define DWM_PKG_SYM_CYCLONE           "\xF0\x9F\x8C\x80"        // cyclone
-#define DWM_PKG_SYM_DOT               "\xE2\x97\x8F"            // dot
-#define DWM_PKG_SYM_FILE_FOLDER       "\xF0\x9F\x93\x81"
-#define DWM_PKG_SYM_FULLHASH          "\xEF\xBC\x83"
-#define DWM_PKG_SYM_GEAR              "\xE2\x9A\x99"            // gear
-#define DWM_PKG_SYM_GHOST             "\xF0\x9F\x91\xBB"
-#define DWM_PKG_SYM_HEAVY_CHECK       "\xE2\x9C\x94"
-#define DWM_PKG_SYM_HEAVY_EXCL        "\xE2\x9D\x97"
-#define DWM_PKG_SYM_JACKOLANTERN      "\xF0\x9F\x8E\x83"  // jack-o-lantern
-#define DWM_PKG_SYM_OPEN_BOOK         "\xF0\x9F\x93\x96"
-#define DWM_PKG_SYM_OPEN_FOLDER       "\xF0\x9F\x93\x82"
-#define DWM_PKG_SYM_PACKAGE           "\xF0\x9F\x93\xA6"  // Package
-#define DWM_PKG_SYM_PAGE              "\xF0\x9F\x93\x84"
-#define DWM_PKG_SYM_ROBOT             "\xF0\x9F\xA4\x96"        // robot emoji
-#define DWM_PKG_SYM_ROCKET            "\xF0\x9F\x9A\x80"        // rocket
-#define DWM_PKG_SYM_WARNING_SIGN      "\xE2\x9A\xA0"
-#define DWM_PKG_SYM_WHITE_CHECK       "\xE2\x9C\x85"
-#define DWM_PKG_SYM_RP_TRIANGLE       "\xE2\x96\xB6" // right-pointing triangle
+#define DWM_WHAT_SYM_ALARM_CLOCK       "\xE2\x8F\xB0"            // alarm clock
+#define DWM_WHAT_SYM_ALIEN             "\xF0\x9F\x91\xBD"        // alien
+#define DWM_WHAT_SYM_BLUE_CIRCLE       "\xF0\x9F\x94\xB5"
+#define DWM_WHAT_SYM_BOOKS             "\xF0\x9F\x93\x9A"
+#define DWM_WHAT_SYM_CALENDAR          "\xF0\x9F\x93\x86"  // tear-off Calendar
+#define DWM_WHAT_SYM_CAUTION_SIGN      "\xE2\x98\xA1"
+#define DWM_WHAT_SYM_CHANGE_TETRA      "\xF0\x9D\x8C\xA1"  // change tetragram
+#define DWM_WHAT_SYM_CHECK_MARK        "\xE2\x9C\x93"
+#define DWM_WHAT_SYM_CONSTRUCT_WORKER  "\xF0\x9F\x91\xB7"
+#define DWM_WHAT_SYM_CONSTRUCT_ZONE    "\xF0\x9F\x9A\xA7"
+#define DWM_WHAT_SYM_COPYRIGHT         "\xC2\xA9\xEF\xB8\x8F "
+#define DWM_WHAT_SYM_CYCLONE           "\xF0\x9F\x8C\x80"        // cyclone
+#define DWM_WHAT_SYM_DOT               "\xE2\x97\x8F"            // dot
+#define DWM_WHAT_SYM_FILE_FOLDER       "\xF0\x9F\x93\x81"
+#define DWM_WHAT_SYM_FULLHASH          "\xEF\xBC\x83"
+#define DWM_WHAT_SYM_GEAR              "\xE2\x9A\x99"            // gear
+#define DWM_WHAT_SYM_GHOST             "\xF0\x9F\x91\xBB"
+#define DWM_WHAT_SYM_HEAVY_CHECK       "\xE2\x9C\x94"
+#define DWM_WHAT_SYM_HEAVY_EXCL        "\xE2\x9D\x97"
+#define DWM_WHAT_SYM_JACKOLANTERN      "\xF0\x9F\x8E\x83"  // jack-o-lantern
+#define DWM_WHAT_SYM_OPEN_BOOK         "\xF0\x9F\x93\x96"
+#define DWM_WHAT_SYM_OPEN_FOLDER       "\xF0\x9F\x93\x82"
+#define DWM_WHAT_SYM_PACKAGE           "\xF0\x9F\x93\xA6"  // Package
+#define DWM_WHAT_SYM_PAGE              "\xF0\x9F\x93\x84"
+#define DWM_WHAT_SYM_ROBOT             "\xF0\x9F\xA4\x96"        // robot emoji
+#define DWM_WHAT_SYM_ROCKET            "\xF0\x9F\x9A\x80"        // rocket
+#define DWM_WHAT_SYM_WARNING_SIGN      "\xE2\x9A\xA0"
+#define DWM_WHAT_SYM_WHITE_CHECK       "\xE2\x9C\x85"
+#define DWM_WHAT_SYM_RP_TRIANGLE       "\xE2\x96\xB6" // right-pointing triangle
 
 //----------------------------------------------------------------------------
 //!  The three characters I use for 'status'.  Development, release candidate
 //!  or release.
 //----------------------------------------------------------------------------
-#define DWM_PKG_STATUS_DEV  DWM_PKG_SYM_HEAVY_EXCL
-#define DWM_PKG_STATUS_RC   DWM_PKG_SYM_CONSTRUCT_WORKER
-#define	DWM_PKG_STATUS_REL  DWM_PKG_SYM_WHITE_CHECK
+#define DWM_WHAT_STATUS_DEV  DWM_WHAT_SYM_HEAVY_EXCL
+#define DWM_WHAT_STATUS_RC   DWM_WHAT_SYM_CONSTRUCT_WORKER
+#define	DWM_WHAT_STATUS_REL  DWM_WHAT_SYM_WHITE_CHECK
 
 //----------------------------------------------------------------------------
 //!  The characters I use for 'package type', one of 'header-only library',
 //!  'library', 'executable' or 'documentation'.
 //----------------------------------------------------------------------------
-#define DWM_PKG_TYPE_HDR  DWM_PKG_SYM_FULLHASH
-#define DWM_PKG_TYPE_LIB  DWM_PKG_SYM_BOOKS
-#define DWM_PKG_TYPE_EXE  DWM_PKG_SYM_ROBOT
-#define DWM_PKG_TYPE_DOC  DWM_PKG_SYM_PAGE
+#define DWM_WHAT_TYPE_HDR  DWM_WHAT_SYM_FULLHASH
+#define DWM_WHAT_TYPE_LIB  DWM_WHAT_SYM_BOOKS
+#define DWM_WHAT_TYPE_EXE  DWM_WHAT_SYM_ROBOT
+#define DWM_WHAT_TYPE_DOC  DWM_WHAT_SYM_PAGE
 
 //----------------------------------------------------------------------------
 //!  Symbol to place before the 'other' field.  I prefer nothing here and
 //!  will likely remove this.
 //----------------------------------------------------------------------------
-#define DWM_PKG_SYM_OTHER ""
+#define DWM_WHAT_SYM_OTHER ""
 
 //----------------------------------------------------------------------------
 //!  Delimiter, which I'll likely remove and always use a fixed single space.
 //----------------------------------------------------------------------------
-#define DWM_PKG_DELIM " "
+#define DWM_WHAT_DELIM " "
 
 //----------------------------------------------------------------------------
-//!  DWM_PKG_MK_LINE_ARG(__LINE__) can be used to get a string literal of
+//!  DWM_WHAT_MK_LINE_ARG(__LINE__) can be used to get a string literal of
 //!  __LINE__.
 //----------------------------------------------------------------------------
-#define DWM_PKG_MK_LINE_ARG(x) DWM_PKG_MK_LINE_ARG2(x)
-#define DWM_PKG_MK_LINE_ARG2(x) #x
+#define DWM_WHAT_MK_LINE_ARG(x) DWM_WHAT_MK_LINE_ARG2(x)
+#define DWM_WHAT_MK_LINE_ARG2(x) #x
 
 namespace Dwm {
 
-  namespace Pkg {
+  namespace What {
 
     //------------------------------------------------------------------------
     //!  Class template to hold package information using an encapsulated
@@ -135,37 +135,37 @@ namespace Dwm {
               std::size_t C, std::size_t O>
     class Info
       : public SegmentedLiteral<1,10,
-                                SegmentedLiteralChars_v<sizeof(DWM_PKG_DELIM),
+                                SegmentedLiteralChars_v<sizeof(DWM_WHAT_DELIM),
                                                         sizeof("@(#)"),P,S,
                                                         N,V,
-                                                        sizeof(DWM_PKG_SYM_COPYRIGHT),
+                                                        sizeof(DWM_WHAT_SYM_COPYRIGHT),
                                                         C, sizeof(__DATE__),
-                                                        sizeof(DWM_PKG_SYM_OTHER),
+                                                        sizeof(DWM_WHAT_SYM_OTHER),
                                                         O>>
     {
     public:
       using MyLiteral =
         SegmentedLiteral<1,10,
-                         SegmentedLiteralChars_v<sizeof(DWM_PKG_DELIM),
+                         SegmentedLiteralChars_v<sizeof(DWM_WHAT_DELIM),
                                                  sizeof("@(#)"),P,S,
                                                  N,V,
-                                                 sizeof(DWM_PKG_SYM_COPYRIGHT),
+                                                 sizeof(DWM_WHAT_SYM_COPYRIGHT),
                                                  C, sizeof(__DATE__),
-                                                 sizeof(DWM_PKG_SYM_OTHER),O>>;
+                                                 sizeof(DWM_WHAT_SYM_OTHER),O>>;
       
       //----------------------------------------------------------------------
-      //!  Construct from a given package type @c pkgtype (see the
-      //!  @c DWM_PKG_TYPE_* macros above), package @c status (see the
-      //!  @c DWM_PKG_STATUS_* macros above), package @c name, package
+      //!  Construct from a given package type @c whattype (see the
+      //!  @c DWM_WHAT_TYPE_* macros above), package @c status (see the
+      //!  @c DWM_WHAT_STATUS_* macros above), package @c name, package
       //!  @c version, package @c copyright and finally any @c other
       //!  information.  All arguments are string literals.
       //----------------------------------------------------------------------
-      consteval Info(const char (&pkgtype)[P], const char (&status)[S],
+      consteval Info(const char (&whattype)[P], const char (&status)[S],
                      const char (&name)[N], const char (&version)[V],
                      const char (&cpyright)[C], const char (&other)[O])
-          : MyLiteral(DWM_PKG_DELIM, "@(#)", pkgtype, status, name, version,
-                      DWM_PKG_SYM_COPYRIGHT, cpyright, __DATE__,
-                      DWM_PKG_SYM_OTHER, other)
+          : MyLiteral(DWM_WHAT_DELIM, "@(#)", whattype, status, name, version,
+                      DWM_WHAT_SYM_COPYRIGHT, cpyright, __DATE__,
+                      DWM_WHAT_SYM_OTHER, other)
       {}
 
       //----------------------------------------------------------------------
@@ -263,11 +263,11 @@ namespace Dwm {
     };
 
     inline constexpr const Info __attribute__((used))
-    info(DWM_PKG_TYPE_HDR, @DWM_PKG_STATUS@, "libDwmPkg", "@DWM_VERSION@",
-         "Daniel McRobb " DWM_PKG_SYM_GHOST, "mcplex.net");
+    info(DWM_WHAT_TYPE_HDR, @DWM_WHAT_STATUS@, "DwmWhat", "@DWM_VERSION@",
+         "Daniel McRobb " DWM_WHAT_SYM_GHOST, "mcplex.net");
     
-  }  // namespace Pkg
+  }  // namespace What
 
 }  // namespace Dwm
 
-#endif  // _DWMPKGINFO_HH_
+#endif  // _DWMWHATINFO_HH_

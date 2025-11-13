@@ -34,13 +34,13 @@
 //===========================================================================
 
 //---------------------------------------------------------------------------
-//!  \file DwmPkgSegmentedLiteral.hh
+//!  \file DwmWhatSegmentedLiteral.hh
 //!  \author Daniel W. McRobb
 //!  \brief NOT YET DOCUMENTED
 //---------------------------------------------------------------------------
 
-#ifndef _DWMPKGSEGMENTEDLITERAL_HH_
-#define _DWMPKGSEGMENTEDLITERAL_HH_
+#ifndef _DWMWHATSEGMENTEDLITERAL_HH_
+#define _DWMWHATSEGMENTEDLITERAL_HH_
 
 
 #include <algorithm>
@@ -54,7 +54,7 @@
 
 namespace Dwm {
 
-  namespace Pkg {
+  namespace What {
 
     //------------------------------------------------------------------------
     //!  The idea of this template: hold a concatenated string literal that
@@ -62,7 +62,7 @@ namespace Dwm {
     //!  length of each string literal stored in an array.  This allows one
     //!  string literal to be stored in a binary, but each 'segement' is
     //!  retrievable via the @c nth() member.
-    //!  This is primarily here to support the Dwm::Pkg::Info class, but
+    //!  This is primarily here to support the Dwm::What::Info class, but
     //!  I split it out simply because it's useful for other things.
     //!  You can do this:
     //!
@@ -190,8 +190,8 @@ namespace Dwm {
     SegmentedLiteral(const char (&delim)[D], const char (&...s)[Ns])
       -> SegmentedLiteral<D-1,sizeof...(Ns),SegmentedLiteralChars_v<D,Ns...>>;
     
-  }  // namespace Pkg
+  }  // namespace What
 
 }  // namespace Dwm
 
-#endif  // _DWMPKGSEGMENTEDLITERAL_HH_
+#endif  // _DWMWHATSEGMENTEDLITERAL_HH_

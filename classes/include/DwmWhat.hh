@@ -34,20 +34,20 @@
 //===========================================================================
 
 //---------------------------------------------------------------------------
-//!  \file DwmPkg.hh
+//!  \file DwmWhat.hh
 //!  \author Daniel W. McRobb
 //!  \brief Utility function templates, using C++26 reflection
 //---------------------------------------------------------------------------
 
-#ifndef _DWMPKG_HH_
-#define _DWMPKG_HH_
+#ifndef _DWMWHAT_HH_
+#define _DWMWHAT_HH_
 
 #if defined(__cpp_impl_reflection)
 #  if defined(__cpp_expansion_statements)
 #    if __has_include(<meta>)
 #      include <meta>
 #      if defined(__cpp_lib_define_static)
-#        define DWM_PKG_CAN_USE_REFLECTION 1
+#        define DWM_WHAT_CAN_USE_REFLECTION 1
 #      endif
 #    endif
 #  endif
@@ -59,14 +59,14 @@
 #include <variant>
 #include <vector>
 
-#include "DwmPkgStringLiteral.hh"
-#include "DwmPkgInfo.hh"
+#include "DwmWhatStringLiteral.hh"
+#include "DwmWhatInfo.hh"
 
 namespace Dwm {
 
-  namespace Pkg {
+  namespace What {
 
-#if defined(DWM_PKG_CAN_USE_REFLECTION)
+#if defined(DWM_WHAT_CAN_USE_REFLECTION)
     
     //------------------------------------------------------------------------
     //!  Returns a fully qualified name for the given reflection @c info.
@@ -229,15 +229,15 @@ namespace Dwm {
     }
     
     //------------------------------------------------------------------------
-    //!  Returns a vector of pair<string,Dwm::Pkg::Info> holding all
-    //!  instances of Dwm::Pkg::Info found within the given namespace
+    //!  Returns a vector of pair<string,Dwm::What::Info> holding all
+    //!  instances of Dwm::What::Info found within the given namespace
     //!  reflections @c NSes.  Note that the visibility of the namespaces
     //!  is that of the translation unit from which this is called.
     //------------------------------------------------------------------------
     template <std::meta::info ...NSes>
     constexpr auto get_packages()
-    { return get_templates_of_in_nses<^^Dwm::Pkg::Info,NSes...>(); }
-    // { return get_templates_of_in_nses_2<^^Dwm::Pkg::Info,NSes...>(); }
+    { return get_templates_of_in_nses<^^Dwm::What::Info,NSes...>(); }
+    // { return get_templates_of_in_nses_2<^^Dwm::What::Info,NSes...>(); }
 
 #if 0
     //------------------------------------------------------------------------
@@ -331,10 +331,10 @@ namespace Dwm {
       return vars;
     }
 
-#endif  // defined(DWM_PKG_CAN_USE_REFLECTION)
+#endif  // defined(DWM_WHAT_CAN_USE_REFLECTION)
     
-  }  // namespace Pkg
+  }  // namespace What
 
 }  // namespace Dwm
 
-#endif  // _DWMPKG_HH_
+#endif  // _DWMWHAT_HH_
