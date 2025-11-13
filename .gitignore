@@ -4,5 +4,5 @@ staging/**
 Makefile.vars
 config.log
 config.status
-libDwmPkg_*.deb
-libDwmPkg*.pkg
+DwmWhat_*.deb
+DwmWhat*.pkg
