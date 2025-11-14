@@ -402,9 +402,9 @@ int main(int argc, char *argv[])
     }
 #else
     if (showVerbose) {
-      std::cout << "[\n"
+      std::cout << "{ \"file\": \"" << argv[0] << "\", \"pkgs\": [\n"
                 << "  " << Dwm::What::info().as_json() << '\n'
-                << "]\n";
+                << "] }\n";
     }
     else {
       std::cout << Dwm::What::info().data_view() << '\n';
