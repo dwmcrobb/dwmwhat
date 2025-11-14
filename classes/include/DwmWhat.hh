@@ -149,8 +149,8 @@ namespace Dwm {
     //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------
-    template <std::meta::info T, std::meta::info NS>
-    constexpr auto get_templates_of_in_ns()
+    template <std::meta::info NS>
+    constexpr auto get_what_infos_in_ns()
     {
       using namespace std::meta;
       
@@ -160,14 +160,13 @@ namespace Dwm {
       template for (constexpr auto mem :
                       define_static_array(members_of(NS, ctx))) {
         if constexpr (is_namespace(mem)) {
-          append_to_vec(vars,get_templates_of_in_ns<T,mem>());
+          append_to_vec(vars,get_what_infos_in_ns<mem>());
         }
         else {
           if constexpr (is_variable(mem)) {
             using  memType = typename[:remove_cvref(type_of(mem)):];
             if constexpr (has_template_arguments(type_of(mem))
-                          && template_of(type_of(mem)) == T) {
-              // vars.push_back({FQN<mem>(),std::string([:mem:].view())});
+                          && template_of(type_of(mem)) == ^^Dwm::What::Info) {
               vars.push_back({FQN<mem>(),
                               {std::string([:mem:].data_view()),
                                std::string([:mem:].as_json())}});
@@ -181,53 +180,14 @@ namespace Dwm {
     //------------------------------------------------------------------------
     //!  
     //------------------------------------------------------------------------
-    template <std::meta::info T, std::meta::info ...NSes>
-    constexpr auto get_templates_of_in_nses()
+    template <std::meta::info ...NSes>
+    constexpr auto get_what_infos_in_nses()
     {
       std::vector<std::pair<std::string,std::pair<std::string,std::string>>>  vars;
-      (append_to_vec(vars, get_templates_of_in_ns<T,NSes>()), ...);
+      (append_to_vec(vars, get_what_infos_in_ns<NSes>()), ...);
       return vars;
     }
 
-    //------------------------------------------------------------------------
-    //!  
-    //------------------------------------------------------------------------
-    template <std::meta::info T, std::meta::info NS>
-    constexpr auto get_templates_of_in_ns_2()
-    {
-      using namespace std::meta;
-      
-      std::vector<std::pair<std::string,std::meta::info>>  vars;
-      constexpr auto ctx = access_context::unchecked();
-      template for (constexpr auto mem :
-                      define_static_array(members_of(NS, ctx))) {
-        if constexpr (is_namespace(mem)) {
-          append_to_vec(vars,get_templates_of_in_ns_2<T,mem>());
-        }
-        else {
-          if constexpr (is_variable(mem)) {
-            using  memType = typename[:remove_cvref(type_of(mem)):];
-            if constexpr (has_template_arguments(type_of(mem))
-                          && template_of(type_of(mem)) == T) {
-              vars.push_back({FQN<mem>(),mem});
-            }
-          }
-        }
-      }
-      return vars;
-    }
-
-    //------------------------------------------------------------------------
-    //!  
-    //------------------------------------------------------------------------
-    template <std::meta::info T, std::meta::info ...NSes>
-    constexpr auto get_templates_of_in_nses_2()
-    {
-      std::vector<std::pair<std::string,std::meta::info>>  vars;
-      (append_to_vec(vars, get_templates_of_in_ns_2<T,NSes>()), ...);
-      return vars;
-    }
-    
     //------------------------------------------------------------------------
     //!  Returns a vector of pair<string,Dwm::What::Info> holding all
     //!  instances of Dwm::What::Info found within the given namespace
@@ -235,49 +195,8 @@ namespace Dwm {
     //!  is that of the translation unit from which this is called.
     //------------------------------------------------------------------------
     template <std::meta::info ...NSes>
-    constexpr auto get_packages()
-    { return get_templates_of_in_nses<^^Dwm::What::Info,NSes...>(); }
-    // { return get_templates_of_in_nses_2<^^Dwm::What::Info,NSes...>(); }
-
-#if 0
-    //------------------------------------------------------------------------
-    //!  A structural class literal to hold a string literal so we can pass
-    //!  a string literal as a non-type template parameter.  Many of us have
-    //!  been using nearly this exact code to allow passing of string
-    //!  literals as template parameters.
-    //------------------------------------------------------------------------
-    template <std::size_t N>
-    struct string_literal {
-      //----------------------------------------------------------------------
-      //!  The encapsulated data.
-      //----------------------------------------------------------------------
-      std::array<char, N> data;
-      
-      //----------------------------------------------------------------------
-      //!  Construct from a C-style string literal using a non-type template
-      //!  parameter pack for characters.  A bit ugly but works and the way
-      //!  many others have done this.
-      //----------------------------------------------------------------------
-      template <std::size_t... Is>
-      constexpr string_literal(const char (&s)[N], std::index_sequence<Is...>)
-          : data{{s[Is]...}}
-      { }
-      
-      //----------------------------------------------------------------------
-      //!  Construct from string literal input.  Template parameter N is
-      //!  deduced.
-      //----------------------------------------------------------------------
-      constexpr string_literal(const char (&s)[N])
-          : string_literal(s, std::make_index_sequence<N>{})
-      {}
-      
-      //----------------------------------------------------------------------
-      //!  Convert to std::string_view, excluding the null termination.
-      //----------------------------------------------------------------------
-      constexpr operator std::string_view() const
-      { return std::string_view(data.data(), N - 1); }
-    };
-#endif
+    constexpr auto get_what_infos()
+    { return get_what_infos_in_nses<NSes...>(); }
     
     //------------------------------------------------------------------------
     //!  Returns variables that are of the types in @c Ts and inside a
