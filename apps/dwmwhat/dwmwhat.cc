@@ -84,8 +84,8 @@ static std::string MapToJson(std::map<std::string,std::string> & result)
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
-static bool ParseAsDwmPkgInfo(const std::string & v,
-                              std::map<std::string,std::string> & result)
+static bool ParseAsDwmWhatInfo(const std::string & v,
+                               std::map<std::string,std::string> & result)
 {
   bool  rc = false;
   const static std::string  pkgTypes("((" DWM_WHAT_TYPE_HDR
@@ -102,7 +102,6 @@ static bool ParseAsDwmPkgInfo(const std::string & v,
                                    + " (" DWM_WHAT_SYM_COPYRIGHT ")"
                                    + " (.+) "                // copyright
                                    + DWM_WHAT_SYM_OTHER
-                                   // + " (.*)\\0");            // other
                                    + " (.*)");               // other
   static const std::regex
     rgx(rgxstr,std::regex::ECMAScript|std::regex::optimize);
@@ -115,6 +114,7 @@ static bool ParseAsDwmPkgInfo(const std::string & v,
 #endif
     if (sm.size() == 9) {
       result.clear();
+      result["id"] = sm[0].str();
       result["type"] = sm[1].str();
       result["status"] = sm[3].str();
       result["name"] = sm[4].str();
@@ -143,7 +143,7 @@ static void GetPkgMap(const vector<string> & vs, PkgMap & pkgMap)
   pkgMap.clear();
   map<string,string>  infoMap;
   for (const auto & s : vs) {
-    if (ParseAsDwmPkgInfo(s, infoMap)) {
+    if (ParseAsDwmWhatInfo(s, infoMap)) {
       pkgMap["pkgs"][s] = MapToJson(infoMap);
     }
     else {
@@ -224,7 +224,7 @@ static string GetJson(const vector<string> & vs)
   vector<string>  pkgsJson, others;
   map<string,string>  infoMap;
   for (const auto & s : vs) {
-    if (ParseAsDwmPkgInfo(s, infoMap)) {
+    if (ParseAsDwmWhatInfo(s, infoMap)) {
       pkgsJson.push_back(MapToJson(infoMap));
     }
     else {
@@ -314,7 +314,7 @@ static vector<string> FindSccsStrings(const char * map, size_t size)
 //----------------------------------------------------------------------------
 static auto GetPackages()
 {
-  auto pkgs = Dwm::What::get_packages<^^Dwm>();
+  auto pkgs = Dwm::What::get_what_infos<^^Dwm>();
   std::ranges::sort(pkgs);
   auto u = std::ranges::unique(pkgs);
   pkgs.erase(u.begin(), u.end());
@@ -324,12 +324,12 @@ static auto GetPackages()
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
-static void DumpPackagesJson()
+static void DumpPackagesJson(const char *argv0)
 {
   auto pkgs = GetPackages();
   
   if (! pkgs.empty()) {
-    cout << "[";
+    cout << "{ \"file\": \"" << argv0 << "\", \"pkgs\": [";
     bool  first = true;
     for (auto & pkg : pkgs) {
       if (! first) {
@@ -340,7 +340,7 @@ static void DumpPackagesJson()
         first = false;
       }
     }
-    cout << "]";
+    cout << "] }\n";
   }
   return;
 }
@@ -392,8 +392,10 @@ int main(int argc, char *argv[])
 
   if (showVersion) {
 #if defined(DWM_WHAT_CAN_USE_REFLECTION)
+    cerr << "Using reflection...\n";
+    
     if (showVerbose) {
-      DumpPackagesJson();
+      DumpPackagesJson(argv[0]);
     }
     else {
       DumpPackagesPlain();
