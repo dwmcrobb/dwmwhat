@@ -89,6 +89,11 @@ int main(int argc, char *argv[])
   assert(TestSegmentedLiteral.nth(5) == __TIME__);
   assert(TestSegmentedLiteral.view() ==
          "@(#) TestSegmentedLiteral  Copyright Daniel McRobb 2025 " __DATE__ " " __TIME__);
+
+  static constexpr Dwm::What::SegmentedLiteral
+    __attribute__((used)) sccsMatch(" ","@(#) ","SCCS string");
+  assert(sccsMatch.nth(0) == "@(#) ");
+  assert(sccsMatch.nth(1) == "SCCS string");
   
   return 0;
 }
