@@ -32,11 +32,11 @@ $(dwm_include $(abspath $(my mydir)/../../Makefile.rules))
 runtests: $(my Exes)
 	@ for tp in $(my tests.Exes) ; do \
 		printf "%-36s " `basename $$tp` ; \
-		out=`$$tp 2>&1` ; \
-		if [ $$? -eq 0 ]; then \
-		  printf "%25s\n" "$$out" ; \
+		$$tp > /dev/null 2>&1; \
+		if [ $$? -ne 0 ]; then \
+		  printf "failed\n"; \
 		else \
-		  printf '\n%s\n' "$$out" ; \
+		  printf "passed\n" ; \
 		fi ; \
 	done
 

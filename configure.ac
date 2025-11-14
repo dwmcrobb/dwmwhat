@@ -90,6 +90,12 @@ AC_SUBST(BUILD_DOCS)
 DWM_WHAT_STATUS=`./getvers.sh -S`
 AC_SUBST(DWM_WHAT_STATUS)
 
+DWM_WHAT_INSTANCE=`getvers.sh -i`
+AC_SUBST(DWM_WHAT_INSTANCE)
+
+DWM_WHAT_OTHER="mcplex.net"
+AC_SUBST(DWM_WHAT_OTHER)
+
 AC_CONFIG_FILES([Makefile.vars packaging/DwmWhat.pc
                  packaging/fbsd_manifest packaging/debcontrol doc/Doxyfile
 		 classes/include/DwmWhatInfo.hh])

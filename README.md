@@ -1,8 +1,18 @@
-# DwmWhat
+# DwmWhat : bringing an old standard back into modern C++
 
-A small header-only C++ library for embedding package information in
-compiled code, and a utility to search for the information in compiled
-code much like the very old `what` utility from SCCS.
+DwmWhat is a small header-only C++ library for embedding package
+information in compiled code, and a utility to search for the
+information in compiled code much like the very old `what` utility
+from SCCS.
+
+The `what` utility was part of POSIX.1 (2001).  It is optional, and is
+not in the base of most (any?) Linux distros.  It is installed as
+part of the base of FreeBSD, and is on my Apple systems via Xcode
+command line utilities.  It is useful, but requires developers to
+follow a convention very few follow today.  I like the convention
+(embed strings starting with '@(#)' in files), despite the fact
+that no one in their right mind uses SCCS for revision control today
+(even for single local files, RCS makes more sense).
 
 ## Platforms
 - macOS
@@ -20,7 +30,9 @@ code much like the very old `what` utility from SCCS.
 
 ## `class Dwm::What::Info`
 This is the primary class template in the library, and normally the
-only type a user will instantiate from the library.
+only type a user will instantiate from the library.  A concise version
+of its interface is shown below.  Note that `Dwm::What::Info` inherits
+from `Dwm::What::SegmentedLiteral`.
 
 ```cpp
 template <std::size_t P, std::size_t S, std::size_t N,
@@ -62,8 +74,7 @@ namespace MyPackageName {
 Things of note here:
 - We declared our instance `inline` so that the compiler and linker
   will in the end only produce a single instance.  It's `constexpr`
-  because we want to build our underlying string literal at compile
-  time.
+  because it can be and should be.
 - `__attribute__((used))` tells the compiler and linker to not throw
   away this instance when optimizing, even if no code uses it.  The
   whole idea is just to embed a useful string literal in output,
@@ -104,7 +115,18 @@ output from `dwmwhat` for embedded instances of `Dwm::What::Info`.
 - **`DWM_WHAT_TYPE_DOC`** (📄)
     > A package of documentation.
 
-### Package status
+More than one package type can be concatenated to form the first
+argument to the `Dwm::What::Info` constructor.  For example, the
+DwmWhat package contains header files and the `dwmwhat` utility,
+so I use both `DWM_WHAT_TYPE_EXE` and `DWM_WHAT_TYPE_HDR`:
+
+```
+    inline constexpr const Info __attribute__((used))
+    info(DWM_WHAT_TYPE_EXE DWM_WHAT_TYPE_HDR, DWM_WHAT_STATUS_DEV, "DwmWhat",
+         "0.0.5", "Daniel McRobb " DWM_WHAT_SYM_GHOST, "mcplex.net");
+```
+
+#### Package status
 - **`DWM_WHAT_STATUS_DEV`** (❗)
     > Not tagged, not reproducible... should not be used in production.
 - **`DWM_WHAT_STATUS_RC`** (👷)
@@ -145,6 +167,43 @@ public:
 };
 
 ```
+The following would produce the same string literals:
+```
+    inline constexpr const Dwm::What::Info __attribute__((used))
+    myinfo(DWM_WHAT_TYPE_LIB, DWM_WHAT_STATUS_DEV, "MyPackage",
+         "1.0.5", "John Doe 2025", "Other stuff");
+
+    inline constexpr const Dwm::What::SegmentedLiteral __attribute__((used))
+    myseg(" ", "@(#)", DWM_WHAT_TYPE_LIB, DWM_WHAT_STATUS_DEV, "MyPackage",
+          "1.0.5", DWM_WHAT_SYM_COPYRIGHT, "John Doe 2025",
+	  DWM_WHAT_SYM_OTHER, "Other stuff");
+```
+This is kind of important to note.  The compiler is going to produce two
+string literals of the same size (hence the same type, `const char (&)[63]`),
+with the same content:
+
+"@(#) 📚 ❗ MyPackage 1.0.5 ©️  John Doe 2025  Other stuff"
+
+In fact, since both are available at compile time, these static
+assertions pass:
+```
+  static_assert(myinfo.view() == myseg.view());
+  static_assert(myinfo.num_segments() == myseg.num_segments());
+  static_assert(sizeof(decltype(myinfo)::BufType)
+                == sizeof(decltype(myseg)::BufType));
+  static_assert(std::is_same_v<decltype(myinfo)::BufType,                    
+                               decltype(myseg)::BufType>);                 
+```
+And these runtime assertions pass:
+```
+  for (size_t i = 0; i < myinfo.num_segments(); ++i) {
+     assert(myinfo.nth(i) == myseg.nth(i));
+  }                                                                             
+
+```
+However, `dwmwhat` will coalesce these into one instance when scanning
+a file, unlike `what`.  This just helps remove duplicate reporting of
+the same information.
 
 ## dwmwhat
 dwmwhat searches one or more files for strings starting with @(#) and
@@ -153,7 +212,7 @@ displays the strings on stdout, one per line.  It is similar to the old
      
 ```
 % dwmwhat `which dwmwhat`
-＃ ✅ DwmWhat 0.0.3 ©️  Daniel McRobb 👻 Nov 11 2025  mcplex.net
+🤖＃ ✅ DwmWhat 0.0.3 ©️  Daniel McRobb 👻  mcplex.net
 ```
 
 ```
@@ -173,11 +232,10 @@ and presented in decomposed form.
       "pkgs" : [
          {
             "copyright" : "Daniel McRobb 👻",
-            "date" : "Nov 13 2025",
             "name" : "DwmWhat",
             "other" : "mcplex.net",
             "status" : "✅",
-            "type" : "＃",
+            "type" : "🤖＃",
             "version" : "0.0.7"
          }
       ]

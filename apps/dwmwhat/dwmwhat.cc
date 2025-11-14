@@ -95,17 +95,12 @@ static bool ParseAsDwmPkgInfo(const std::string & v,
   static const std::string  pkgStatus("(" DWM_WHAT_STATUS_DEV
                                       "|" DWM_WHAT_STATUS_RC
                                       "|" DWM_WHAT_STATUS_REL ")");
-  static const std::string  pkgDate("((Jan|Feb|Mar|Apr|May|Jun"
-                                    "|Jul|Aug|Sep|Oct|Nov|Dec)"
-                                    " [ 123][0-9] [0-9][0-9][0-9][0-9])");
-
   static const std::string  rgxstr("\\@\\(#\\)[ ]+" + pkgTypes + " "
                                    + pkgStatus
                                    + " (.+)"                 // pkg name
                                    + " (.+)"                 // pkg version
                                    + " (" DWM_WHAT_SYM_COPYRIGHT ")"
                                    + " (.+) "                // copyright
-                                   + pkgDate + " "           // date
                                    + DWM_WHAT_SYM_OTHER
                                    // + " (.*)\\0");            // other
                                    + " (.*)");               // other
@@ -118,15 +113,14 @@ static bool ParseAsDwmPkgInfo(const std::string & v,
       cerr << "sm[" << i << "]: " << sm[i].str() << '\n';
     }
 #endif
-    if (sm.size() == 11) {
+    if (sm.size() == 9) {
       result.clear();
       result["type"] = sm[1].str();
       result["status"] = sm[3].str();
       result["name"] = sm[4].str();
       result["version"] = sm[5].str();
       result["copyright"] = sm[7].str();
-      result["date"] = sm[8].str();
-      result["other"] = sm[10].str();
+      result["other"] = sm[8].str();
       rc = true;
     }
   }
@@ -386,16 +380,9 @@ int main(int argc, char *argv[])
   int  optChar;
   while ((optChar = getopt(argc, argv, "jvV")) != -1) {
     switch (optChar) {
-      case 'j':
-        showAsJson = true;
-        break;
-      case 'v':
-        showVersion = true;
-        break;
-      case 'V':
-        showVersion = true;
-        showVerbose = true;
-        break;
+      case 'j':        showAsJson = true;                            break;
+      case 'v':        showVersion = true;                           break;
+      case 'V':        showVersion = true, showVerbose = true;       break;
       default:
         Usage(argv[0]);
         return 1;
@@ -414,11 +401,11 @@ int main(int argc, char *argv[])
 #else
     if (showVerbose) {
       std::cout << "[\n"
-                << "  " << Dwm::What::info.as_json() << '\n'
+                << "  " << Dwm::What::info().as_json() << '\n'
                 << "]\n";
     }
     else {
-      std::cout << Dwm::What::info.data_view() << '\n';
+      std::cout << Dwm::What::info().data_view() << '\n';
     }
 #endif
     return 0;
@@ -434,17 +421,12 @@ int main(int argc, char *argv[])
       PkgMap  pkgMap;
       GetPkgMap(sccsStrings, pkgMap);
       pkgMaps.push_back({argv[arg],pkgMap});
-      // PrintPackages(pkgMap, showAsJson);
-
       munmap(mf.first, mf.second);
     }
   }
 
   if (! pkgMaps.empty()) {
     if (showAsJson) {
-#if 0
-      cout << as_json(pkgMaps) << '\n';
-#else
       cout << "[";
       string comma;
       for (const auto & f : pkgMaps) {
@@ -456,7 +438,6 @@ int main(int argc, char *argv[])
         comma = ",";
       }
       cout << "]\n";
-#endif
     }
     else {
       for (const auto & f : pkgMaps) {

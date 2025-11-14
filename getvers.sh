@@ -36,9 +36,9 @@ DwmGetGitTag() {
 	    DWM_STATUS='DWM_WHAT_STATUS_REL'
 	    GIT_VERSION=`echo "${gittag}" | awk -F '-' '{print $NF}'`
         else
-	    fakevers=`date +%Y%m%d`
-	    GIT_TAG="$1-0.0.${fakevers}"
-	    GIT_VERSION="0.0.${fakevers}"
+	    fakevers=`date +%Y.%m.%d`
+	    GIT_TAG="$1-${fakevers}"
+	    GIT_VERSION="${fakevers}"
         fi
     fi
 }
@@ -77,12 +77,20 @@ DwmGetTag() {
     fi
 }
 
-DwmGetTag libDwmPkg
+DwmGetTag DwmWhat
 
-args=`getopt svS $*`
+args=`getopt disSv $*`
 set -- $args
 for i; do
     case "$i" in
+	-d)
+	    date +%Y.%m.%d
+	    exit 0
+	    break;;
+	-i)
+	    echo "${DWM_TAG}" | tr '.-' '_'
+	    exit 0
+	    break;;
 	-s)
 	    echo "${SHARED_LIB_VERSION}"
 	    exit 0

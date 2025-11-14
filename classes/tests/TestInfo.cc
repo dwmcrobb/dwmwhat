@@ -57,12 +57,12 @@ g_info1(DWM_WHAT_TYPE_HDR, DWM_WHAT_STATUS_RC, "g_info1", "0.0.1",
 //----------------------------------------------------------------------------
 int main(int argc, char *argv[])
 {
-  assert(Dwm::What::info.name() == "DwmWhat");
-  assert(! Dwm::What::info.type().empty());
-  assert(! Dwm::What::info.version().empty());
-  assert(! Dwm::What::info.status().empty());
-  assert(! Dwm::What::info.copyright().empty());
-  assert(Dwm::What::info.other() == "mcplex.net");
+  assert(Dwm::What::info().name() == "DwmWhat");
+  assert(! Dwm::What::info().type().empty());
+  assert(! Dwm::What::info().version().empty());
+  assert(! Dwm::What::info().status().empty());
+  assert(! Dwm::What::info().copyright().empty());
+  assert(Dwm::What::info().other() == "mcplex.net");
   
   assert(g_info1.type() == DWM_WHAT_TYPE_HDR);
   assert(g_info1.status() == DWM_WHAT_STATUS_RC);
@@ -86,11 +86,26 @@ int main(int argc, char *argv[])
   assert(maininfo1.data_view() ==
          DWM_WHAT_TYPE_EXE " " DWM_WHAT_STATUS_DEV " maininfo1 1.0.0 "
          DWM_WHAT_SYM_COPYRIGHT " Daniel McRobb " DWM_WHAT_SYM_GHOST " "
-         __DATE__ " " DWM_WHAT_SYM_OTHER " "
-         DWM_WHAT_SYM_RP_TRIANGLE " mcplex.net");
+         DWM_WHAT_SYM_OTHER " " DWM_WHAT_SYM_RP_TRIANGLE " mcplex.net");
   
   assert(maininfo1 != g_info1);
   assert(g_info1 < maininfo1);
+
+  static constexpr const Dwm::What::SegmentedLiteral __attribute__((used))
+    mainsegstr(" ","@(#)",DWM_WHAT_TYPE_EXE,DWM_WHAT_STATUS_DEV,
+               "maininfo1", "1.0.0", DWM_WHAT_SYM_COPYRIGHT,
+               "Daniel McRobb " DWM_WHAT_SYM_GHOST, DWM_WHAT_SYM_OTHER,
+               DWM_WHAT_SYM_RP_TRIANGLE " mcplex.net");
+  static_assert(mainsegstr.view() == maininfo1.view());
+  static_assert(maininfo1.num_segments() == mainsegstr.num_segments());
+  static_assert(sizeof(decltype(maininfo1)::BufType)
+                == sizeof(decltype(mainsegstr)::BufType));
+  static_assert(std::is_same_v<decltype(maininfo1)::BufType,
+                               decltype(mainsegstr)::BufType>);
+
+  for (size_t i = 0; i < maininfo1.num_segments(); ++i) {
+    assert(maininfo1.nth(i) == mainsegstr.nth(i));
+  }
 
   return 0;
 }
