@@ -63,23 +63,23 @@ namespace Dwm {
     {
     public:
       template <std::size_t D, std::size_t ...Size>
-      struct SegmentedLiteralChars {
-        static const size_t sz =
-          ((D - 1) * (sizeof...(Size) - 1)) + ((Size-1) + ...) + 1;
+      struct CalcNumChars {
+        static constexpr size_t sz =
+          ((D - 1) * (sizeof...(Size) - 1)) + ((Size - 1) + ...) + 1;
       };
 
-      static constexpr size_t SegmentedLiteralChars_v =
-        SegmentedLiteralChars<DelimLen,FirstLen,N...>::sz;
+      static constexpr size_t NumChars =
+        CalcNumChars<DelimLen, FirstLen, N...>::sz;
 
-      static constexpr size_t NumSegs_v = sizeof...(N) + 1;
+      static constexpr size_t NumSegs = sizeof...(N) + 1;
 
       using SegLenType =
-        std::conditional<(SegmentedLiteralChars_v <= 256),
+        std::conditional<(NumChars <= 256),
                          uint8_t,
-                         typename std::conditional<(SegmentedLiteralChars_v <= 65536),
+                         typename std::conditional<(NumChars <= 65536),
                                                    uint16_t,
                                                    uint32_t>::type>::type;
-      using BufType = const char(&)[SegmentedLiteralChars_v];
+      using BufType = const char(&)[NumChars];
 
       //----------------------------------------------------------------------
       //!  
@@ -88,16 +88,15 @@ namespace Dwm {
                                  const char (&f)[FirstLen],
                                  const char (&...s)[N])
       {
-        static_assert(SegmentedLiteralChars_v
-                      <= std::numeric_limits<SegLenType>::max());
+        static_assert(NumChars <= std::numeric_limits<SegLenType>::max());
 
         //  'f' is just 'first'
-        auto  it = std::ranges::copy_n(f,FirstLen-1,_buffer).out;
+        auto  it = std::ranges::copy_n(f,FirstLen - 1, _buffer).out;
         std::size_t  si = 0;
-        seglengths[si++] = FirstLen-1;
-        ((seglengths[si++] = N-1,
-          it = std::ranges::copy_n(delim,DelimLen-1,it).out,
-          it = std::ranges::copy_n(s,N-1,it).out), ...);
+        _seglengths[si++] = FirstLen - 1;
+        ((_seglengths[si++] = N - 1,
+          it = std::ranges::copy_n(delim,DelimLen - 1, it).out,
+          it = std::ranges::copy_n(s, N-1, it).out), ...);
         *it = '\0';
       }
 
@@ -105,7 +104,7 @@ namespace Dwm {
       //!  Returns a view of the whole buffer, minus the terminating null.
       //----------------------------------------------------------------------
       consteval operator std::string_view () const noexcept
-      { return std::string_view(_buffer,SegmentedLiteralChars_v-1); }
+      { return std::string_view(_buffer,NumChars - 1); }
 
       //----------------------------------------------------------------------
       //!  Returns the buffer.
@@ -117,23 +116,23 @@ namespace Dwm {
       //!  Returns a view of the whole buffer, minus the terminating null.
       //----------------------------------------------------------------------
       constexpr std::string_view view() const noexcept
-      { return std::string_view(_buffer,SegmentedLiteralChars_v-1); }
+      { return std::string_view(_buffer,NumChars - 1); }
         
       //----------------------------------------------------------------------
       //!  Returns the number of segments in the buffer (1 or more).
       //----------------------------------------------------------------------
       constexpr std::size_t num_segments() const noexcept
-      { return NumSegs_v; }
+      { return NumSegs; }
       
       //----------------------------------------------------------------------
       //!  Returns a view of the nth segment.
       //----------------------------------------------------------------------
       constexpr std::string_view nth(std::size_t n) const noexcept
       {
-        assert(n < NumSegs_v);
-        std::size_t  off = std::accumulate(seglengths, &seglengths[n], 0);
-        off += n * (delimLen - 1);
-        return std::string_view(_buffer + off, seglengths[n]);
+        assert(n < NumSegs);
+        std::size_t  off = std::accumulate(_seglengths, &_seglengths[n], 0);
+        off += n * (_delimLen - 1);
+        return std::string_view(_buffer + off, _seglengths[n]);
       }
       
       //----------------------------------------------------------------------
@@ -143,9 +142,10 @@ namespace Dwm {
       { return sizeof(SegLenType); }
       
     private:
-      char         _buffer[SegmentedLiteralChars_v] {};
-      SegLenType   seglengths[NumSegs_v] {};
-      std::size_t  delimLen = DelimLen;
+      char         _buffer[NumChars] {};
+      SegLenType   _seglengths[NumSegs] {};
+      std::size_t  _delimLen = DelimLen;
+
     };
     
   }  // namespace What
