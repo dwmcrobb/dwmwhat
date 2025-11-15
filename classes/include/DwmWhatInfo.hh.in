@@ -239,8 +239,9 @@ namespace Dwm {
       //----------------------------------------------------------------------
       constexpr std::string_view data_view() const noexcept
       {
-        auto  slv = this->view();
-        std::size_t  len = slv.size() - sizeof("@(#)");
+        std::size_t  len = this->view().size() + 1;
+        len -= this->nth(0).size();
+        len -= this->_delimLen;
         return std::string_view(type().data(), len);
       }
 
