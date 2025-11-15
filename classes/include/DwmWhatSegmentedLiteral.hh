@@ -131,7 +131,7 @@ namespace Dwm {
       {
         assert(n < NumSegs);
         std::size_t  off = std::accumulate(_seglengths, &_seglengths[n], 0);
-        off += n * (_delimLen - 1);
+        off += n * _delimLen;
         return std::string_view(_buffer + off, _seglengths[n]);
       }
       
@@ -144,7 +144,7 @@ namespace Dwm {
     protected:
       char                          _buffer[NumChars] {};
       SegLenType                    _seglengths[NumSegs] {};
-      static constexpr std::size_t  _delimLen = DelimLen;
+      static constexpr std::size_t  _delimLen = DelimLen - 1;
       static constexpr std::size_t  _numSegments = NumSegs;
       static constexpr std::size_t  _numChars = NumChars;
     };
