@@ -62,6 +62,18 @@ namespace Dwm {
     class SegmentedLiteral
     {
     public:
+      //----------------------------------------------------------------------
+      //!  The number of bytes we need in our character array.  @c D is
+      //!  the size of the delimiter that is deduced from the first argument
+      //!  of the constructor (a stringt literal).  Hence the size we need
+      //!  for each delimiter is actually D-1 (we don't need the terminating
+      //!  null).  @c Size is a pack of the sizes of all other arguments
+      //!  from the constructor (also string literals and again we don't
+      //!  need the terminating null).  The number of delimiters is one
+      //!  less than the number of segments.  We add 1 so we have a
+      //!  terminating null (which we don't need but it's useful for tools
+      //!  that search binaries for strings).
+      //----------------------------------------------------------------------
       template <std::size_t D, std::size_t ...Size>
       struct CalcNumChars {
         static constexpr size_t sz =
@@ -71,18 +83,30 @@ namespace Dwm {
       static constexpr size_t NumChars =
         CalcNumChars<DelimLen, FirstLen, N...>::sz;
 
+      //----------------------------------------------------------------------
+      //!  The number of segments.
+      //----------------------------------------------------------------------
       static constexpr size_t NumSegs = sizeof...(N) + 1;
 
+      //----------------------------------------------------------------------
+      //!  The minimum sized type we need for our array of segment lengths.
+      //----------------------------------------------------------------------
       using SegLenType =
         std::conditional<(NumChars <= 256),
                          uint8_t,
                          typename std::conditional<(NumChars <= 65536),
                                                    uint16_t,
                                                    uint32_t>::type>::type;
+
+      //----------------------------------------------------------------------
+      //!  Just an alias for our buffer type.
+      //----------------------------------------------------------------------
       using BufType = const char(&)[NumChars];
 
       //----------------------------------------------------------------------
-      //!  
+      //!  Constructor.  Since we require a delimiter and at least one
+      //!  segment, we have @c f as a required argument (the first segment).
+      //!  @c s is the pack of all other segments (which may be empty).
       //----------------------------------------------------------------------
       consteval SegmentedLiteral(const char (&delim)[DelimLen],
                                  const char (&f)[FirstLen],
