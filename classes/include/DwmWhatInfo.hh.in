@@ -222,13 +222,13 @@ namespace Dwm {
       //----------------------------------------------------------------------
       constexpr std::string as_json() const noexcept
       {
-        return "{\"type\": \"" + std::string(type())
-          + "\", \"name\": \"" + std::string(name())
-          + "\", \"status\": \"" + std::string(status())
-          + "\", \"version\": \"" + std::string(version())
-          + "\", \"copyright\": \"" + std::string(copyright())
-          + "\", \"other\": \"" + std::string(other())
-          + "\", \"id\": \""
+        return "{\"type\":\"" + std::string(type())
+          + "\",\"name\":\"" + std::string(name())
+          + "\",\"status\":\"" + std::string(status())
+          + "\",\"version\":\"" + std::string(version())
+          + "\",\"copyright\":\"" + std::string(copyright())
+          + "\",\"other\":\"" + std::string(other())
+          + "\",\"id\":\""
           + std::string(this->view())
           + "\"}";
       }
