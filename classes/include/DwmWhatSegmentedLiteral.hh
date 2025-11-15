@@ -141,11 +141,12 @@ namespace Dwm {
       constexpr std::size_t size_of_seg_lengths() const noexcept
       { return sizeof(SegLenType); }
       
-    private:
-      char         _buffer[NumChars] {};
-      SegLenType   _seglengths[NumSegs] {};
-      std::size_t  _delimLen = DelimLen;
-
+    protected:
+      char                          _buffer[NumChars] {};
+      SegLenType                    _seglengths[NumSegs] {};
+      static constexpr std::size_t  _delimLen = DelimLen;
+      static constexpr std::size_t  _numSegments = NumSegs;
+      static constexpr std::size_t  _numChars = NumChars;
     };
     
   }  // namespace What
