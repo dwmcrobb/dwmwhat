@@ -107,5 +107,12 @@ int main(int argc, char *argv[])
     assert(maininfo1.nth(i) == mainsegstr.nth(i));
   }
 
+#if 0
+  auto infoCopy = Dwm::What::info();
+  assert(infoCopy.view().data()
+         != Dwm::What::DwmWhat_2025_11_14.view().data());
+  assert(infoCopy.view() == Dwm::What::DwmWhat_2025_11_14.view());
+#endif
+  
   return 0;
 }
