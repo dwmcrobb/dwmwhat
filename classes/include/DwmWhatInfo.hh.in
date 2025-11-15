@@ -134,23 +134,15 @@ namespace Dwm {
     template <std::size_t P, std::size_t S, std::size_t N, std::size_t V,
               std::size_t C, std::size_t O>
     class Info
-      : public SegmentedLiteral<1,9,
-                                SegmentedLiteralChars_v<sizeof(DWM_WHAT_DELIM),
-                                                        sizeof("@(#)"),P,S,N,V,
-                                                        sizeof(DWM_WHAT_SYM_COPYRIGHT),
-                                                        C,
-                                                        sizeof(DWM_WHAT_SYM_OTHER),
-                                                        O>>
+      : public SegmentedLiteral<sizeof(DWM_WHAT_DELIM),sizeof("@(#)"),P,S,N,V,
+                                sizeof(DWM_WHAT_SYM_COPYRIGHT),C,
+                                sizeof(DWM_WHAT_SYM_OTHER),O>
     {
     public:
       using MyLiteral =
-        SegmentedLiteral<1,9,
-                         SegmentedLiteralChars_v<sizeof(DWM_WHAT_DELIM),
-                                                 sizeof("@(#)"),P,S,N,V,
-                                                 sizeof(DWM_WHAT_SYM_COPYRIGHT),
-                                                 C,
-                                                 sizeof(DWM_WHAT_SYM_OTHER),
-                                                 O>>;
+        SegmentedLiteral<sizeof(DWM_WHAT_DELIM),sizeof("@(#)"),P,S,N,V,
+                         sizeof(DWM_WHAT_SYM_COPYRIGHT),C,               
+                         sizeof(DWM_WHAT_SYM_OTHER),O>;
       
       //----------------------------------------------------------------------
       //!  Construct from a given package type @c whattype (see the
