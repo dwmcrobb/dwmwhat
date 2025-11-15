@@ -402,9 +402,9 @@ int main(int argc, char *argv[])
     }
 #else
     if (showVerbose) {
-      std::cout << "{ \"file\": \"" << argv[0] << "\", \"pkgs\": [\n"
-                << "  " << Dwm::What::info().as_json() << '\n'
-                << "] }\n";
+      std::cout << "{\"file\":\"" << argv[0] << "\",\"pkgs\":["
+                << Dwm::What::info().as_json()
+                << "]}\n";
     }
     else {
       std::cout << Dwm::What::info().data_view() << '\n';
@@ -413,6 +413,11 @@ int main(int argc, char *argv[])
     return 0;
   }
 
+  if (optind >= argc) {
+    Usage(argv[0]);
+    return 1;
+  }
+  
   int  rc = 0;
   vector<pair<string,PkgMap>>  pkgMaps;
   
