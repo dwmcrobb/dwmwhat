@@ -99,10 +99,12 @@
 #define DWM_WHAT_TYPE_DOC  DWM_WHAT_SYM_PAGE
 
 //----------------------------------------------------------------------------
-//!  Symbol to place before the 'other' field.  I prefer nothing here and
-//!  will likely remove this.
+//!  Symbol to place before the 'other' field.  I need this just because
+//!  the dwmwhat utility needs to be able to parse the end of the 'copyright'
+//!  versus the start of the 'other' field correctly.  Both can have spaces
+//!  in them and our delimiter is a single space.
 //----------------------------------------------------------------------------
-#define DWM_WHAT_SYM_OTHER ""
+#define DWM_WHAT_SYM_OTHER DWM_WHAT_SYM_RP_TRIANGLE
 
 //----------------------------------------------------------------------------
 //!  Delimiter, which I'll likely remove and always use a fixed single space.
