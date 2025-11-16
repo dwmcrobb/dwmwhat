@@ -86,7 +86,7 @@ int main(int argc, char *argv[])
   assert(maininfo1.data_view() ==
          DWM_WHAT_TYPE_EXE " " DWM_WHAT_STATUS_DEV " maininfo1 1.0.0 "
          DWM_WHAT_SYM_COPYRIGHT " Daniel McRobb " DWM_WHAT_SYM_GHOST " "
-         DWM_WHAT_SYM_RP_TRIANGLE " mcplex.net");
+         DWM_WHAT_SYM_OTHER " " DWM_WHAT_SYM_RP_TRIANGLE " mcplex.net");
   
   assert(maininfo1 != g_info1);
   assert(g_info1 < maininfo1);
@@ -94,7 +94,7 @@ int main(int argc, char *argv[])
   static constexpr const Dwm::What::SegmentedLiteral __attribute__((used))
     mainsegstr(" ","@(#)",DWM_WHAT_TYPE_EXE,DWM_WHAT_STATUS_DEV,
                "maininfo1", "1.0.0", DWM_WHAT_SYM_COPYRIGHT,
-               "Daniel McRobb " DWM_WHAT_SYM_GHOST,
+               "Daniel McRobb " DWM_WHAT_SYM_GHOST, DWM_WHAT_SYM_OTHER,
                DWM_WHAT_SYM_RP_TRIANGLE " mcplex.net");
   static_assert(mainsegstr.view() == maininfo1.view());
   static_assert(maininfo1.num_segments() == mainsegstr.num_segments());
