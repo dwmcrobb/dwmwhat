@@ -100,8 +100,8 @@ static bool ParseAsDwmWhatInfo(const std::string & v,
                                    + " (.+)"                 // pkg name
                                    + " (.+)"                 // pkg version
                                    + " (" DWM_WHAT_SYM_COPYRIGHT ")"
-                                   + " (.+) "                // copyright
-                                   + DWM_WHAT_SYM_OTHER
+                                   + " (.+)"                 // copyright
+                                   + " " DWM_WHAT_SYM_OTHER
                                    + " (.*)");               // other
   static const std::regex
     rgx(rgxstr,std::regex::ECMAScript|std::regex::optimize);
