@@ -56,7 +56,8 @@ namespace Dwm {
   namespace What {
 
     //------------------------------------------------------------------------
-    //!  
+    //!  Class template to build a string literal from a delimiter string
+    //!  liternal and one or more other string literals.
     //------------------------------------------------------------------------
     template <std::size_t DelimLen, std::size_t FirstLen, std::size_t ...N>
     class SegmentedLiteral
@@ -123,12 +124,6 @@ namespace Dwm {
           it = std::ranges::copy_n(s, N-1, it).out), ...);
         *it = '\0';
       }
-
-      //----------------------------------------------------------------------
-      //!  Returns a view of the whole buffer, minus the terminating null.
-      //----------------------------------------------------------------------
-      consteval operator std::string_view () const noexcept
-      { return std::string_view(_buffer,NumChars - 1); }
 
       //----------------------------------------------------------------------
       //!  Returns the buffer.
