@@ -34,9 +34,9 @@
 //===========================================================================
 
 //---------------------------------------------------------------------------
-//!  \file DwmWhatSegmentedLiteral.hh
-//!  \author Daniel W. McRobb
-//!  \brief NOT YET DOCUMENTED
+//!  @file DwmWhatSegmentedLiteral.hh
+//!  @author Daniel W. McRobb
+//!  @brief Dwm::What::SegmentedLiteral class template
 //---------------------------------------------------------------------------
 
 #ifndef _DWMWHATSEGMENTEDLITERAL_HH_
@@ -66,7 +66,7 @@ namespace Dwm {
       //----------------------------------------------------------------------
       //!  The number of bytes we need in our character array.  @c D is
       //!  the size of the delimiter that is deduced from the first argument
-      //!  of the constructor (a stringt literal).  Hence the size we need
+      //!  of the constructor (a string literal).  Hence the size we need
       //!  for each delimiter is actually D-1 (we don't need the terminating
       //!  null).  @c Size is a pack of the sizes of all other arguments
       //!  from the constructor (also string literals and again we don't
