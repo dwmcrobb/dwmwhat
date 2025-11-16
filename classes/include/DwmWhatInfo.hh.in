@@ -61,7 +61,8 @@
 #define DWM_WHAT_SYM_CHECK_MARK        "\xE2\x9C\x93"
 #define DWM_WHAT_SYM_CONSTRUCT_WORKER  "\xF0\x9F\x91\xB7"
 #define DWM_WHAT_SYM_CONSTRUCT_ZONE    "\xF0\x9F\x9A\xA7"
-#define DWM_WHAT_SYM_COPYRIGHT         "\xC2\xA9\xEF\xB8\x8F "
+// #define DWM_WHAT_SYM_COPYRIGHT         "\xC2\xA9\xEF\xB8\x8F "
+#define DWM_WHAT_SYM_COPYRIGHT         "\xC2\xA9"
 #define DWM_WHAT_SYM_CYCLONE           "\xF0\x9F\x8C\x80"        // cyclone
 #define DWM_WHAT_SYM_DOT               "\xE2\x97\x8F"            // dot
 #define DWM_WHAT_SYM_FILE_FOLDER       "\xF0\x9F\x93\x81"
@@ -99,12 +100,6 @@
 #define DWM_WHAT_TYPE_DOC  DWM_WHAT_SYM_PAGE
 
 //----------------------------------------------------------------------------
-//!  Symbol to place before the 'other' field.  I prefer nothing here and
-//!  will likely remove this.
-//----------------------------------------------------------------------------
-#define DWM_WHAT_SYM_OTHER ""
-
-//----------------------------------------------------------------------------
 //!  Delimiter, which I'll likely remove and always use a fixed single space.
 //----------------------------------------------------------------------------
 #define DWM_WHAT_DELIM " "
@@ -121,28 +116,26 @@ namespace Dwm {
   namespace What {
 
     //------------------------------------------------------------------------
-    //!  Class template to hold package information using an encapsulated
-    //!  SegmentedLiteral to build a compile-time string so we have a
-    //!  contiguous character array that can be found in a binary (object
-    //!  file, library or executable).  An instance of this template
-    //!  would normally be declared inline constexpr in a header file
-    //!  that is visible to all translation units.  The linker takes care
-    //!  of eliminating duplicates.  You probably also want to mark your
-    //!  instance with __attribute__((used)) so the linker doesn't remove
-    //!  it due to no apparent use.
+    //!  Class template to hold package information in a compile-time string
+    //!  literal so we have a contiguous character array that can be found in
+    //!  a binary (object file, library or executable).
+    //!  This just inherits from a SegmentedLiteral with 8 segments, two of
+    //!  which are automatic and not part of the constructor interface: a
+    //!  first segment containing "@(#)" so that dwmwhat(1) and other
+    //!  utilities can find the string and a copyright symbol that is in
+    //!  its own segment.  All other segments are specified in the
+    //!  constructor.
     //------------------------------------------------------------------------
     template <std::size_t P, std::size_t S, std::size_t N, std::size_t V,
               std::size_t C, std::size_t O>
     class Info
       : public SegmentedLiteral<sizeof(DWM_WHAT_DELIM),sizeof("@(#)"),P,S,N,V,
-                                sizeof(DWM_WHAT_SYM_COPYRIGHT),C,
-                                sizeof(DWM_WHAT_SYM_OTHER),O>
+                                sizeof(DWM_WHAT_SYM_COPYRIGHT),C,O>
     {
     public:
       using MyLiteral =
         SegmentedLiteral<sizeof(DWM_WHAT_DELIM),sizeof("@(#)"),P,S,N,V,
-                         sizeof(DWM_WHAT_SYM_COPYRIGHT),C,               
-                         sizeof(DWM_WHAT_SYM_OTHER),O>;
+                         sizeof(DWM_WHAT_SYM_COPYRIGHT),C,O>;
       
       //----------------------------------------------------------------------
       //!  Construct from a given package type @c whattype (see the
@@ -155,8 +148,7 @@ namespace Dwm {
                      const char (&name)[N], const char (&version)[V],
                      const char (&cpyright)[C], const char (&other)[O])
           : MyLiteral(DWM_WHAT_DELIM, "@(#)", whattype, status, name, version,
-                      DWM_WHAT_SYM_COPYRIGHT, cpyright, DWM_WHAT_SYM_OTHER,
-                      other)
+                      DWM_WHAT_SYM_COPYRIGHT, cpyright, other)
       {}
 
       //----------------------------------------------------------------------
@@ -215,7 +207,7 @@ namespace Dwm {
       //!  Returns the 'other' data.
       //----------------------------------------------------------------------
       constexpr std::string_view other() const noexcept
-      { return this->nth(8); }
+      { return this->nth(7); }
       
       //----------------------------------------------------------------------
       //!  Returns a string holding the package information in JSON format.
@@ -248,7 +240,7 @@ namespace Dwm {
     };
 
     //------------------------------------------------------------------------
-    //!  I name the instance here with the build system, just to avoid
+    //!  I name the instance here with the build system, just to help avoid
     //!  potential ODR violations between versions.  Each release gets
     //!  its own instance name based on the tag.
     //------------------------------------------------------------------------
