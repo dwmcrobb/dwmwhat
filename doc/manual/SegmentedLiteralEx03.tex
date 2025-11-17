@@ -1,8 +1,16 @@
+\begin{minipage}{\linewidth}
 \begin{verbatim}
 Dwm::What::SegmentedLiteral("\xC2\xA0", "@(#)", DWM_WHAT_TYPE_LIB,
                             DWM_WHAT_STATUS_REL, "DwmWhat", "1.0.0",
                             "Daniel McRobb 2025", "mcplex.net");
 \end{verbatim}
+\color{blue}
+\begin{verbatim}
+            Dwm::What::Info(DWM_WHAT_TYPE_LIB,
+                            DWM_WHAT_STATUS_REL, "DwmWhat", "1.0.0",
+                            "Daniel McRobb 2025", "mcplex.net");
+\end{verbatim}
+\color{black}
 
 \begin{center}
 \noindent\begin{tikzpicture}[
@@ -38,13 +46,13 @@ Dwm::What::SegmentedLiteral("\xC2\xA0", "@(#)", DWM_WHAT_TYPE_LIB,
     \stepcounter{lastbyte}
   }
   \draw [decorate, decoration={brace, mirror, amplitude=10pt}]
-  (byte-7.south west) -- (byte-10.south east)
-  node [below=8pt, midway, font=\scriptsize] {\texttt{nth(1)}};
+    (byte-7.south west) -- (byte-10.south east)
+    node [below=8pt, midway, font=\scriptsize] {\texttt{nth(1)}};
   \draw (byte-7.south west) -- (byte-10.south east)
     node [below=20pt, midway, font=\scriptsize, text=blue] {\texttt{type()}};
   \draw [decorate, decoration={brace, amplitude=10pt}]
-  (byte-7.north west) -- (byte-10.north east)
-  node [above=8pt, midway] {\emoji{books}};
+    (byte-7.north west) -- (byte-10.north east)
+    node [above=8pt, midway] {\emoji{books}};
   \foreach \byte [count=\i] in \mydelimstring {
     \node[byte node, fill=red!15, font=\scriptsize\ttfamily, text depth=0pt] (byte-\i) {\rotatebox{90}{\byte}};
   }
@@ -131,3 +139,4 @@ Dwm::What::SegmentedLiteral("\xC2\xA0", "@(#)", DWM_WHAT_TYPE_LIB,
 \end{tikzpicture}
 \captionof{figure}{\texttt{Dwm::What::SegmentedLiteral} layout}
 \end{center}
+\end{minipage}
