@@ -51,35 +51,41 @@
 //----------------------------------------------------------------------------
 //!  Just some macros for UTF-8 encodings of some unicode characters
 //----------------------------------------------------------------------------
-#define DWM_WHAT_SYM_ALARM_CLOCK       "\xE2\x8F\xB0"            // alarm clock
-#define DWM_WHAT_SYM_ALIEN             "\xF0\x9F\x91\xBD"        // alien
+#define DWM_WHAT_SYM_NB_SPACE          "\xC2\xA0"        // non-breaking space
+#define DWM_WHAT_SYM_ALARM_CLOCK       "\xE2\x8F\xB0"           // alarm clock
+#define DWM_WHAT_SYM_ALIEN             "\xF0\x9F\x91\xBD"             // alien
 #define DWM_WHAT_SYM_BLUE_CIRCLE       "\xF0\x9F\x94\xB5"
 #define DWM_WHAT_SYM_BOOKS             "\xF0\x9F\x93\x9A"
-#define DWM_WHAT_SYM_CALENDAR          "\xF0\x9F\x93\x86"  // tear-off Calendar
+#define DWM_WHAT_SYM_CALENDAR          "\xF0\x9F\x93\x86" // tear-off Calendar
 #define DWM_WHAT_SYM_CAUTION_SIGN      "\xE2\x98\xA1"
 #define DWM_WHAT_SYM_CHANGE_TETRA      "\xF0\x9D\x8C\xA1"  // change tetragram
 #define DWM_WHAT_SYM_CHECK_MARK        "\xE2\x9C\x93"
 #define DWM_WHAT_SYM_CONSTRUCT_WORKER  "\xF0\x9F\x91\xB7"
 #define DWM_WHAT_SYM_CONSTRUCT_ZONE    "\xF0\x9F\x9A\xA7"
-#define DWM_WHAT_SYM_COPYRIGHT         "\xC2\xA9\xEF\xB8\x8F "
-#define DWM_WHAT_SYM_CYCLONE           "\xF0\x9F\x8C\x80"        // cyclone
-#define DWM_WHAT_SYM_DOT               "\xE2\x97\x8F"            // dot
+// #define DWM_WHAT_SYM_COPYRIGHT         "\xC2\xA9\xEF\xB8\x8F "
+#define DWM_WHAT_SYM_COPYRIGHT         "\xC2\xA9"
+#define DWM_WHAT_SYM_CYCLONE           "\xF0\x9F\x8C\x80"           // cyclone
+#define DWM_WHAT_SYM_DOT               "\xE2\x97\x8F"                   // dot
 #define DWM_WHAT_SYM_FILE_FOLDER       "\xF0\x9F\x93\x81"
 #define DWM_WHAT_SYM_FULLHASH          "\xEF\xBC\x83"
-#define DWM_WHAT_SYM_GEAR              "\xE2\x9A\x99"            // gear
+#define DWM_WHAT_SYM_GEAR              "\xE2\x9A\x99"                  // gear
 #define DWM_WHAT_SYM_GHOST             "\xF0\x9F\x91\xBB"
 #define DWM_WHAT_SYM_HEAVY_CHECK       "\xE2\x9C\x94"
 #define DWM_WHAT_SYM_HEAVY_EXCL        "\xE2\x9D\x97"
-#define DWM_WHAT_SYM_JACKOLANTERN      "\xF0\x9F\x8E\x83"  // jack-o-lantern
+#define DWM_WHAT_SYM_JACKOLANTERN      "\xF0\x9F\x8E\x83"    // jack-o-lantern
 #define DWM_WHAT_SYM_OPEN_BOOK         "\xF0\x9F\x93\x96"
 #define DWM_WHAT_SYM_OPEN_FOLDER       "\xF0\x9F\x93\x82"
-#define DWM_WHAT_SYM_PACKAGE           "\xF0\x9F\x93\xA6"  // Package
+#define DWM_WHAT_SYM_PACKAGE           "\xF0\x9F\x93\xA6"           // Package
 #define DWM_WHAT_SYM_PAGE              "\xF0\x9F\x93\x84"
-#define DWM_WHAT_SYM_ROBOT             "\xF0\x9F\xA4\x96"        // robot emoji
-#define DWM_WHAT_SYM_ROCKET            "\xF0\x9F\x9A\x80"        // rocket
+#define DWM_WHAT_SYM_ROBOT             "\xF0\x9F\xA4\x96"       // robot emoji
+#define DWM_WHAT_SYM_ROCKET            "\xF0\x9F\x9A\x80"            // rocket
 #define DWM_WHAT_SYM_WARNING_SIGN      "\xE2\x9A\xA0"
 #define DWM_WHAT_SYM_WHITE_CHECK       "\xE2\x9C\x85"
-#define DWM_WHAT_SYM_RP_TRIANGLE       "\xE2\x96\xB6" // right-pointing triangle
+#define DWM_WHAT_SYM_RP_TRIANGLE       "\xE2\x96\xB6" //right-pointed triangle
+#define DWM_WHAT_SYM_HEAVY_PLUS        "\xE2\x9E\x95"
+#define DWM_WHAT_SYM_HEAVY_CIRCLE      "\xE2\xAD\x95"
+#define DWM_WHAT_SYM_STAR              "\xE2\xAD\x90"
+// #define DWM_WHAT_SYM_STAR              "\xE2\xAD\x91"
 
 //----------------------------------------------------------------------------
 //!  The three characters I use for 'status'.  Development, release candidate
@@ -99,17 +105,9 @@
 #define DWM_WHAT_TYPE_DOC  DWM_WHAT_SYM_PAGE
 
 //----------------------------------------------------------------------------
-//!  Symbol to place before the 'other' field.  I need this just because
-//!  the dwmwhat utility needs to be able to parse the end of the 'copyright'
-//!  versus the start of the 'other' field correctly.  Both can have spaces
-//!  in them and our delimiter is a single space.
-//----------------------------------------------------------------------------
-#define DWM_WHAT_SYM_OTHER DWM_WHAT_SYM_RP_TRIANGLE
-
-//----------------------------------------------------------------------------
 //!  Delimiter, which I'll likely remove and always use a fixed single space.
 //----------------------------------------------------------------------------
-#define DWM_WHAT_DELIM " "
+#define DWM_WHAT_DELIM DWM_WHAT_SYM_NB_SPACE
 
 //----------------------------------------------------------------------------
 //!  DWM_WHAT_MK_LINE_ARG(__LINE__) can be used to get a string literal of
@@ -133,41 +131,37 @@ namespace Dwm {
     //!  instance with __attribute__((used)) so the linker doesn't remove
     //!  it due to no apparent use.
     //------------------------------------------------------------------------
-    template <std::size_t P, std::size_t S, std::size_t N, std::size_t V,
+    template <std::size_t T, std::size_t S, std::size_t N, std::size_t V,
               std::size_t C, std::size_t O>
     class Info
-      : public SegmentedLiteral<sizeof(DWM_WHAT_DELIM),sizeof("@(#)"),P,S,N,V,
-                                sizeof(DWM_WHAT_SYM_COPYRIGHT),C,
-                                sizeof(DWM_WHAT_SYM_OTHER),O>
+      : public SegmentedLiteral<sizeof(DWM_WHAT_DELIM),sizeof("@(#)"),
+                                T,S,N,V,C,O>
     {
     public:
       using MyLiteral =
-        SegmentedLiteral<sizeof(DWM_WHAT_DELIM),sizeof("@(#)"),P,S,N,V,
-                         sizeof(DWM_WHAT_SYM_COPYRIGHT),C,               
-                         sizeof(DWM_WHAT_SYM_OTHER),O>;
+        SegmentedLiteral<sizeof(DWM_WHAT_DELIM),sizeof("@(#)"),T,S,N,V,C,O>;
       
       //----------------------------------------------------------------------
-      //!  Construct from a given package type @c whattype (see the
+      //!  Construct from a given package type @c type (see the
       //!  @c DWM_WHAT_TYPE_* macros above), package @c status (see the
       //!  @c DWM_WHAT_STATUS_* macros above), package @c name, package
       //!  @c version, package @c copyright and finally any @c other
       //!  information.  All arguments are string literals.
       //----------------------------------------------------------------------
-      consteval Info(const char (&whattype)[P], const char (&status)[S],
+      consteval Info(const char (&type)[T], const char (&status)[S],
                      const char (&name)[N], const char (&version)[V],
                      const char (&cpyright)[C], const char (&other)[O])
-          : MyLiteral(DWM_WHAT_DELIM, "@(#)", whattype, status, name, version,
-                      DWM_WHAT_SYM_COPYRIGHT, cpyright, DWM_WHAT_SYM_OTHER,
-                      other)
+          : MyLiteral(DWM_WHAT_DELIM, "@(#)", type, status, name, version,
+                      cpyright, other)
       {}
 
       //----------------------------------------------------------------------
       //!  
       //----------------------------------------------------------------------
-      template <std::size_t PI, std::size_t SI, std::size_t NI,
+      template <std::size_t TI, std::size_t SI, std::size_t NI,
                 std::size_t VI, std::size_t CI, std::size_t OI>
       constexpr bool operator ==
-      (const Info<PI,SI,NI,VI,CI,OI> & info) const noexcept
+      (const Info<TI,SI,NI,VI,CI,OI> & info) const noexcept
       {
         return (this->view() == info.view());
       }
@@ -175,10 +169,10 @@ namespace Dwm {
       //----------------------------------------------------------------------
       //!  
       //----------------------------------------------------------------------
-      template <std::size_t PI, std::size_t SI, std::size_t NI,
+      template <std::size_t TI, std::size_t SI, std::size_t NI,
                 std::size_t VI, std::size_t CI, std::size_t OI>
       constexpr bool operator <
-      (const Info<PI,SI,NI,VI,CI,OI> & info) const noexcept
+      (const Info<TI,SI,NI,VI,CI,OI> & info) const noexcept
       {
         return (this->view() < info.view());
       }
@@ -211,13 +205,13 @@ namespace Dwm {
       //!  Returns the package copyright.
       //----------------------------------------------------------------------
       constexpr std::string_view copyright() const noexcept
-      { return this->nth(6); }
+      { return this->nth(5); }
       
       //----------------------------------------------------------------------
       //!  Returns the 'other' data.
       //----------------------------------------------------------------------
       constexpr std::string_view other() const noexcept
-      { return this->nth(8); }
+      { return this->nth(6); }
       
       //----------------------------------------------------------------------
       //!  Returns a string holding the package information in JSON format.
@@ -258,7 +252,7 @@ namespace Dwm {
     @DWM_WHAT_INSTANCE@(DWM_WHAT_TYPE_EXE DWM_WHAT_TYPE_HDR,
                         @DWM_WHAT_STATUS@, "DwmWhat",
                         "@DWM_VERSION@",
-                        "Daniel McRobb 2025 " DWM_WHAT_SYM_GHOST,
+                        "Daniel McRobb 2025",
                         "@DWM_WHAT_OTHER@");
 
     //------------------------------------------------------------------------
