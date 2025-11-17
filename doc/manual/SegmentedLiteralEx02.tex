@@ -1,0 +1,48 @@
+\begin{verbatim}
+Dwm::What::SegmentedLiteral("|", "@(#)", "DwmWhat", "1.0.0",
+                            "Copyright Daniel McRobb 2025", "mcplex.net");
+\end{verbatim}
+
+\begin{center}
+\noindent\begin{tikzpicture}[
+    start chain = A going right,
+    node distance = 0pt, % Ensure no gap between bit nodes
+    byte node/.style = {draw=lightgray, minimum height=20pt, minimum width=(\textwidth)/56, text width=\dimexpr(\textwidth)/56\relax, text height=16pt, text depth=4pt, font=\ttfamily, anchor=south, align=center, inner sep=0pt, outer sep=0pt, on chain=A}
+  ]
+  \def\mybytestring{{@},{(},{\#},{)},{|},D,w,m,W,h,a,t,{|},1,.,0,.,0,{|},C,o,p,y,r,i,g,h,t,{ },D,a,n,i,e,l,{ },M,c,R,o,b,b,{ },2,0,2,5,{|},m,c,p,l,e,x,.,n,e,t}
+  % Draw the byte nodes and indices
+  \setcounter{lastbyte}{0}
+  \foreach \byte [count=\i] in \mybytestring {
+    \node[byte node, fill=white] (byte-\i) {\byte};
+    \stepcounter{lastbyte}
+  }
+  \node[byte node, fill=lightgray!50] (termnull) {$\emptyset$};
+  
+  % and a label for the byte nodes
+  \ifnum \value{lastbyte} > 0
+    \draw [decorate, decoration={brace, amplitude=10pt}] (byte-1.north west) -- (byte-\thelastbyte.north east)
+    node [above=8pt, midway, font=\scriptsize] {\texttt{view()}};
+    \draw [decorate, decoration={brace, mirror, amplitude=10pt}] (byte-1.south west) -- (byte-4.south east)
+    node [below=8pt, midway, font=\scriptsize] {\texttt{nth(0)}};
+    \draw [decorate, decoration={brace, mirror, amplitude=10pt}] (byte-6.south west) -- (byte-12.south east)
+    node [below=8pt, midway, font=\scriptsize] {\texttt{nth(1)}};
+    \draw [decorate, decoration={brace, mirror, amplitude=10pt}] (byte-14.south west) -- (byte-18.south east)
+    node [below=8pt, midway, font=\scriptsize] {\texttt{nth(2)}};
+    \draw [decorate, decoration={brace, mirror, amplitude=10pt}] (byte-20.south west) -- (byte-47.south east)
+    node [below=8pt, midway, font=\scriptsize] {\texttt{nth(3)}};
+    \draw [decorate, decoration={brace, mirror, amplitude=10pt}] (byte-49.south west) -- (byte-58.south east)
+    node [below=8pt, midway, font=\scriptsize] {\texttt{nth(4)}};
+
+  \draw [decorate, decoration={brace, mirror, amplitude=10pt}] (byte-5.south west) -- (byte-5.south east) 
+  node [below=8pt, midway, rotate=270, anchor=east, xshift=3em, yshift=.5pt, font=\scriptsize] {delim};
+  \draw [decorate, decoration={brace, mirror, amplitude=10pt}] (byte-13.south west) -- (byte-13.south east) 
+  node [below=8pt, midway, rotate=270, anchor=east, xshift=3em, yshift=.5pt, font=\scriptsize] {delim};
+  \draw [decorate, decoration={brace, mirror, amplitude=10pt}] (byte-19.south west) -- (byte-19.south east) 
+  node [below=8pt, midway, rotate=270, anchor=east, xshift=3em, yshift=.5pt, font=\scriptsize] {delim};
+  \draw [decorate, decoration={brace, mirror, amplitude=10pt}] (byte-48.south west) -- (byte-48.south east) 
+  node [below=8pt, midway, rotate=270, anchor=east, xshift=3em, yshift=.5pt, font=\scriptsize] {delim};
+
+  \fi
+\end{tikzpicture}
+\captionof{figure}{\texttt{Dwm::What::SegmentedLiteral} layout}
+\end{center}

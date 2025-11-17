@@ -1,0 +1,133 @@
+\begin{verbatim}
+Dwm::What::SegmentedLiteral("\xC2\xA0", "@(#)", DWM_WHAT_TYPE_LIB,
+                            DWM_WHAT_STATUS_REL, "DwmWhat", "1.0.0",
+                            "Daniel McRobb 2025", "mcplex.net");
+\end{verbatim}
+
+\begin{center}
+\noindent\begin{tikzpicture}[
+    start chain = A going right,
+    node distance = 0pt, % Ensure no gap between bit nodes
+    byte node/.style = {draw=lightgray, minimum height=20pt, minimum width=(\textwidth)/56, text width=\dimexpr(\textwidth)/56\relax, text height=16pt, text depth=4pt, font=\ttfamily, anchor=south, align=center, inner sep=0pt, outer sep=0pt, on chain=A}
+]
+  \def\mypfxstring{{@},{(},{\#},{)}}
+  \def\mydelimstring{0xC2,0xA0}
+  \def\mysegonestring{0xF0,0x9F,0x93,0x9A}
+  \def\mysegtwostring{0xE2,0x9C,0x85}
+  \def\mysegthreestring{D,w,m,W,h,a,t}
+  \def\mysegfourstring{1,.,0,.,0}
+  \def\mysegfivestring{D,a,n,i,e,l,{ },M,c,R,o,b,b}
+  \def\mysegsixstring{m,c,p,l,e,x,.,n,e,t}
+
+  \foreach \byte [count=\i] in \mypfxstring {
+    \node[byte node, fill=white] (byte-\i) {\byte};
+    \stepcounter{lastbyte}
+  }
+  \draw [decorate, decoration={brace, mirror, amplitude=10pt}]
+    (byte-1.south west) -- (byte-4.south east)
+    node [below=8pt, midway, font=\scriptsize] {\texttt{nth(0)}};
+  \draw [decorate, decoration={brace, amplitude=10pt}]
+    (byte-1.north west) -- (byte-4.north east)
+    node [above=8pt, midway] {@(\#)};
+  \foreach \byte [count=\i] in \mydelimstring {
+    \node[byte node, fill=red!15, font=\scriptsize\ttfamily, text depth=0pt] (byte-\i) {\rotatebox{90}{\byte}};
+  }
+
+  \foreach \byte [count=\i] in \mysegonestring {
+    \node[byte node, fill=white, font=\scriptsize\ttfamily, text depth=0pt] (byte-\i) {\rotatebox{90}{\byte}};
+    \stepcounter{lastbyte}
+  }
+  \draw [decorate, decoration={brace, mirror, amplitude=10pt}]
+  (byte-7.south west) -- (byte-10.south east)
+  node [below=8pt, midway, font=\scriptsize] {\texttt{nth(1)}};
+  \draw (byte-7.south west) -- (byte-10.south east)
+    node [below=20pt, midway, font=\scriptsize, text=blue] {\texttt{type()}};
+  \draw [decorate, decoration={brace, amplitude=10pt}]
+  (byte-7.north west) -- (byte-10.north east)
+  node [above=8pt, midway] {\emoji{books}};
+  \foreach \byte [count=\i] in \mydelimstring {
+    \node[byte node, fill=red!15, font=\scriptsize\ttfamily, text depth=0pt] (byte-\i) {\rotatebox{90}{\byte}};
+  }
+
+  \foreach \byte [count=\i] in \mysegtwostring {
+    \node[byte node, fill=white, font=\scriptsize\ttfamily, text depth=0pt] (byte-\i) {\rotatebox{90}{\byte}};
+    \stepcounter{lastbyte}
+  }
+  \draw [decorate, decoration={brace, mirror, amplitude=10pt}]
+  (byte-13.south west) -- (byte-15.south east)
+  node [below=8pt, midway, font=\scriptsize] {\texttt{nth(2)}};
+  \draw (byte-13.south west) -- (byte-15.south east)
+    node [below=20pt, midway, font=\scriptsize, text=blue] {\texttt{status()}};
+  \draw [decorate, decoration={brace, amplitude=10pt}]
+  (byte-13.north west) -- (byte-15.north east)
+  node [above=8pt, midway] {\emoji{white-check-mark}};
+  \foreach \byte [count=\i] in \mydelimstring {
+    \node[byte node, fill=red!15, font=\scriptsize\ttfamily, text depth=0pt] (byte-\i) {\rotatebox{90}{\byte}};
+  }
+
+  \foreach \byte [count=\i] in \mysegthreestring {
+    \node[byte node, fill=white] (byte-\i) {\byte};
+    \stepcounter{lastbyte}
+  }
+  \draw [decorate, decoration={brace, mirror, amplitude=10pt}]
+    (byte-18.south west) -- (byte-24.south east)
+    node [below=8pt, midway, font=\scriptsize] {\texttt{nth(3)}};
+  \draw (byte-18.south west) -- (byte-24.south east)
+    node [below=20pt, midway, font=\scriptsize, text=blue] {\texttt{name()}};
+  \draw [decorate, decoration={brace, amplitude=10pt}]
+    (byte-18.north west) -- (byte-24.north east)
+    node [above=8pt, midway] {DwmWhat};
+  \foreach \byte [count=\i] in \mydelimstring {
+    \node[byte node, fill=red!15, font=\scriptsize\ttfamily, text depth=0pt] (byte-\i) {\rotatebox{90}{\byte}};
+  }
+
+  \foreach \byte [count=\i] in \mysegfourstring {
+    \node[byte node, fill=white] (byte-\i) {\byte};
+    \stepcounter{lastbyte}
+  }
+  \draw [decorate, decoration={brace, mirror, amplitude=10pt}]
+    (byte-27.south west) -- (byte-31.south east)
+    node [below=8pt, midway, font=\scriptsize] {\texttt{nth(4)}};
+  \draw (byte-27.south west) -- (byte-31.south east)
+    node [below=20pt, midway, font=\scriptsize, text=blue] {\texttt{version()}};
+  \draw [decorate, decoration={brace, amplitude=10pt}]
+    (byte-27.north west) -- (byte-31.north east)
+    node [above=8pt, midway] {1.0.0};
+  \foreach \byte [count=\i] in \mydelimstring {
+    \node[byte node, fill=red!15, font=\scriptsize\ttfamily, text depth=0pt] (byte-\i) {\rotatebox{90}{\byte}};
+  }
+
+  \foreach \byte [count=\i] in \mysegfivestring {
+    \node[byte node, fill=white] (byte-\i) {\byte};
+    \stepcounter{lastbyte}
+  }
+  \draw [decorate, decoration={brace, mirror, amplitude=10pt}]
+    (byte-34.south west) -- (byte-46.south east)
+    node [below=8pt, midway, font=\scriptsize] {\texttt{nth(5)}};
+  \draw (byte-34.south west) -- (byte-46.south east)
+    node [below=20pt, midway, font=\scriptsize, text=blue] {\texttt{copyright()}};
+  \draw [decorate, decoration={brace, amplitude=10pt}]
+    (byte-34.north west) -- (byte-46.north east)
+    node [above=8pt, midway] {Daniel McRobb};
+  \foreach \byte [count=\i] in \mydelimstring {
+    \node[byte node, fill=red!15, font=\scriptsize\ttfamily, text depth=0pt] (byte-\i) {\rotatebox{90}{\byte}};
+  }
+
+  \foreach \byte [count=\i] in \mysegsixstring {
+    \node[byte node, fill=white] (byte-\i) {\byte};
+    \stepcounter{lastbyte}
+  }
+  \draw [decorate, decoration={brace, mirror, amplitude=10pt}]
+    (byte-49.south west) -- (byte-58.south east)
+    node [below=8pt, midway, font=\scriptsize] {\texttt{nth(6)}};
+  \draw (byte-49.south west) -- (byte-58.south east)
+    node [below=20pt, midway, font=\scriptsize, text=blue] {\texttt{other()}};
+  \draw [decorate, decoration={brace, amplitude=10pt}]
+    (byte-49.north west) -- (byte-58.north east)
+    node [above=8pt, midway] {mcplex.net};
+
+  \node[byte node, fill=lightgray!50] (termnull) {$\emptyset$};
+    
+\end{tikzpicture}
+\captionof{figure}{\texttt{Dwm::What::SegmentedLiteral} layout}
+\end{center}

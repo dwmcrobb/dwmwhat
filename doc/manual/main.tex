@@ -1,0 +1,140 @@
+\PassOptionsToPackage{table}{xcolor}
+\documentclass[letterpaper,openany]{book}
+
+\input{Preamble.tex}
+% \usepackage[utf8]{inputenc}
+
+\begin{document}
+\include{TitlePage.tex}
+
+\begingroup
+\renewcommand{\baselinestretch}{1.0}
+% \tableofcontents
+% \listoffigures
+% \listoftables
+\endgroup
+
+\chapter{\texttt{Dwm::What::SegmentedLiteral}}
+
+\section{Synopsis}
+
+\begin{verbatim}
+template <std::size_t DelimLen, std::size_t FirstLen, std::size_t ...N>
+class SegmentedLiteral
+{
+public:
+   consteval SegmentedLiteral(const char (&delim)[DelimLen],
+                              const char (&f)[FirstLen],
+                              const char (&...s)[N]);
+   constexpr std::string_view view() const noexcept;
+   constexpr std::size_t num_segments() const noexcept;      
+   constexpr std::string_view nth(std::size_t n) const noexcept;
+};
+\end{verbatim}
+
+\section{Examples}
+
+\input{SegmentedLiteralEx01.tex}
+
+\input{SegmentedLiteralEx02.tex}
+
+\chapter{\texttt{Dwm::What::Info}}
+\texttt{Dwm::What::Info} is just a \texttt{Dwm::What::SegmentedLiteral}
+with a specific delimiter (not user-specified), an automatically added
+first segment and named accessors for the contained segments.
+
+\section{Why a specific 2-byte delimiter between segments?}
+\subsection{Desirable delimiter features}
+\begin{enumerate}
+\item Painless to eliminate from the vocabulary allowed in
+the user-specified content.  We want something that the user
+will never need.
+\item Does not clutter the display of the entire literal
+(including the delimiters) such as that from \texttt{data\_view()}
+and \texttt{view()}.
+\end{enumerate}
+
+\begin{enumerate}
+\item Human readability of strings in binary files.
+\item Machine readability of strings in binary files (the
+ability to decompose into segments), without compromising the
+human readability.
+\end{enumerate}
+
+I've chosen Unicode {\em No-Break Space (NBSP)} as the delimiter,
+since it serves the needs well.  For a human it just looks like
+a single space, while it can be distinguished from a single space
+when parsing.
+
+\section{Synopsis}
+
+\begin{verbatim}
+template <std::size_t T, std::size_t S, std::size_t N,
+          std::size_t V, std::size_t C, std::size_t O>
+class Info
+   : public SegmentedLiteral<sizeof(DWM_WHAT_DELIM),sizeof("@(#)"),T,S,N,V,C,O>
+{
+public:
+   consteval Info(const char (&type)[T], const char (&status)[S],
+                  const char (&name)[N], const char (&version)[V],
+                  const char (&cpyright)[C], const char (&other)[O]);
+
+   constexpr std::string_view type() const noexcept;
+   constexpr std::string_view status() const noexcept;
+   constexpr std::string_view name() const noexcept;
+   constexpr std::string_view version() const noexcept;
+   constexpr std::string_view copyright() const noexcept;
+   constexpr std::string_view date() const noexcept;
+   constexpr std::string_view other() const noexcept;
+   constexpr std::string_view data_view() const noexcept;
+   constexpr std::string_view view() const noexcept;
+};
+\end{verbatim}
+
+\section{Constructor}
+\subsection{constructor arguments}
+\begin{tabular}{ll}
+\textbf{argument} & \textbf{description} \\
+type & The type of the package.  By convention, one or more of
+\texttt{DWM\_WHAT\_TYPE\_}, \texttt{DWM\_WHAT\_TYPE\_}, \texttt{DWM\_WHAT\_TYPE\_}
+and \texttt{DWM\_WHAT\_TYPE\_}. \\
+status & \\
+name & \\
+version & \\
+cpyright & \\
+other & \\
+\end{tabular}
+
+\section{Accesssors}
+
+\section{Equivalence to \texttt{Dwm::What::SegmentedLiteral}}
+The following will produce the equivalent stirng literal.  This makes
+it obvious that \texttt{Dwm::What::Info} is just a
+\texttt{Dwm::What::SegmentedLiteral} with a specific delimiter
+(\texttt{"\textbackslash{xC2}\textbackslash{xA0}"}) and an automatically added first segment
+(\texttt{"@(\#)"}).
+
+\begin{verbatim}
+   SegmentedLiteral("\xC2\xA0", "@(#)",
+                    DWM_WHAT_TYPE_LIB, DWM_WHAT_STATUS_REL, "DwmWhat",
+                    "1.0.0", "Daniel McRobb 2025", "mcplex.net");
+
+               Info(DWM_WHAT_TYPE_LIB, DWM_WHAT_STATUS_REL, "DwmWhat",
+                    "1.0.0", "Daniel McRobb 2025", "mcplex.net");
+\end{verbatim}
+
+\section{Examples}
+\input{InfoEx01.tex}
+
+\input{SegmentedLiteralEx03.tex}
+
+% \emoji{robot}
+% \emoji{ghost}
+% \emoji{heavy-exclamation-mark}
+% \emoji{books}
+% \emoji{white-check-mark}
+% \emoji{construction-worker}
+% \emoji{page-facing-up}
+% \emoji{copyright}
+
+\end{document}
