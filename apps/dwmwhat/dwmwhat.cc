@@ -95,14 +95,13 @@ static bool ParseAsDwmWhatInfo(const std::string & v,
   static const std::string  pkgStatus("(" DWM_WHAT_STATUS_DEV
                                       "|" DWM_WHAT_STATUS_RC
                                       "|" DWM_WHAT_STATUS_REL ")");
-  static const std::string  rgxstr("\\@\\(#\\)[ ]+" + pkgTypes + " "
-                                   + pkgStatus
-                                   + " (.+)"                 // pkg name
-                                   + " (.+)"                 // pkg version
-                                   + " (" DWM_WHAT_SYM_COPYRIGHT ")"
-                                   + " (.+)"                 // copyright
-                                   + " " DWM_WHAT_SYM_OTHER
-                                   + " (.*)");               // other
+  static const std::string  rgxstr(std::string("\\@\\(#\\)")
+                                   + DWM_WHAT_DELIM + pkgTypes
+                                   + DWM_WHAT_DELIM + pkgStatus
+                                   + DWM_WHAT_DELIM + "(.+)"      // pkg name
+                                   + DWM_WHAT_DELIM + "(.+)"   // pkg version
+                                   + DWM_WHAT_DELIM + "(.+)"     // copyright
+                                   + DWM_WHAT_DELIM + "(.*)");       // other
   static const std::regex
     rgx(rgxstr,std::regex::ECMAScript|std::regex::optimize);
   std::smatch sm;
@@ -112,15 +111,15 @@ static bool ParseAsDwmWhatInfo(const std::string & v,
       cerr << "sm[" << i << "]: " << sm[i].str() << '\n';
     }
 #endif
-    if (sm.size() == 9) {
+    if (sm.size() == 8) {
       result.clear();
       result["id"] = sm[0].str();
       result["type"] = sm[1].str();
       result["status"] = sm[3].str();
       result["name"] = sm[4].str();
       result["version"] = sm[5].str();
-      result["copyright"] = sm[7].str();
-      result["other"] = sm[8].str();
+      result["copyright"] = sm[6].str();
+      result["other"] = sm[7].str();
       rc = true;
     }
   }
@@ -408,6 +407,7 @@ int main(int argc, char *argv[])
     }
     else {
       std::cout << Dwm::What::info().data_view() << '\n';
+      //      std::cout << Dwm::What::info().view().size() << '\n';
     }
 #endif
     return 0;
