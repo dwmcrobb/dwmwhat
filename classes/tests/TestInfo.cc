@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
   static constexpr const Dwm::What::Info __attribute__((used))
     maininfo1(DWM_WHAT_TYPE_EXE, DWM_WHAT_STATUS_DEV, "maininfo1", "1.0.0",
               "Daniel McRobb " DWM_WHAT_SYM_GHOST,
-              DWM_WHAT_SYM_RP_TRIANGLE " mcplex.net");
+              DWM_WHAT_SYM_RP_TRIANGLE " mcplex.net and more");
 
   assert(maininfo1.type() == DWM_WHAT_TYPE_EXE);
   assert(maininfo1.status() == DWM_WHAT_STATUS_DEV);
@@ -82,20 +82,22 @@ int main(int argc, char *argv[])
   assert(maininfo1.version() == "1.0.0");
   assert(maininfo1.copyright()
          == "Daniel McRobb " DWM_WHAT_SYM_GHOST);
-  assert(maininfo1.other() == DWM_WHAT_SYM_RP_TRIANGLE " mcplex.net");
+  assert(maininfo1.other() == DWM_WHAT_SYM_RP_TRIANGLE " mcplex.net and more");
   assert(maininfo1.data_view() ==
-         DWM_WHAT_TYPE_EXE " " DWM_WHAT_STATUS_DEV " maininfo1 1.0.0 "
-         DWM_WHAT_SYM_COPYRIGHT " Daniel McRobb " DWM_WHAT_SYM_GHOST " "
-         DWM_WHAT_SYM_OTHER " " DWM_WHAT_SYM_RP_TRIANGLE " mcplex.net");
+         DWM_WHAT_TYPE_EXE DWM_WHAT_DELIM
+         DWM_WHAT_STATUS_DEV DWM_WHAT_DELIM
+         "maininfo1" DWM_WHAT_DELIM
+         "1.0.0" DWM_WHAT_DELIM
+         "Daniel McRobb " DWM_WHAT_SYM_GHOST DWM_WHAT_DELIM
+         DWM_WHAT_SYM_RP_TRIANGLE " mcplex.net and more");
   
   assert(maininfo1 != g_info1);
   assert(g_info1 < maininfo1);
 
   static constexpr const Dwm::What::SegmentedLiteral __attribute__((used))
-    mainsegstr(" ","@(#)",DWM_WHAT_TYPE_EXE,DWM_WHAT_STATUS_DEV,
-               "maininfo1", "1.0.0", DWM_WHAT_SYM_COPYRIGHT,
-               "Daniel McRobb " DWM_WHAT_SYM_GHOST, DWM_WHAT_SYM_OTHER,
-               DWM_WHAT_SYM_RP_TRIANGLE " mcplex.net");
+    mainsegstr(DWM_WHAT_DELIM,"@(#)",DWM_WHAT_TYPE_EXE,DWM_WHAT_STATUS_DEV,
+               "maininfo1", "1.0.0", "Daniel McRobb " DWM_WHAT_SYM_GHOST,
+               DWM_WHAT_SYM_RP_TRIANGLE " mcplex.net and more");
   static_assert(mainsegstr.view() == maininfo1.view());
   static_assert(maininfo1.num_segments() == mainsegstr.num_segments());
   static_assert(sizeof(decltype(maininfo1)::BufType)
