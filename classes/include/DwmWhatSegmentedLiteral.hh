@@ -111,12 +111,12 @@ namespace Dwm {
       //----------------------------------------------------------------------
       consteval SegmentedLiteral(const char (&delim)[DelimLen],
                                  const char (&f)[FirstLen],
-                                 const char (&...s)[N])
+                                 const char (&...s)[N]) noexcept
       {
         static_assert(NumChars <= std::numeric_limits<SegLenType>::max());
 
         //  'f' is just 'first'
-        auto  it = std::ranges::copy_n(f,FirstLen - 1, _buffer).out;
+        auto  it = std::ranges::copy_n(f, FirstLen - 1, _buffer).out;
         std::size_t  si = 0;
         _seglengths[si++] = FirstLen - 1;
         ((_seglengths[si++] = N - 1,
@@ -159,6 +159,23 @@ namespace Dwm {
       //----------------------------------------------------------------------
       constexpr std::size_t size_of_seg_lengths() const noexcept
       { return sizeof(SegLenType); }
+
+      //----------------------------------------------------------------------
+      //!  
+      //----------------------------------------------------------------------
+      constexpr bool delims_in_content() const noexcept
+      {
+        if ((_numSegments > 1) && (_delimLen > 0)) {
+          std::string_view  d(_buffer + _seglengths[0], _delimLen);
+          for (size_t i = 0; i < _numSegments; ++i) {
+            auto  v = this->nth(i);
+            if (v.find(d) != v.npos) {
+              return true;
+            }
+          }
+        }
+        return false;
+      }
       
     protected:
       char                          _buffer[NumChars] {};
