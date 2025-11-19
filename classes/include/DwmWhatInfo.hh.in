@@ -265,7 +265,7 @@ namespace Dwm {
     //------------------------------------------------------------------------
     //!  Returns the current instance of Info for Dwm::What.
     //------------------------------------------------------------------------
-    inline constexpr const auto info() noexcept
+    inline constexpr auto & info() noexcept
     { return @DWM_WHAT_INSTANCE@; }
       
   }  // namespace What
