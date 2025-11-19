@@ -59,7 +59,7 @@ namespace Dwm {
     //!  Class template to build a string literal from a delimiter string
     //!  liternal and one or more other string literals.
     //------------------------------------------------------------------------
-    template <std::size_t DelimLen, std::size_t FirstLen, std::size_t ...N>
+    template <std::size_t DelimLen, std::size_t FirstLen, std::size_t ...SegLen>
     class SegmentedLiteral
     {
     public:
@@ -82,12 +82,12 @@ namespace Dwm {
       };
 
       static constexpr size_t NumChars =
-        CalcNumChars<DelimLen, FirstLen, N...>::sz;
+        CalcNumChars<DelimLen, FirstLen, SegLen...>::sz;
 
       //----------------------------------------------------------------------
       //!  The number of segments.
       //----------------------------------------------------------------------
-      static constexpr size_t NumSegs = sizeof...(N) + 1;
+      static constexpr size_t NumSegs = sizeof...(SegLen) + 1;
 
       //----------------------------------------------------------------------
       //!  The minimum sized type we need for our array of segment lengths.
@@ -106,31 +106,32 @@ namespace Dwm {
 
       //----------------------------------------------------------------------
       //!  Constructor.  Since we require a delimiter and at least one
-      //!  segment, we have @c f as a required argument (the first segment).
-      //!  @c s is the pack of all other segments (which may be empty).
+      //!  segment, we have @c firstSeg as a required argument (the first
+      //!  segment).  @c moreSegs is the pack of all other segments (which
+      //!  may be empty).
       //----------------------------------------------------------------------
       consteval SegmentedLiteral(const char (&delim)[DelimLen],
-                                 const char (&f)[FirstLen],
-                                 const char (&...s)[N]) noexcept
+                                 const char (&firstSeg)[FirstLen],
+                                 const char (&...moreSegs)[SegLen]) noexcept
       {
         static_assert(NumChars <= std::numeric_limits<SegLenType>::max());
 
         //  'f' is just 'first'
-        auto  it = std::ranges::copy_n(f, FirstLen - 1, _buffer).out;
+        auto  it = std::ranges::copy_n(firstSeg, FirstLen - 1, _buffer).out;
         std::size_t  si = 0;
         _seglengths[si++] = FirstLen - 1;
-        ((_seglengths[si++] = N - 1,
-          it = std::ranges::copy_n(delim,DelimLen - 1, it).out,
-          it = std::ranges::copy_n(s, N-1, it).out), ...);
+        ((_seglengths[si++] = SegLen - 1,
+          it = std::ranges::copy_n(delim, DelimLen - 1, it).out,
+          it = std::ranges::copy_n(moreSegs, SegLen-1, it).out), ...);
         *it = '\0';
       }
 
       //----------------------------------------------------------------------
       //!  Returns the buffer.
       //----------------------------------------------------------------------
-      constexpr operator BufType () const noexcept
+      constexpr BufType buffer() const noexcept
       { return _buffer; }
-
+        
       //----------------------------------------------------------------------
       //!  Returns a view of the whole buffer, minus the terminating null.
       //----------------------------------------------------------------------

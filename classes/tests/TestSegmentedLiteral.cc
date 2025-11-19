@@ -80,6 +80,7 @@ int main(int argc, char *argv[])
   assert(emptyDelim.nth(1) == "defg");
   assert(emptyDelim.nth(2) == "hijkl");
   assert(emptyDelim.view() == "abcdefghijkl");
+  assert(! emptyDelim.delims_in_content());
 
   assert(TestSegmentedLiteral.nth(0) == "@(#)");
   assert(TestSegmentedLiteral.nth(1) == "TestSegmentedLiteral");
@@ -89,11 +90,13 @@ int main(int argc, char *argv[])
   assert(TestSegmentedLiteral.nth(5) == __TIME__);
   assert(TestSegmentedLiteral.view() ==
          "@(#) TestSegmentedLiteral  Copyright Daniel McRobb 2025 " __DATE__ " " __TIME__);
-
+  assert(TestSegmentedLiteral.delims_in_content());
+  
   static constexpr Dwm::What::SegmentedLiteral
     __attribute__((used)) sccsMatch(" ","@(#) ","SCCS string");
   assert(sccsMatch.nth(0) == "@(#) ");
   assert(sccsMatch.nth(1) == "SCCS string");
+  assert(sccsMatch.delims_in_content());
   
   return 0;
 }

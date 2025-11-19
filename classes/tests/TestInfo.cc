@@ -1,3 +1,5 @@
+
+
 //===========================================================================
 // @(#) $DwmPath$
 //===========================================================================
@@ -55,14 +57,28 @@ g_info1(DWM_WHAT_TYPE_HDR, DWM_WHAT_STATUS_RC, "g_info1", "0.0.1",
 //----------------------------------------------------------------------------
 //!  
 //----------------------------------------------------------------------------
+static void TestBadContent()
+{
+  constexpr const Dwm::What::Info
+    bcinfo(DWM_WHAT_TYPE_HDR, DWM_WHAT_STATUS_RC, "bcinfo", "0.0.1",
+           "Daniel McRobb " DWM_WHAT_DELIM, "mcplex.net");
+  static_assert(bcinfo.delims_in_content());
+}
+
+//----------------------------------------------------------------------------
+//!  
+//----------------------------------------------------------------------------
 int main(int argc, char *argv[])
 {
-  assert(Dwm::What::info().name() == "DwmWhat");
+  TestBadContent();
+  
+  assert(Dwm::What::info().name() == "dwmwhat");
   assert(! Dwm::What::info().type().empty());
   assert(! Dwm::What::info().version().empty());
   assert(! Dwm::What::info().status().empty());
   assert(! Dwm::What::info().copyright().empty());
   assert(Dwm::What::info().other() == "mcplex.net");
+  static_assert(! Dwm::What::info().delims_in_content());
   
   assert(g_info1.type() == DWM_WHAT_TYPE_HDR);
   assert(g_info1.status() == DWM_WHAT_STATUS_RC);

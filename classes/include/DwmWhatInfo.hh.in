@@ -131,15 +131,19 @@ namespace Dwm {
     //!  instance with __attribute__((used)) so the linker doesn't remove
     //!  it due to no apparent use.
     //------------------------------------------------------------------------
-    template <std::size_t T, std::size_t S, std::size_t N, std::size_t V,
-              std::size_t C, std::size_t O>
+    template <std::size_t TypeLen, std::size_t StatusLen, std::size_t NameLen,
+              std::size_t VersionLen, std::size_t CopyrightLen,
+              std::size_t OtherLen>
     class Info
-      : public SegmentedLiteral<sizeof(DWM_WHAT_DELIM),sizeof("@(#)"),
-                                T,S,N,V,C,O>
+      : public SegmentedLiteral<sizeof(DWM_WHAT_DELIM), sizeof("@(#)"),
+                                TypeLen, StatusLen, NameLen, VersionLen,
+                                CopyrightLen, OtherLen>
     {
     public:
       using MyLiteral =
-        SegmentedLiteral<sizeof(DWM_WHAT_DELIM),sizeof("@(#)"),T,S,N,V,C,O>;
+        SegmentedLiteral<sizeof(DWM_WHAT_DELIM),sizeof("@(#)"),
+                         TypeLen, StatusLen, NameLen, VersionLen,
+                         CopyrightLen, OtherLen>;
       
       //----------------------------------------------------------------------
       //!  Construct from a given package type @c type (see the
@@ -148,9 +152,12 @@ namespace Dwm {
       //!  @c version, package @c copyright and finally any @c other
       //!  information.  All arguments are string literals.
       //----------------------------------------------------------------------
-      consteval Info(const char (&type)[T], const char (&status)[S],
-                     const char (&name)[N], const char (&version)[V],
-                     const char (&cpyright)[C], const char (&other)[O])
+      consteval Info(const char (&type)[TypeLen],
+                     const char (&status)[StatusLen],
+                     const char (&name)[NameLen],
+                     const char (&version)[VersionLen],
+                     const char (&cpyright)[CopyrightLen],
+                     const char (&other)[OtherLen])
           : MyLiteral(DWM_WHAT_DELIM, "@(#)", type, status, name, version,
                       cpyright, other)
       {}
@@ -224,7 +231,7 @@ namespace Dwm {
           + "\",\"version\":\"" + std::string(version())
           + "\",\"copyright\":\"" + std::string(copyright())
           + "\",\"other\":\"" + std::string(other())
-          + "\",\"id\":\""
+          + "\",\"view\":\""
           + std::string(this->view())
           + "\"}";
       }
@@ -250,7 +257,7 @@ namespace Dwm {
     //------------------------------------------------------------------------
     inline constexpr const Info __attribute__((used))
     @DWM_WHAT_INSTANCE@(DWM_WHAT_TYPE_EXE DWM_WHAT_TYPE_HDR,
-                        @DWM_WHAT_STATUS@, "DwmWhat",
+                        @DWM_WHAT_STATUS@, "dwmwhat",
                         "@DWM_VERSION@",
                         "Daniel McRobb 2025",
                         "@DWM_WHAT_OTHER@");
