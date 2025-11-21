@@ -105,8 +105,8 @@ namespace Dwm {
           }
         }
       }
+      std::sort(_infos.begin(), _infos.end());
       if (unique) {
-        std::sort(_infos.begin(), _infos.end());
         auto last = std::unique(_infos.begin(), _infos.end());
         _infos.erase(last, _infos.end());
       }
