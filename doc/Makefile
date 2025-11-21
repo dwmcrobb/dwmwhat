@@ -9,27 +9,25 @@ html/index.html: ../classes/include/*.hh
 www: html/index.html
 	tar --exclude=\*.md5 -zcvf html.tgz html
 
-tarprep: html/index.html
-	mkdir -p ${TARDIR}/share/doc/libDwmPkg
+tarprep: html/index.html ${TARDIR}/share/doc/dwmwhat.pdf
+	mkdir -p ${TARDIR}/share/doc/dwmwhat
 	find html -name \*.md5 -exec rm {} \;
-	cp html/* ${TARDIR}/share/doc/libDwmPkg
+	cp html/* ${TARDIR}/share/doc/dwmwhat
 
-install: ${DOCINSTALLDIR}/index.html
+${TARDIR}/share/doc/dwmwhat.pdf:
+	${MAKE} -C manual tarprep
 
-${DOCINSTALLDIR}/index.html: html/index.html
-	mkdir -p ${DOCINSTALLDIR}
-	cp html/* ${DOCINSTALLDIR}
-
-uninstall: clean-install
-
-clean:: clean-tarprep
+clean:: clean-tarprep clean-manual
 	rm -Rf html latex man
 
-clean-install::
-	rm -Rf ${DOCINSTALLDIR}
+clean-manual::
+	${MAKE} -C manual clean
 
 clean-tarprep::
-	rm -Rf ${TARDIR}/share/doc/libDwmPkg
+	rm -Rf ${TARDIR}/share/doc/dwmwhat
 
-distclean::
+distclean-manual::
+	${MAKE} -C manual distclean
+
+distclean:: distclean-manual
 	rm -f Doxyfile
