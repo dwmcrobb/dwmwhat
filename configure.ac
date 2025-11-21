@@ -1,4 +1,4 @@
-AC_INIT([DwmWhat],[m4_esyscmd_s(./getvers.sh -v)],[dwmcrobb@me.com],[DwmWhat],[http://www.mcplex.net])
+AC_INIT([dwmwhat],[m4_esyscmd_s(./getvers.sh -v)],[dwmcrobb@me.com],[dwmwhat],[http://www.mcplex.net])
 AC_PREFIX_DEFAULT(/usr/local)
 
 AC_PROG_CC
@@ -73,8 +73,8 @@ AC_SUBST(PKG_CFLAGS)
 
 DWM_PREREQ_PATH(htmlman,share/htmlman,[HTML manpage path])
 
-DWM_SET_PKGVARS(DwmWhat,[DwmWhat-0.0.0])
-DWM_GET_TAG([DwmWhat])
+DWM_SET_PKGVARS(dwmwhat,[dwmwhat-0.0.0])
+DWM_GET_TAG([dwmwhat])
 
 AC_CHECK_PROG([MANDOC], [mandoc], [mandoc], [])
 
@@ -109,7 +109,7 @@ AC_SUBST(DWM_WHAT_INSTANCE)
 DWM_WHAT_OTHER="mcplex.net"
 AC_SUBST(DWM_WHAT_OTHER)
 
-AC_CONFIG_FILES([Makefile.vars packaging/DwmWhat.pc
+AC_CONFIG_FILES([Makefile.vars packaging/dwmwhat.pc
                  packaging/fbsd_manifest packaging/debcontrol doc/Doxyfile
 		 classes/include/DwmWhatInfo.hh])
 AC_OUTPUT
