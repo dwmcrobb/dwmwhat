@@ -77,7 +77,7 @@ DwmGetTag() {
     fi
 }
 
-DwmGetTag DwmWhat
+DwmGetTag dwmwhat
 
 args=`getopt disSv $*`
 set -- $args
