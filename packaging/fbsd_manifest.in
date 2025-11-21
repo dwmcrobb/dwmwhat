@@ -1,6 +1,6 @@
-name: "DwmWhat"
+name: "dwmwhat"
 version: "@TAGVERSION@"
-origin: "devel/DwmWhat"
+origin: "devel/dwmwhat"
 prefix: "@prefix@"
 www: "http://www.rfdm.com"
 maintainer: "dwmcrobb@me.com"
