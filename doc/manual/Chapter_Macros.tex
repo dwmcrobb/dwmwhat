@@ -1,0 +1,18 @@
+\chapter{Macros in \texttt{DwmWhatInfo.hh}}
+There are many macros in \texttt{DwmWhatInfo.hh} that expand to UTF-8 string literals,
+just so I can get emoji output.  For my own use, the following macros are commonly
+used.
+
+\begin{tabular}{llll}
+  \textbf{macro} & \textbf{expands to (UTF-8)} & \textbf{Unicode Code Point} & \textbf{display} \\ \hline
+  \texttt{DWM\_WHAT\_TYPE\_EXE}   & \texttt{"\textbackslash{xF0}\textbackslash{x9F}\textbackslash{xA4}\textbackslash{x96}"} & \texttt{U+1F916}   & \texttt{\emoji{robot}} \\
+  \texttt{DWM\_WHAT\_TYPE\_LIB}   & \texttt{"\textbackslash{xF0}\textbackslash{x9F}\textbackslash{x93}\textbackslash{x9A}"} & \texttt{U+1F4DA}   & \texttt{\emoji{books}} \\
+  \texttt{DWM\_WHAT\_TYPE\_HDR}   & \texttt{"\textbackslash{xEF}\textbackslash{xBC}\textbackslash{x83}"} & \texttt{U+FF03}    & \texttt{\#} \\
+  \texttt{DWM\_WHAT\_TYPE\_DOC}   & \texttt{"\textbackslash{xF0}\textbackslash{x9F}\textbackslash{x93}\textbackslash{x84}"} & \texttt{U+1F4C4}   & \texttt{\emoji{page-facing-up}} \\
+  \texttt{DWM\_WHAT\_STATUS\_REL} & \texttt{"\textbackslash{xE2}\textbackslash{x9C}\textbackslash{x85}"} & \texttt{U+2705}    & \texttt{\emoji{white-check-mark}} \\
+  \texttt{DWM\_WHAT\_STATUS\_RC}  & \texttt{"\textbackslash{xF0}\textbackslash{x9F}\textbackslash{x91}\textbackslash{xB7}"} & \texttt{U+1F477}   & \texttt{\emoji{construction-worker}} \\
+  \texttt{DWM\_WHAT\_STATUS\_DEV} & \texttt{"\textbackslash{xE2}\textbackslash{x9D}\textbackslash{x97}"} & \texttt{U+2757}    & \texttt{\emoji{heavy-exclamation-mark}} \\
+  \texttt{DWM\_WHAT\_SYM\_COPYRIGHT} & \texttt{"\textbackslash{xC2}\textbackslash{xA9}"} & \texttt{U+00A9} & \texttt{\copyright} \\
+\end{tabular}
+  
+  

@@ -5,10 +5,14 @@ This call to the \texttt{Dwm::What::Info} constructor:
                    "DwmWhat", "1.0.0", "Daniel McRobb 2025", "mcplex.net");
 \end{verbatim}
 
-Would produce a 67 byte string literal at compile time with the following
-layout:
+Would produce a 67 byte string literal at compile time with the layout shown
+in \autoref{figure:InfoEx01}.  Note this figure shows what would be returned
+by accessors inherited from the \texttt{Dwm::What::SegmentedLiteral} base
+class (in black) and the accessors from the \texttt{Dwm::What::Info} class
+(in \textcolor{blue}{blue}).
 
 \begin{center}
+  \begin{figure}[H]
 \noindent\begin{tikzpicture}[
   start chain = A going right,
   node distance = 0pt, % Ensure no gap between bit nodes
@@ -18,17 +22,23 @@ layout:
 \setlength{\onebyte}{1.7ex}
 
 \node[byte node,minimum width=4\onebyte,text width=4\onebyte,fill=white] (seg1) {@(\#)};
-\node[byte node,minimum width=2\onebyte,text width=2\onebyte, fill=white] (delim1) { };
+\node[byte node,minimum width=\onebyte,text width=\onebyte, fill=red!15,font=\scriptsize\ttfamily, text depth=0pt] (delim1a) {\rotatebox{90}{0xC2}};
+\node[byte node,minimum width=\onebyte,text width=\onebyte, fill=red!15,font=\scriptsize\ttfamily, text depth=0pt] (delim1b) {\rotatebox{90}{0xA0} };
 \node[byte node,minimum width=7\onebyte,text width=7\onebyte,fill=white] (seg2) {\emoji{robot}\#};
-\node[byte node,minimum width=2\onebyte,text width=2\onebyte, fill=white] (delim2) { };
+\node[byte node,minimum width=\onebyte,text width=\onebyte, fill=red!15,font=\scriptsize\ttfamily, text depth=0pt] (delim2a) {\rotatebox{90}{0xC2}};
+\node[byte node,minimum width=\onebyte,text width=\onebyte, fill=red!15,font=\scriptsize\ttfamily, text depth=0pt] (delim2b) {\rotatebox{90}{0xA0} };
 \node[byte node,minimum width=3\onebyte,text width=3\onebyte,fill=white] (seg3) {\emoji{white-check-mark}};
-\node[byte node,minimum width=2\onebyte,text width=2\onebyte, fill=white] (delim3) { };
+\node[byte node,minimum width=\onebyte,text width=\onebyte, fill=red!15,font=\scriptsize\ttfamily, text depth=0pt] (delim3a) {\rotatebox{90}{0xC2}};
+\node[byte node,minimum width=\onebyte,text width=\onebyte, fill=red!15,font=\scriptsize\ttfamily, text depth=0pt] (delim3b) {\rotatebox{90}{0xA0} };
 \node[byte node,minimum width=7\onebyte,text width=7\onebyte,fill=white] (seg4) {DwmWhat};
-\node[byte node,minimum width=2\onebyte,text width=2\onebyte, fill=white] (delim4) { };
+\node[byte node,minimum width=\onebyte,text width=\onebyte, fill=red!15,font=\scriptsize\ttfamily, text depth=0pt] (delim4a) {\rotatebox{90}{0xC2}};
+\node[byte node,minimum width=\onebyte,text width=\onebyte, fill=red!15,font=\scriptsize\ttfamily, text depth=0pt] (delim4b) {\rotatebox{90}{0xA0} };
 \node[byte node,minimum width=5\onebyte,text width=5\onebyte,fill=white] (seg5) {1.0.0};
-\node[byte node,minimum width=2\onebyte,text width=2\onebyte, fill=white] (delim5) { };
+\node[byte node,minimum width=\onebyte,text width=\onebyte, fill=red!15,font=\scriptsize\ttfamily, text depth=0pt] (delim5a) {\rotatebox{90}{0xC2}};
+\node[byte node,minimum width=\onebyte,text width=\onebyte, fill=red!15,font=\scriptsize\ttfamily, text depth=0pt] (delim5b) {\rotatebox{90}{0xA0} };
 \node[byte node,minimum width=18\onebyte,text width=18\onebyte,fill=white] (seg6) {Daniel McRobb 2025};
-\node[byte node,minimum width=2\onebyte,text width=2\onebyte, fill=white] (delim6) { };
+\node[byte node,minimum width=\onebyte,text width=\onebyte, fill=red!15,font=\scriptsize\ttfamily, text depth=0pt] (delim6a) {\rotatebox{90}{0xC2}};
+\node[byte node,minimum width=\onebyte,text width=\onebyte, fill=red!15,font=\scriptsize\ttfamily, text depth=0pt] (delim6b) {\rotatebox{90}{0xA0} };
 \node[byte node,minimum width=10\onebyte,text width=10\onebyte,fill=white] (seg7) {mcplex.net};
 \node[byte node,minimum width=\onebyte,text width=\onebyte,fill=lightgray!50] (termnull) {$\emptyset$};
 
@@ -36,45 +46,47 @@ layout:
       {\texttt{nth(0)}};
 \draw [decorate, decoration={brace, mirror, amplitude=10pt}]
   (seg2.south west) -- (seg2.south east)
-  node [below=8pt, midway, font=\scriptsize] {\texttt{type()}};
+  node [below=8pt, midway, font=\scriptsize, text=blue] {\texttt{type()}};
 \node (nth1) [below=of seg2.south, yshift=-20pt,font=\scriptsize]
       {\texttt{nth(1)}};
 \draw [decorate, decoration={brace, mirror, amplitude=10pt}]
   (seg3.south west) -- (seg3.south east)
-  node [below=8pt, midway, font=\scriptsize] {\texttt{status()}};
+  node [below=8pt, midway, font=\scriptsize, text=blue] {\texttt{status()}};
 \node (nth2) [below=of seg3.south, yshift=-20pt,font=\scriptsize]
       {\texttt{nth(2)}};
 \draw [decorate, decoration={brace, mirror, amplitude=10pt}]
   (seg4.south west) -- (seg4.south east)
-  node [below=8pt, midway, font=\scriptsize] {\texttt{name()}};
+  node [below=8pt, midway, font=\scriptsize, text=blue] {\texttt{name()}};
 \node (nth3) [below=of seg4.south, yshift=-20pt,font=\scriptsize]
       {\texttt{nth(3)}};
 \draw [decorate, decoration={brace, mirror, amplitude=10pt}]
   (seg5.south west) -- (seg5.south east)
-  node [below=8pt, midway, font=\scriptsize] {\texttt{version()}};
+  node [below=8pt, midway, font=\scriptsize, text=blue] {\texttt{version()}};
 \node (nth4) [below=of seg5.south, yshift=-20pt,font=\scriptsize]
       {\texttt{nth(4)}};
 \draw [decorate, decoration={brace, mirror, amplitude=10pt}]
   (seg6.south west) -- (seg6.south east)
-  node [below=8pt, midway, font=\scriptsize] {\texttt{copyright()}};
+  node [below=8pt, midway, font=\scriptsize, text=blue] {\texttt{copyright()}};
 \node (nth6) [below=of seg6.south, yshift=-20pt,font=\scriptsize]
       {\texttt{nth(5)}};
 \draw [decorate, decoration={brace, mirror, amplitude=10pt}]
   (seg7.south west) -- (seg7.south east)
-  node [below=8pt, midway, font=\scriptsize] {other()};
+  node [below=8pt, midway, font=\scriptsize, text=blue] {other()};
 \node (nth8) [below=of seg7.south, yshift=-20pt,font=\scriptsize]
       {\texttt{nth(6)}};
       
 \draw [decorate, decoration={brace, amplitude=10pt}]
   (seg2.north west) -- (seg7.north east)
-  node [above=8pt, midway, font=\scriptsize] {\texttt{data\_view()}};
+  node [above=8pt, midway, font=\scriptsize, text=blue] {\texttt{data\_view()}};
 
 \draw [decorate, decoration={brace, amplitude=40pt}]
   (seg1.north west) -- (seg7.north east)
   node [above=40pt, midway, font=\scriptsize] {\texttt{view()}};
 
 \end{tikzpicture}
-\captionof{figure}{\texttt{Dwm::What::Info} layout}
+\caption{\texttt{Dwm::What::Info} layout}
+\label{figure:InfoEx01}
+\end{figure}
 \end{center}
 \end{minipage}
 
@@ -100,6 +112,6 @@ The 67 bytes:
 And {\em dwmwhat} would print this when scanning a compiled program
 containing such an instance of \texttt{Dwm::What::Info}:
 
-\ttfamily{
+\texttt{
 \emoji{robot}\# \emoji{white-check-mark} DwmWhat 1.0.0 Daniel McRobb 2025 mcplex.net
 }

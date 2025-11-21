@@ -1,0 +1,295 @@
+\PassOptionsToPackage{table}{xcolor}
+\documentclass[letterpaper,openany]{book}
+
+\input{Preamble.tex}
+% \usepackage[utf8]{inputenc}
+
+\begin{document}
+\include{TitlePage.tex}
+
+\begingroup
+\renewcommand{\baselinestretch}{1.0}
+% \tableofcontents
+% \listoffigures
+% \listoftables
+\endgroup
+
+\chapter{Introduction}
+{\em dwmwhat(1)} is a command line utility that is very similar to {\em what(1)}
+from SCCS.  It searches one or more files for strings that start with "@(\#)"
+and displays them on standard output.  Such strings can be embedded in
+binaries to represent version information.
+
+The {\em dwmwhat} package includes a C++ class template \texttt{Dwm::What::Info}
+that can be used to create structured versions of these strings from string
+literals.  This class template is intended to be instantiated to identify
+the package name, version and other information inside a string that will be
+visible in compiled code.  It is constructed at compile time, and because it
+is structured, {\em dwmwhat(1)} can parse it and hence present it decomposed
+into its components (as it does when the \texttt{-j} command line option is
+used).
+
+For example, let's say you create a trivial program in \texttt{myprog.cc}:
+
+\begin{small}
+\begin{lstlisting}[language=c++]
+#include <iostream>
+#include "DwmWhatInfo.hh"
+
+//----------------------------------------------------------------------------
+Dwm::What::Info  myproginfo(DWM_WHAT_TYPE_EXE, DWM_WHAT_STATUS_REL, "myprog",
+                            "1.0.0", DWM_WHAT_SYM_COPYRIGHT " Jane Doe 2025",
+                            "hello!");
+
+//----------------------------------------------------------------------------
+int main(int argc, char *argv[])
+{
+  std::cout << myproginfo.data_view() << '\n';
+  std::cout << myproginfo.as_json() << '\n';
+  return 0;
+}
+\end{lstlisting}
+\end{small}
+
+If you compile and link this program, {\em dwmwhat(1)} will report this:
+
+\begin{ttfamily}
+\% dwmwhat myprog \\
+\emoji{robot} \emoji{white-check-mark} myprog 1.0.0 \copyright\ Jane Doe 2025 hello! \\
+\emoji{robot} \# \emoji{white-check-mark} dwmwhat 1.0.0 \copyright\ Daniel McRobb 2025 mcplex.net
+\end{ttfamily}
+
+And can also report in JSON form:
+
+\begin{ttfamily}
+\% dwmwhat -j myprog\\
+\parbox{\linewidth}{[\{"file":"myprog","infos":[\{"copyright":"\copyright\ Jane Doe 2025","name":"myprog", "other":"hello!","status":"\emoji{white-check-mark}","type":"\emoji{robot}","version":"1.0.0", "view":"@(\#) \emoji{robot} \emoji{white-check-mark} myprog 1.0.0 \copyright\ Jane Doe 2025 hello!"\},\{"copyright": "\copyright\ Daniel McRobb 2025","name":"dwmwhat","other":"mcplex.net","status":"\emoji{white-check-mark}", "type":"\emoji{robot}\#","version":"1.0.0","view":"@(\#) \emoji{robot}\# \emoji{white-check-mark} dwmwhat 1.0.0 \copyright\ Daniel McRobb 2025 mcplex.net"\}]\}]}
+\end{ttfamily}
+
+\section{Under the hood}
+Let's look at what's going on under the hood.
+
+We're building a null-terminated string literal at compile time (the
+\texttt{Dwm::What::Info} constructor is \texttt{consteval}).  Note that
+the only reason we need the null termination is to allow {\em dwmwhat(1)}
+and similar tools to find the end of the string in a binary.
+
+The constructor call:
+
+\begin{verbatim}
+   Dwm::What::Info(DWM_WHAT_TYPE_EXE, DWM_WHAT_STATUS_REL, "myprog", "1.0.0",
+                   DWM_WHAT_SYM_COPYRIGHT " Jane Doe 2025", "hello!");
+\end{verbatim}
+
+Produces a string as shown below.
+
+\input{myprogString01.tex}
+
+All we've done here is concatenate {\em segments} of string literals,
+separated by a fixed {\em delimiter}.  Some of our string literals are
+Unicode code points in UTF-8, such as \emoji{robot}
+(\texttt{"\textbackslash{xF0}\textbackslash{x9F}\textbackslash{xA4}\textbackslash{x96}"})
+and \emoji{white-check-mark}
+(\texttt{"\textbackslash{xE2}\textbackslash{x9C}\textbackslash{x85}"}),
+for which I created macros in \texttt{DwmWhatInfo.hh}.  And for the
+copyright segment, I concatenate \texttt{DWM\_WHAT\_SYM\_COPYRIGHT}
+(\texttt{"\textbackslash{xC2}\textbackslash{xA9}"}) with " Jane Doe 2025".
+
+\subsection{Choice of delimiter}
+The delimiter is key to being able to decompose the string in tools
+like {\em dwmwhat(1)}.  It needs to be distinct, and never appear inside
+a {\em segment}.
+
+It turns out that this was probably the most time-consuming part of
+doing this work.  Let's start with what I wanted in a delimiter.
+
+\subsubsection{Desirable delimiter features}
+\begin{enumerate}
+\item Painless to disallow in the user-specified content ({\em segments}).
+We want something that the user will never need.
+\item Does not clutter the display of the entire literal
+(including the delimiters).
+\item Human readability of strings ({\em segments} concatenated with
+{\em delimiters}, together) in binary files.
+\item Machine readability of strings in binary files (the
+ability to decompose into segments), without compromising the
+human readability.
+\end{enumerate}
+
+\section{Delimiter is Unicode {\em No-Break Space (NBSP)} (U+00A0)}
+I’ve chosen Unicode {\em No-Break Space (NBSP)} as the delimiter,
+since it serves the needs well. For a human it just looks like a
+single space, while it can be distinguished from an ASCII space
+(\texttt{0x20}) when parsing.  The UTF-8 encoding for {\em NBSP} is
+\texttt{"\textbackslash{xC2}\textbackslash{xA0}"}, i.e.
+\texttt{\{0xC2,0xA0\}}.
+
+When you want single spaces in any of your segments, just use ASCII
+spaces (\texttt{0x20}) and not {\em NBSP}.
+
+\include{Chapter_TypicalUse.tex}
+
+\chapter{Class templates in \texttt{Dwm::What} namespace}
+There are two class templates of interest in the {\em dwmwhat} package:
+\texttt{Dwm::What::SegmentedLiteral} and \texttt{Dwm::What::Info}.
+We saw simple use of the \texttt{Dwm::What::Info} class template in
+the introduction, and it is likely the only class template most users
+will use.
+
+However, \texttt{Dwm::What::Info} inherits from
+\texttt{Dwm::What::SegmentedLiteral}, and I'll introduce them in
+base to derived order.  
+\texttt{Dwm::What::SegmentedLiteral} has no constraints on number
+of segments or choice of delimiter (an empty delimiter is permissible),
+and all of the segments are user defined.
+
+\section{\texttt{Dwm::What::SegmentedLiteral}}
+\texttt{Dwm::What::SegmentedLiteral} builds a string literal from
+a given delimiter (placed between segments) and one or more segments
+(given as string literals).  All arguments to the constructor are
+string literals, and used to deduce the template parameters.
+
+An empty delimiter is allowed, as are empty segments.
+
+\subsection{Synopsis}
+
+\begin{verbatim}
+template <std::size_t DelimLen, std::size_t FirstLen, std::size_t ...SegLen>
+class SegmentedLiteral
+{
+public:
+   consteval SegmentedLiteral(const char (&delim)[DelimLen],
+                              const char (&firstSeg)[FirstLen],
+                              const char (&...moreSegs)[SegLen]);
+   constexpr std::string_view view() const noexcept;
+   constexpr std::size_t num_segments() const noexcept;      
+   constexpr std::string_view nth(std::size_t n) const noexcept;
+};
+\end{verbatim}
+
+\subsection{Member functions}
+
+\subsubsection{Constructor}
+The \texttt{Dwm::What::SegmentedLiteral} constructor requires a
+delimiter (a string literal) and at least one segment.  All segments
+are given as string literals.
+
+\begin{description}[noitemsep,align=left,leftmargin=*,labelsep=10pt,itemindent=-\leftmargin,style=nextline]
+  \item[\texttt{delim}] The delimiter that will be placed between segments,
+  which may be empty.
+  \item[\texttt{firstSeg}] The first segment.
+  \item[\texttt{moreSegs}] The remaining segments.
+\end{description}
+
+\subsubsection{Accessors}
+\begin{description}[noitemsep,align=left,leftmargin=*,labelsep=10pt,itemindent=-\leftmargin,style=nextline]
+  \item[\texttt{view()}] returns a \texttt{std::string\_view} of the entire
+  constructed string literal, sand the terminating null.
+  \item[\texttt{num\_segments()}] returns the number of segments.
+  \item[\texttt{nth(std::size\_t n)}] returns the \texttt{n}th segment (0 indexed).
+\end{description}
+
+\subsection{Examples}
+
+\begin{minipage}{\linewidth}
+\input{SegmentedLiteralEx01.tex}
+\end{minipage}
+
+\input{SegmentedLiteralEx02.tex}
+
+\section{\texttt{Dwm::What::Info}}
+\texttt{Dwm::What::Info} is just a \texttt{Dwm::What::SegmentedLiteral}
+with seven segments and a specific delimiter (not user-specified).
+The first segment (\texttt{"@(\#)"}) is automatically added, and named
+accessors are provided for the remaining six segments.
+
+\subsection{Synopsis}
+
+\begin{small}
+\begin{verbatim}
+template <std::size_t TypeLen, std::size_t StatusLen,
+          std::size_t NameLen, std::size_t VersionLen,
+          std::size_t CopyrightLen, std::size_t OtherLen>
+class Info
+   : public SegmentedLiteral<sizeof(DWM_WHAT_DELIM), sizeof("@(#)"),
+                             TypeLen, StatusLen, NameLen,
+                             VersionLen, CopyrightLen, OtherLen>
+{
+public:
+   consteval Info(const char (&type)[TypeLen], const char (&status)[StatusLen],
+                  const char (&name)[NameLen], const char (&version)[VersionLen],
+                  const char (&copyright)[CopyrightLen], const char (&other)[OtherLen]);
+
+   constexpr std::string_view type() const noexcept;
+   constexpr std::string_view status() const noexcept;
+   constexpr std::string_view name() const noexcept;
+   constexpr std::string_view version() const noexcept;
+   constexpr std::string_view copyright() const noexcept;
+   constexpr std::string_view other() const noexcept;
+   constexpr std::string_view data_view() const noexcept;
+   constexpr std::string_view view() const noexcept;
+};
+\end{verbatim}
+\end{small}
+
+\subsection{Constructor}
+\subsubsection{constructor arguments}
+\begin{description}[noitemsep,align=left,leftmargin=*,labelsep=10pt,itemindent=-\leftmargin,style=nextline]
+\item[\texttt{type}] The type of the package.  By convention, one or more of
+  \texttt{DWM\_WHAT\_TYPE\_EXE}, \texttt{DWM\_WHAT\_TYPE\_LIB},
+  \texttt{DWM\_WHAT\_TYPE\_HDR} and \texttt{DWM\_WHAT\_TYPE\_DOC}.
+\item[\texttt{status}] The status of the package.  By convention, one of
+  \texttt{DWM\_WHAT\_STATUS\_REL}, \texttt{DWM\_WHAT\_STATUS\_RC} or
+  \texttt{DWM\_WHAT\_STATUS\_DEV}.
+  \item[\texttt{name}] The name of the package.
+  \item[\texttt{version}] The version of the package.
+  \item[\texttt{copyright}] The copyright.
+  \item[\texttt{other}] Any other additional information.
+\end{description}
+
+\subsection{Accesssors}
+\begin{description}[noitemsep,align=left,leftmargin=*,labelsep=10pt,itemindent=-\leftmargin,style=nextline]
+\item[\texttt{type}]
+\item[\texttt{status()}]
+\item[\texttt{name()}]
+\item[\texttt{version()}]
+\item[\texttt{copyright()}]
+\item[\texttt{other()}]
+
+\end{description}
+
+\subsection{Equivalence to \texttt{Dwm::What::SegmentedLiteral}}
+The following will produce the equivalent string literal.  This makes
+it obvious that \texttt{Dwm::What::Info} is just a
+\texttt{Dwm::What::SegmentedLiteral} with a specific delimiter
+(\texttt{"\textbackslash{xC2}\textbackslash{xA0}"}) and an
+automatically added first segment (\texttt{"@(\#)"}).
+
+\begin{Verbatim}
+   SegmentedLiteral(\textcolor{blue}{"\textbackslash{xC2}\textbackslash{xA0}"}, \textcolor{blue}{"@(\#)"},
+                    DWM_WHAT_TYPE_LIB, DWM_WHAT_STATUS_REL, "DwmWhat",
+                    "1.0.0", "Daniel McRobb 2025", "mcplex.net");
+
+               Info(DWM_WHAT_TYPE_LIB, DWM_WHAT_STATUS_REL, "DwmWhat",
+                    "1.0.0", "Daniel McRobb 2025", "mcplex.net");
+\end{Verbatim}
+
+\subsection{Examples}
+\input{InfoEx01.tex}
+
+\subsection{\texttt{SegmentedLiteral} and \texttt{Info} equivalents}
+
+\input{SegmentedLiteralEx03.tex}
+
+\input{Chapter_Macros.tex}
+
+% \emoji{robot}
+% \emoji{ghost}
+% \emoji{heavy-exclamation-mark}
+% \emoji{books}
+% \emoji{white-check-mark}
+% \emoji{construction-worker}
+% \emoji{page-facing-up}
+% \emoji{copyright}
+
+\end{document}

@@ -1,9 +1,9 @@
 *.log
 *.aux
-main.fdb_latexmk
-main.fls
-main.lof
-main.lot
-main.out
-main.toc
+dwmwhat.fdb_latexmk
+dwmwhat.fls
+dwmwhat.lof
+dwmwhat.lot
+dwmwhat.out
+dwmwhat.toc
 

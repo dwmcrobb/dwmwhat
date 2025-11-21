@@ -20,10 +20,10 @@
 
     \color{black}
     \begin{Large}
-    Version 2025.11.21
+    Version @DWM_VERSION@
     \end{Large}
     
-    \texttt{\emoji{robot}\# \emoji{heavy-exclamation-mark} dwmwhat 2025.11.21 \copyright\ Daniel W. McRobb 2025 mcplex.net}
+    \texttt{\emoji{robot}\# @DWM_WHAT_STATUS_LATEX@ dwmwhat @DWM_VERSION@ \copyright\ Daniel W. McRobb 2025 mcplex.net}
 
     \color{dwmOrange}
     \rule{\linewidth}{.5mm}
