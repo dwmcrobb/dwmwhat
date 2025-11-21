@@ -81,28 +81,23 @@ namespace Dwm {
           ((D - 1) * (sizeof...(Size) - 1)) + ((Size - 1) + ...) + 1;
       };
 
-      static constexpr size_t NumChars =
-        CalcNumChars<DelimLen, FirstLen, SegLen...>::sz;
-
-      //----------------------------------------------------------------------
-      //!  The number of segments.
-      //----------------------------------------------------------------------
-      static constexpr size_t NumSegs = sizeof...(SegLen) + 1;
-
+      static consteval size_t NumChars() noexcept
+      { return CalcNumChars<DelimLen, FirstLen, SegLen...>::sz; }
+        
       //----------------------------------------------------------------------
       //!  The minimum sized type we need for our array of segment lengths.
       //----------------------------------------------------------------------
       using SegLenType =
-        std::conditional<(NumChars <= 256),
+        std::conditional<(NumChars() <= 256),
                          uint8_t,
-                         typename std::conditional<(NumChars <= 65536),
+                         typename std::conditional<(NumChars() <= 65536),
                                                    uint16_t,
                                                    uint32_t>::type>::type;
 
       //----------------------------------------------------------------------
       //!  Just an alias for our buffer type.
       //----------------------------------------------------------------------
-      using BufType = const char(&)[NumChars];
+      using BufType = const char(&)[NumChars()];
 
       //----------------------------------------------------------------------
       //!  Constructor.  Since we require a delimiter and at least one
@@ -114,12 +109,13 @@ namespace Dwm {
                                  const char (&firstSeg)[FirstLen],
                                  const char (&...moreSegs)[SegLen]) noexcept
       {
-        static_assert(NumChars <= std::numeric_limits<SegLenType>::max());
+        static_assert(NumChars() <= std::numeric_limits<SegLenType>::max());
 
-        //  'f' is just 'first'
+        //  handle the first segment
         auto  it = std::ranges::copy_n(firstSeg, FirstLen - 1, _buffer).out;
         std::size_t  si = 0;
         _seglengths[si++] = FirstLen - 1;
+        //  and the remaining segments
         ((_seglengths[si++] = SegLen - 1,
           it = std::ranges::copy_n(delim, DelimLen - 1, it).out,
           it = std::ranges::copy_n(moreSegs, SegLen-1, it).out), ...);
@@ -136,22 +132,22 @@ namespace Dwm {
       //!  Returns a view of the whole buffer, minus the terminating null.
       //----------------------------------------------------------------------
       constexpr std::string_view view() const noexcept
-      { return std::string_view(_buffer,NumChars - 1); }
+      { return std::string_view(_buffer,NumChars() - 1); }
         
       //----------------------------------------------------------------------
       //!  Returns the number of segments in the buffer (1 or more).
       //----------------------------------------------------------------------
       constexpr std::size_t num_segments() const noexcept
-      { return NumSegs; }
+      { return sizeof...(SegLen) + 1; }
       
       //----------------------------------------------------------------------
       //!  Returns a view of the nth segment.
       //----------------------------------------------------------------------
       constexpr std::string_view nth(std::size_t n) const noexcept
       {
-        assert(n < NumSegs);
+        assert(n < (sizeof...(SegLen) + 1));
         std::size_t  off = std::accumulate(_seglengths, &_seglengths[n], 0);
-        off += n * _delimLen;
+        off += n * (DelimLen - 1);
         return std::string_view(_buffer + off, _seglengths[n]);
       }
       
@@ -166,9 +162,9 @@ namespace Dwm {
       //----------------------------------------------------------------------
       constexpr bool delims_in_content() const noexcept
       {
-        if ((_numSegments > 1) && (_delimLen > 0)) {
-          std::string_view  d(_buffer + _seglengths[0], _delimLen);
-          for (size_t i = 0; i < _numSegments; ++i) {
+        if ((sizeof...(SegLen) > 0) && (DelimLen > 1)) {
+          std::string_view  d(_buffer + _seglengths[0], DelimLen - 1);
+          for (size_t i = 0; i < (sizeof...(SegLen) + 1); ++i) {
             auto  v = this->nth(i);
             if (v.find(d) != v.npos) {
               return true;
@@ -179,11 +175,8 @@ namespace Dwm {
       }
       
     protected:
-      char                          _buffer[NumChars] {};
-      SegLenType                    _seglengths[NumSegs] {};
-      static constexpr std::size_t  _delimLen = DelimLen - 1;
-      static constexpr std::size_t  _numSegments = NumSegs;
-      static constexpr std::size_t  _numChars = NumChars;
+      char        _buffer[NumChars()] {};
+      SegLenType  _seglengths[sizeof...(SegLen) + 1] {};
     };
     
   }  // namespace What
