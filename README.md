@@ -1,6 +1,6 @@
-# DwmWhat : bringing an old standard back into modern C++
+# dwmwhat
 
-DwmWhat is a small header-only C++ library for embedding package
+dwmwhat is a small header-only C++ library for embedding package
 information in compiled code, and a utility to search for the
 information in compiled code much like the very old `what` utility
 from SCCS.
@@ -138,35 +138,41 @@ so I use both `DWM_WHAT_TYPE_EXE` and `DWM_WHAT_TYPE_HDR`:
 This class template is the more generic segmented string literal class
 template.  `Dwm::What::Info` inherits from `Dwm::What::SegmentedLiteral`.
 The idea here is to provide a means of constructing a contiguous
-string literal at compile time from N other string literals and a
-delimiter that is placed between each given string literal, without
-resorting to using the preprocessor.  In code that instantiates a
-`SegmentedLiteral`, the segments from which it was constructed are
-accessible via the `nth(std::size_t n)` member, where `n` is from 0 to
-`num_segments() - 1`.  A view of the entire constructed string literal
-is available via the `view()` member.
+string literal at compile time from one or more other string literals
+and a delimiter that is placed between each given string literal,
+without resorting to using the preprocessor.  In code that
+instantiates a `SegmentedLiteral`, the segments from which it was
+constructed are accessible via the `nth(std::size_t n)` member, where
+`n` is from 0 to `num_segments() - 1`.  A view of the entire
+constructed string literal is available via the `view()` member.
 
 The tricks to such a thing...
 - Passing the string literals as `const char (&)[N]` so we can use
-  template parameter deduction in the constructor to deduce the
-  size of the encapsulated character buffer.
-- a correct deduction guide.
+  template parameter deduction to deduce the size of the encapsulated
+  character array we need to declare as well as the type we need
+  for the array of segment lengths (which we minimize).
   
 
 ```cpp
-template <std::size_t DelimLen, std::size_t NumSegs, std::size_t NumChars>
+template <std::size_t DelimLen, std::size_t FirstLen, std::size_t ...N>
 class SegmentedLiteral
 {
 public:
-   template <std::size_t D, std::size_t F, std::size_t ...Ns>
-   consteval SegmentedLiteral(const char (&delim)[D], const char (&f)[F],
-                              const char (&...s)[Ns]);
+   consteval SegmentedLiteral(const char (&delim)[DelimLen],
+                              const char (&f)[FirstLen],
+                              const char (&...s)[N]);
    constexpr std::string_view view() const noexcept;
    constexpr std::size_t num_segments() const noexcept;      
    constexpr std::string_view nth(std::size_t n) const noexcept;
 };
 
 ```
+
+|         |     |         |     |                          |           |
+|:-------:|-----|:-------:|-----|--------------------------|:---------:|
+|segment 0|delim|segment 1|delim|..........................|segment N-1|
+| nth(0)  |     | nth(1)  |     |                          | nth(N-1)  |
+
 The following would produce the same string literals:
 ```
     inline constexpr const Dwm::What::Info __attribute__((used))
