@@ -19,7 +19,7 @@ freebsd-pkg: tarprep
 	pkg create -o . -r staging -m staging
 
 darwin-pkg: tarprep
-	pkgbuild --root staging --identifier net.mcplex.DwmWhat --version ${VERSION} DwmWhat-${VERSION}.pkg
+	pkgbuild --root staging --identifier net.mcplex.dwmwhat --version ${VERSION} dwmwhat-${VERSION}.pkg
 
 linux-pkg: tarprep
 	if [ ! -d staging/DEBIAN ]; then mkdir staging/DEBIAN; fi
@@ -34,4 +34,4 @@ otherDistclean::
 	${MAKE} -C packaging distclean
 	rm -Rf autom4te.cache staging
 	rm -f config.log config.status Makefile.vars
-	rm -f DwmWhat_*.deb DwmWhat-*.pkg
+	rm -f dwmwhat_*.deb dwmwhat-*.pkg

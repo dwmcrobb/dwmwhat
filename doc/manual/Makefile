@@ -6,9 +6,9 @@ dwmwhat.pdf: *.tex
 	lualatex dwmwhat.tex
 	lualatex dwmwhat.tex
 
-tarprep: ${DOCINSTALLDIR}/dwmwhat.pdf
+tarprep: ${DOCTARDIR}/dwmwhat.pdf
 
-${DOCINSTALLDIR}/dwmwhat.pdf: dwmwhat.pdf
+${DOCTARDIR}/dwmwhat.pdf: dwmwhat.pdf
 	${INSTALL} -c -m 644 $< $@
 
 clean::

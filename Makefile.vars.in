@@ -34,7 +34,7 @@ TARDIR		 := @TARDIR@@prefix@
 VERSION		 := @DWM_VERSION@
 INSTALL          := @LIBTOOL@ --mode=install $(TOP)/install-sh
 INSTALLPREFIX	 := @prefix@
-DOCINSTALLDIR	 := ${INSTALLPREFIX}/share/doc/libDwmPkg
+DOCTARDIR	 := ${TARDIR}/share/doc/dwmwhat
 TARGETVENDOR     := @target_vendor@
 
 # TARGETS          ?=
