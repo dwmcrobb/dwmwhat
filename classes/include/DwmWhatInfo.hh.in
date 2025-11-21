@@ -45,6 +45,7 @@
 #include <cstdint>
 #include <cstdlib>
 #include <cstring>
+#include <string>
 
 #include "DwmWhatSegmentedLiteral.hh"
 
@@ -225,7 +226,7 @@ namespace Dwm {
       //----------------------------------------------------------------------
       constexpr std::string as_json() const noexcept
       {
-        return "{\"type\":\"" + std::string(type())
+        return std::string("{\"type\":\"") + std::string(type())
           + "\",\"name\":\"" + std::string(name())
           + "\",\"status\":\"" + std::string(status())
           + "\",\"version\":\"" + std::string(version())
@@ -244,7 +245,7 @@ namespace Dwm {
       {
         std::size_t  len = this->view().size();
         len -= this->nth(0).size();
-        len -= this->_delimLen;
+        len -= sizeof(DWM_WHAT_DELIM) - 1;
         return std::string_view(type().data(), len);
       }
 
@@ -259,7 +260,7 @@ namespace Dwm {
     @DWM_WHAT_INSTANCE@(DWM_WHAT_TYPE_EXE DWM_WHAT_TYPE_HDR,
                         @DWM_WHAT_STATUS@, "dwmwhat",
                         "@DWM_VERSION@",
-                        "Daniel McRobb 2025",
+                        DWM_WHAT_SYM_COPYRIGHT " Daniel McRobb 2025",
                         "@DWM_WHAT_OTHER@");
 
     //------------------------------------------------------------------------
