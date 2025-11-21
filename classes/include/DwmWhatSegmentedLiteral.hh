@@ -81,6 +81,9 @@ namespace Dwm {
           ((D - 1) * (sizeof...(Size) - 1)) + ((Size - 1) + ...) + 1;
       };
 
+      //----------------------------------------------------------------------
+      //!  Returns the number of characters we need in our character array.
+      //----------------------------------------------------------------------
       static consteval size_t NumChars() noexcept
       { return CalcNumChars<DelimLen, FirstLen, SegLen...>::sz; }
         
