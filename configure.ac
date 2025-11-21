@@ -68,7 +68,7 @@ fi
 
 echo libPrefix ${libPrefix}
 
-PKG_CFLAGS=`dwmgmk_uniqleft ${PTHREADCXXFLAGS} -I${libPrefix}/include/DwmWhat ${EXTINCS}`
+PKG_CFLAGS=`dwmgmk_uniqleft ${PTHREADCXXFLAGS} -I${libPrefix}/include/dwmwhat ${EXTINCS}`
 AC_SUBST(PKG_CFLAGS)
 
 DWM_PREREQ_PATH(htmlman,share/htmlman,[HTML manpage path])
@@ -89,6 +89,19 @@ AC_SUBST(BUILD_DOCS)
 
 DWM_WHAT_STATUS=`./getvers.sh -S`
 AC_SUBST(DWM_WHAT_STATUS)
+DWM_WHAT_STATUS_LATEX=""
+case "${DWM_WHAT_STATUS}" in
+  DWM_WHAT_STATUS_DEV)
+    DWM_WHAT_STATUS_LATEX="\emoji{heavy-exclamation-mark}"
+    ;;
+  DWM_WHAT_STATUS_RC)
+    DWM_WHAT_STATUS_LATEX="\emoji{construction-worker}"
+    ;;
+  DWM_WHAT_STATUS_REL)
+    DWM_WHAT_STATUS_LATEX="\emoji{white-check-mark}"
+    ;;
+esac
+AC_SUBST(DWM_WHAT_STATUS_LATEX)
 
 DWM_WHAT_INSTANCE=`./getvers.sh -i`
 AC_SUBST(DWM_WHAT_INSTANCE)
@@ -98,5 +111,5 @@ AC_SUBST(DWM_WHAT_OTHER)
 
 AC_CONFIG_FILES([Makefile.vars packaging/DwmWhat.pc
                  packaging/fbsd_manifest packaging/debcontrol doc/Doxyfile
-		 classes/include/DwmWhatInfo.hh])
+		 classes/include/DwmWhatInfo.hh doc/manual/TitlePage.tex])
 AC_OUTPUT
