@@ -4878,7 +4878,7 @@ DWM_WHAT_INSTANCE=`./getvers.sh -i`
 DWM_WHAT_OTHER="mcplex.net"
 
 
-ac_config_files="$ac_config_files Makefile.vars packaging/DwmWhat.pc packaging/fbsd_manifest packaging/debcontrol doc/Doxyfile classes/include/DwmWhatInfo.hh doc/manual/TitlePage.tex"
+ac_config_files="$ac_config_files Makefile.vars packaging/DwmWhat.pc packaging/fbsd_manifest packaging/debcontrol doc/Doxyfile classes/include/DwmWhatInfo.hh"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -5588,7 +5588,6 @@ do
     "packaging/debcontrol") CONFIG_FILES="$CONFIG_FILES packaging/debcontrol" ;;
     "doc/Doxyfile") CONFIG_FILES="$CONFIG_FILES doc/Doxyfile" ;;
     "classes/include/DwmWhatInfo.hh") CONFIG_FILES="$CONFIG_FILES classes/include/DwmWhatInfo.hh" ;;
-    "doc/manual/TitlePage.tex") CONFIG_FILES="$CONFIG_FILES doc/manual/TitlePage.tex" ;;
 
   *) as_fn_error $? "invalid argument: '$ac_config_target'" "$LINENO" 5;;
   esac
