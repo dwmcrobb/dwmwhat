@@ -12,7 +12,7 @@ ${DOCTARDIR}/dwmwhat.pdf: dwmwhat.pdf
 
 clean::
 	rm -f *.log *.aux dwmwhat.fdb_latexmk dwmwhat.fls dwmwhat.lof \
-	  dwmwhat.lot dwmwhat.out dwmwhat.pdf dwmwhat.toc
+	  dwmwhat.lot dwmwhat.out dwmwhat.toc
 
 distclean:: clean
-	rm -f TitlePage.tex
+
