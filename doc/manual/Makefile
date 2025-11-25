@@ -3,8 +3,7 @@ include ../../Makefile.vars
 all: dwmwhat.pdf
 
 dwmwhat.pdf: *.tex
-	lualatex dwmwhat.tex
-	lualatex dwmwhat.tex
+	latexmk -lualatex dwmwhat.tex
 
 tarprep: ${DOCTARDIR}/dwmwhat.pdf
 

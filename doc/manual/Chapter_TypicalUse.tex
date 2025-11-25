@@ -12,7 +12,7 @@ namespace MyNamespace {
    namespace myproginfo {
       static constexpr __attribute((used))
           info(DWM_WHAT_TYPE_EXE, DWM_WHAT_STATUS_REL, "myprog", "1.0.0",
-               @DWM_WHAT_SYM_COPYRIGHT "My Name 2025", "my program");
+               DWM_WHAT_SYM_COPYRIGHT " My Name 2025", "my program");
    }
 }
 \end{verbatim}
@@ -29,7 +29,7 @@ namespace MyNamespace {
    namespace mylibinfo {
       static constexpr  __attribute__((used))
          info(DWM_WHAT_TYPE_LIB, DWM_WHAT_STATUS_REL, "mylib", "1.0.0",
-              @DWM_WHAT_SYM_COPYRIGHT "My Name 2025", "my library");
+              DWM_WHAT_SYM_COPYRIGHT " My Name 2025", "my library");
    }
 }
 \end{verbatim}
@@ -46,30 +46,35 @@ namespace MyNamespace {
    namespace myhdrinfo {
       inline constexpr  __attribute__((used))
          info(DWM_WHAT_TYPE_HDR, DWM_WHAT_STATUS_REL, "myheaderlib", "1.0.0",
-              @DWM_WHAT_SYM_COPYRIGHT "My Name 2025", "my header library");
+              DWM_WHAT_SYM_COPYRIGHT " My Name 2025", "my header library");
    }
 }
 \end{verbatim}
 
 \subsection{Caveats}
 It's worth noting that the usual caveats apply here.  Despite the fact that
-this is the recommended means of producing a single instance in a linked
-program, ODR (One Definition Rule) violations can rear their head in
-difficult-to-diagnose ways.  Your header is making a promise it can't
-really keep (unless the header never changes), since each compilation
-unit is going to get its own copy and the linker is going to pick one.
-If you happen to have an object file in a old library that was compiled
-against an older version, and link it to an object file that was compiled
-against a newer version, the linker is going to just pick one, with
-NDR (No Diagnostic Required) for ODR violations.  My recommendation is
-to name your instance differently for each release, and provide an
-accessor that returns a reference to that instance.  Then the linker
-will see two identifiers instead of one, and will keep both.
+\texttt{inline constexpr} is the recommended means of producing a single
+instance of such a constant in a linked program, ODR (One Definition Rule)
+violations can rear their head in difficult-to-diagnose ways.  Just be aware:
+today's linkers aren't good at identifying ODR violations.  If two object
+files are compiled with different versions of your header and then linked,
+the linker is going to pick one of your \texttt{inline constexpr} variables,
+despite the fact that they might not match in content or even type.
+It's also NDR (No diagnostic Required).
+
+This is no different than other things that can go wrong with ODR
+violations when two object files are compiled different versions of a
+header file.  Just be aware.  My recommendation is to name your
+instance of \texttt{Dwm::What::Info} differently for each release, and
+provide an accessor that returns a reference to that instance.  Then
+the linker will see two identifiers instead of one, and will keep
+both.  Which will at least allow you to see that you have more than
+one version linked into a binary.
 
 I mention this because in the case of
 \texttt{Dwm::What::SegmentedLiteral} and \texttt{Dwm::What::Info}, a
-declaration is typically not just stamping out a variable, but a new
-type.  The template is parameterized by the number and size of the
-segments, so any change to either of these will yield a different
-type, not just different content.  The linkers of today don't seem to
-use this information to flag ODR violations.
+declaration is typically stamping out an instance of a new type.  The
+template is parameterized by the number and size of the segments, so
+any change to either of these will yield a different type, not just
+different content.  The linkers of today don't seem to use this
+information to flag ODR violations.

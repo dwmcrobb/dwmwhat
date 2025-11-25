@@ -1,0 +1,204 @@
+\begin{minipage}{\linewidth}
+  
+\begin{Verbatim}
+Dwm::What::SegmentedLiteral(" ", "@(#)", \textcolor{typeColor}{"The"}, \textcolor{statusColor}{"cow"}, \textcolor{nameColor}{"jumped"}, \textcolor{versionColor}{"over"}, \textcolor{copyrightColor}{"the"}, \textcolor{otherColor}{"moon"})
+\end{Verbatim}
+\noindent\begin{tikzpicture}[start chain = A going right]
+\node[draw=none,anchor=north west,yshift=1em,on chain=A] {\em compilation produces compile-time string};
+\node[draw, single arrow,
+  minimum height=10mm, minimum width=15mm,
+  single arrow head extend=2mm,
+  anchor=east, rotate=-90,xshift=-1em,on chain=A] {};
+\end{tikzpicture}
+
+\setcounter{lastbyte}{1}
+\begin{center}
+\begin{tikzpicture}[
+    start chain = A going right,
+    node distance = 0pt, % Ensure no gap between bit nodes
+    byte node/.style = {draw=lightgray, minimum height=20pt, minimum width=(\textwidth)/56, text width=\dimexpr(\textwidth)/56\relax, text height=16pt, text depth=4pt, font=\ttfamily, align=center, inner sep=0pt, outer sep=0pt, on chain=A}
+]
+% anchor=south, 
+  \def\mypfxstring{{@},{(},{\#},{)}}
+  \def\mydelimstring{ }
+  \def\mysegonestring{T,h,e}
+  \def\mysegtwostring{c,o,w}
+  \def\mysegthreestring{j,u,m,p,e,d}
+  \def\mysegfourstring{o,v,e,r}
+  \def\mysegfivestring{t,h,e}
+  \def\mysegsixstring{m,o,o,n}
+
+  \foreach \byte [count=\i] in \mypfxstring {
+    \node[byte node, fill=white] (byte-\arabic{lastbyte}) {\byte};
+    \stepcounter{lastbyte}
+  }
+  \draw [decorate, decoration={brace, mirror, amplitude=10pt}]
+    (byte-1.south west) -- (byte-4.south east)
+    node [below=8pt, midway, font=\scriptsize] {\texttt{nth(0)}};
+  \draw [decorate, decoration={brace, amplitude=10pt}]
+    (byte-1.north west) -- (byte-4.north east)
+    node [above=8pt, midway] {@(\#)};
+  \foreach \byte [count=\i] in \mydelimstring {
+    \node[byte node, text=delimColor, fill=white, font=\scriptsize\ttfamily, text depth=4pt] (byte-\arabic{lastbyte}) {\rotatebox{90}{\byte}};
+    \stepcounter{lastbyte}
+  }
+  \draw [decorate, decoration={brace, amplitude=10pt}]
+  (byte-5.north west) -- (byte-5.north east)
+  node [above=8pt, midway] { };
+
+  \foreach \byte [count=\i] in \mysegonestring {
+    \node[byte node, fill=typeColor!10, text=typeColor, font=\ttfamily, text depth=4pt] (byte-\arabic{lastbyte}) {\byte};
+    \stepcounter{lastbyte}
+  }
+  \draw [decorate, decoration={brace, mirror, amplitude=10pt}]
+    (byte-6.south west) -- (byte-8.south east)
+    node [below=8pt, midway, font=\scriptsize] {\texttt{nth(1)}};
+  \draw [decorate, decoration={brace, amplitude=10pt}]
+    (byte-6.north west) -- (byte-8.north east)
+    node [above=8pt, midway] {The};
+  \foreach \byte [count=\i] in \mydelimstring {
+    \node[byte node, text=delimColor, fill=white, font=\scriptsize\ttfamily, text depth=0pt] (byte-\arabic{lastbyte}) {\rotatebox{90}{\byte}};
+    \stepcounter{lastbyte}
+  }
+  \draw [decorate, decoration={brace, amplitude=10pt}]
+  (byte-9.north west) -- (byte-9.north east)
+  node [above=8pt, midway] {\textvisiblespace};
+
+  \foreach \byte [count=\i] in \mysegtwostring {
+    \node[byte node, fill=statusColor!10, font=\ttfamily, text=statusColor] (byte-\arabic{lastbyte}) {\byte};
+    \stepcounter{lastbyte}
+  }
+  \draw [decorate, decoration={brace, mirror, amplitude=10pt}]
+    (byte-10.south west) -- (byte-12.south east)
+    node [below=8pt, midway, font=\scriptsize] {\texttt{nth(2)}};
+  \draw [decorate, decoration={brace, amplitude=10pt}]
+  (byte-10.north west) -- (byte-12.north east)
+  node [above=8pt, midway] {cow};
+  \foreach \byte [count=\i] in \mydelimstring {
+    \node[byte node, text=delimColor, fill=white, font=\scriptsize\ttfamily, text depth=0pt] (byte-\arabic{lastbyte}) {\rotatebox{90}{\byte}};
+    \stepcounter{lastbyte}    
+  }
+  \draw [decorate, decoration={brace, amplitude=10pt}]
+  (byte-13.north west) -- (byte-13.north east)
+  node [above=8pt, midway] {\textvisiblespace};
+
+  \foreach \byte [count=\i] in \mysegthreestring {
+    \node[byte node, fill=nameColor!10, text=nameColor] (byte-\arabic{lastbyte}) {\byte};
+    \stepcounter{lastbyte}
+  }
+  \draw [decorate, decoration={brace, mirror, amplitude=10pt}]
+    (byte-14.south west) -- (byte-19.south east)
+    node [below=8pt, midway, font=\scriptsize] {\texttt{nth(3)}};
+  \draw [decorate, decoration={brace, amplitude=10pt}]
+    (byte-14.north west) -- (byte-19.north east)
+    node [above=8pt, midway] {jumped};
+  \foreach \byte [count=\i] in \mydelimstring {
+    \node[byte node, text=delimColor, fill=white, font=\scriptsize\ttfamily, text depth=0pt] (byte-\arabic{lastbyte}) {\rotatebox{90}{\byte}};
+    \stepcounter{lastbyte}    
+  }
+  \draw [decorate, decoration={brace, amplitude=10pt}]
+  (byte-20.north west) -- (byte-20.north east)
+  node [above=8pt, midway] {\textvisiblespace};
+
+  \foreach \byte [count=\i] in \mysegfourstring {
+    \node[byte node, fill=versionColor!10, text=versionColor] (byte-\arabic{lastbyte}) {\byte};
+    \stepcounter{lastbyte}
+  }
+  \draw [decorate, decoration={brace, mirror, amplitude=10pt}]
+    (byte-21.south west) -- (byte-24.south east)
+    node [below=8pt, midway, font=\scriptsize] {\texttt{nth(4)}};
+  \draw [decorate, decoration={brace, amplitude=10pt}]
+    (byte-21.north west) -- (byte-24.north east)
+    node [above=8pt, midway] {over};
+  \foreach \byte [count=\i] in \mydelimstring {
+    \node[byte node, text=delimColor, fill=white, font=\scriptsize\ttfamily, text depth=0pt] (byte-\arabic{lastbyte}) {\rotatebox{90}{\byte}};
+    \stepcounter{lastbyte}    
+  }
+  \draw [decorate, decoration={brace, amplitude=10pt}]
+  (byte-25.north west) -- (byte-25.north east)
+  node [above=8pt, midway] {\textvisiblespace};
+
+  \foreach \byte [count=\i] in \mysegfivestring {
+    \node[byte node, fill=copyrightColor!10, text=copyrightColor] (byte-\arabic{lastbyte}) {\byte};
+    \stepcounter{lastbyte}
+  }
+  \draw [decorate, decoration={brace, mirror, amplitude=10pt}]
+    (byte-26.south west) -- (byte-28.south east)
+    node [below=8pt, midway, font=\scriptsize] {\texttt{nth(5)}};
+  \draw [decorate, decoration={brace, amplitude=10pt}]
+    (byte-26.north west) -- (byte-28.north east)
+    node [above=8pt, midway] {the};
+  \foreach \byte [count=\i] in \mydelimstring {
+    \node[byte node, text=delimColor, fill=white, font=\scriptsize\ttfamily, text depth=0pt] (byte-\arabic{lastbyte}) {\rotatebox{90}{\byte}};
+    \stepcounter{lastbyte}    
+  }
+  \draw [decorate, decoration={brace, amplitude=10pt}]
+  (byte-29.north west) -- (byte-29.north east)
+  node [above=8pt, midway] {\textvisiblespace};
+
+  \foreach \byte [count=\i] in \mysegsixstring {
+    \node[byte node, fill=otherColor!10, text=otherColor] (byte-\arabic{lastbyte}) {\byte};
+    \stepcounter{lastbyte}
+  }
+  \draw [decorate, decoration={brace, mirror, amplitude=10pt}]
+    (byte-30.south west) -- (byte-33.south east)
+    node [below=8pt, midway, font=\scriptsize] {\texttt{nth(6)}};
+  \draw [decorate, decoration={brace, amplitude=10pt}]
+    (byte-30.north west) -- (byte-33.north east)
+    node [above=8pt, midway] {moon};
+
+  \node[byte node, fill=lightgray!50] (termnull) {$\emptyset$};
+
+  \draw [decorate, decoration={brace,mirror,amplitude=20pt,raise=20pt}]
+    (byte-1.south west) -- (byte-33.south east)
+    node [below=40pt, midway, font=\scriptsize] {\texttt{view()}};
+    
+\end{tikzpicture}
+\label{figure:SegLit2StrEx02}
+\end{center}
+
+\begin{tikzpicture}[start chain = A going right]
+\node[draw=none,minimum height=3em,anchor=north west,yshift=2em,on chain=A] {\em and an array of 7 bytes for segment lengths};
+\end{tikzpicture}
+
+\setcounter{lastbyte}{0}
+\begin{tikzpicture}[
+    start chain = A going below,
+    node distance = 0pt, % Ensure no gap between bit nodes
+    byte node/.style = {draw=lightgray, minimum height=(\textwidth)/56, minimum width=20pt, text width=16pt, text height=\dimexpr(\textwidth)/56\relax, text depth=2pt, font=\ttfamily, anchor=south, align=center, inner sep=0pt, outer sep=0pt, on chain=A}
+]
+    
+  \def\mysegonestring{0x04,0x03,0x03,0x06,0x04,0x03,0x04}
+
+  \foreach \byte [count=\i from 0] in \mysegonestring {
+    \node[byte node, font=\scriptsize\ttfamily, text depth=2pt] (byte-\arabic{lastbyte}) {\byte};
+    \stepcounter{lastbyte}
+  }
+  \foreach \byte [count=\i from 0] in \mysegonestring {
+    \draw [decorate, decoration={brace, mirror, amplitude=10pt}]
+      (byte-\i.north west) -- (byte-\i.south west)
+      node [anchor=west, midway, left, xshift=-1em,font=\scriptsize] (seglen-\i) {\texttt{nth(\i).size()}};
+  }
+
+  \draw (byte-0.north west) -- (byte-0.south west)
+    node [anchor=east,right=of byte-0,right,font=\scriptsize\ttfamily] {\textcolor{black}{= 4}};
+  \draw (byte-1.north west) -- (byte-1.south west)
+    node [anchor=east,right=of byte-1,right,font=\scriptsize\ttfamily] {\textcolor{typeColor}{= 3}};
+  \draw (byte-2.north west) -- (byte-2.south west)
+    node [anchor=east,right=of byte-2,right,font=\scriptsize\ttfamily] {\textcolor{statusColor}{= 3}};
+  \draw (byte-3.north west) -- (byte-3.south west)
+    node [anchor=east,right=of byte-3,right,font=\scriptsize\ttfamily] {\textcolor{nameColor}{= 6}};
+  \draw (byte-4.north west) -- (byte-4.south west)
+    node [anchor=east,right=of byte-4,right,font=\scriptsize\ttfamily] {\textcolor{versionColor}{= 4}};
+  \draw (byte-5.north west) -- (byte-5.south west)
+    node [anchor=east,right=of byte-5,right,font=\scriptsize\ttfamily] {\textcolor{copyrightColor}{= 3}};
+  \draw (byte-6.north west) -- (byte-6.south west)
+    node [anchor=east,right=of byte-6,right,font=\scriptsize\ttfamily] {\textcolor{otherColor}{= 4}};
+    
+\end{tikzpicture}
+\label{figure:SegLit2StrEx02SegLen}
+
+\vspace{1em}
+For a total of 41 bytes.
+
+\end{minipage}

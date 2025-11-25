@@ -1,18 +1,25 @@
 \chapter{Macros in \texttt{DwmWhatInfo.hh}}
 There are many macros in \texttt{DwmWhatInfo.hh} that expand to UTF-8 string literals,
-just so I can get emoji output.  For my own use, the following macros are commonly
-used.
+just so I can get emoji output.  For my own use, the macros in \autoref{table:Macros}
+are commonly used.
 
-\begin{tabular}{llll}
-  \textbf{macro} & \textbf{expands to (UTF-8)} & \textbf{Unicode Code Point} & \textbf{display} \\ \hline
-  \texttt{DWM\_WHAT\_TYPE\_EXE}   & \texttt{"\textbackslash{xF0}\textbackslash{x9F}\textbackslash{xA4}\textbackslash{x96}"} & \texttt{U+1F916}   & \texttt{\emoji{robot}} \\
-  \texttt{DWM\_WHAT\_TYPE\_LIB}   & \texttt{"\textbackslash{xF0}\textbackslash{x9F}\textbackslash{x93}\textbackslash{x9A}"} & \texttt{U+1F4DA}   & \texttt{\emoji{books}} \\
-  \texttt{DWM\_WHAT\_TYPE\_HDR}   & \texttt{"\textbackslash{xEF}\textbackslash{xBC}\textbackslash{x83}"} & \texttt{U+FF03}    & \texttt{\#} \\
-  \texttt{DWM\_WHAT\_TYPE\_DOC}   & \texttt{"\textbackslash{xF0}\textbackslash{x9F}\textbackslash{x93}\textbackslash{x84}"} & \texttt{U+1F4C4}   & \texttt{\emoji{page-facing-up}} \\
-  \texttt{DWM\_WHAT\_STATUS\_REL} & \texttt{"\textbackslash{xE2}\textbackslash{x9C}\textbackslash{x85}"} & \texttt{U+2705}    & \texttt{\emoji{white-check-mark}} \\
-  \texttt{DWM\_WHAT\_STATUS\_RC}  & \texttt{"\textbackslash{xF0}\textbackslash{x9F}\textbackslash{x91}\textbackslash{xB7}"} & \texttt{U+1F477}   & \texttt{\emoji{construction-worker}} \\
-  \texttt{DWM\_WHAT\_STATUS\_DEV} & \texttt{"\textbackslash{xE2}\textbackslash{x9D}\textbackslash{x97}"} & \texttt{U+2757}    & \texttt{\emoji{heavy-exclamation-mark}} \\
-  \texttt{DWM\_WHAT\_SYM\_COPYRIGHT} & \texttt{"\textbackslash{xC2}\textbackslash{xA9}"} & \texttt{U+00A9} & \texttt{\copyright} \\
+\begin{table}[H]
+\begin{tabular}{lllll}
+  \textbf{category} & \textbf{macro} & \textbf{expands to (UTF-8)} & \textbf{Unicode Code Point} & \textbf{display} \\ \hline
+  \multirow{4}{*}{type} & \texttt{DWM\_WHAT\_TYPE\_EXE}   & \texttt{"\textbackslash{xF0}\textbackslash{x9F}\textbackslash{xA4}\textbackslash{x96}"} & \texttt{U+1F916}   & \texttt{\emoji{robot}} \\
+  & \texttt{DWM\_WHAT\_TYPE\_LIB}   & \texttt{"\textbackslash{xF0}\textbackslash{x9F}\textbackslash{x93}\textbackslash{x9A}"} & \texttt{U+1F4DA}   & \texttt{\emoji{books}} \\
+  & \texttt{DWM\_WHAT\_TYPE\_HDR}   & \texttt{"\textbackslash{xEF}\textbackslash{xBC}\textbackslash{x83}"} & \texttt{U+FF03}    & \texttt{\#} \\
+  & \texttt{DWM\_WHAT\_TYPE\_DOC}   & \texttt{"\textbackslash{xF0}\textbackslash{x9F}\textbackslash{x93}\textbackslash{x84}"} & \texttt{U+1F4C4}   & \texttt{\emoji{page-facing-up}} \\ \hline
+  \multirow{3}{*}{status} & \texttt{DWM\_WHAT\_STATUS\_REL} & \texttt{"\textbackslash{xE2}\textbackslash{x9C}\textbackslash{x85}"} & \texttt{U+2705}    & \texttt{\emoji{white-check-mark}} \\
+  & \texttt{DWM\_WHAT\_STATUS\_RC}  & \texttt{"\textbackslash{xF0}\textbackslash{x9F}\textbackslash{x91}\textbackslash{xB7}"} & \texttt{U+1F477}   & \texttt{\emoji{construction-worker}} \\
+  & \texttt{DWM\_WHAT\_STATUS\_DEV} & \texttt{"\textbackslash{xE2}\textbackslash{x9D}\textbackslash{x97}"} & \texttt{U+2757}    & \texttt{\emoji{heavy-exclamation-mark}} \\ \hline
+  \multirow{4}{*}{miscellany} & \texttt{DWM\_WHAT\_SYM\_ALIEN} & \texttt{"\textbackslash{xF0}\textbackslash{x9F}\textbackslash{x91}\textbackslash{xBD}"} & \texttt{U+1F47D} & \texttt{\emoji{alien}} \\
+  & \texttt{DWM\_WHAT\_SYM\_COPYRIGHT} & \texttt{"\textbackslash{xC2}\textbackslash{xA9}"} & \texttt{U+00A9} & \texttt{\copyright} \\
+  & \texttt{DWM\_WHAT\_SYM\_CYCLONE} & \texttt{"\textbackslash{xF0}\textbackslash{x9F}\textbackslash{x8C}\textbackslash{x80}"} & \texttt{U+1F300} & \texttt{\emoji{cyclone}} \\  
+  & \texttt{DWM\_WHAT\_SYM\_GHOST} & \texttt{"\textbackslash{xF0}\textbackslash{x9F}\textbackslash{x91}\textbackslash{xBB}"} & \texttt{U+1F47B} & \texttt{\emoji{ghost}} \\
+  & \texttt{DWM\_WHAT\_SYM\_JACKOLANTERN} & \texttt{"\textbackslash{xF0}\textbackslash{x9F}\textbackslash{x8E}\textbackslash{x83}"} & \texttt{U+1F383} & \texttt{\emoji{jack-o-lantern}} \\
+  & \texttt{DWM\_WHAT\_SYM\_ROCKET} & \texttt{"\textbackslash{xF0}\textbackslash{x9F}\textbackslash{x9A}\textbackslash{x80}"} & \texttt{U+1F680} & \texttt{\emoji{rocket}} \\ \hline
 \end{tabular}
-  
-  
+\caption{Macros in \texttt{DwmWhatInfo.hh}}
+\label{table:Macros}
+\end{table}

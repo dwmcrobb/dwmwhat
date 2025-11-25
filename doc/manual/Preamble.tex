@@ -1,4 +1,5 @@
 \usepackage{emoji}
+\usepackage{lmodern}
 \setemojifont{Apple Color Emoji}
 \setmainfont{Latin Modern Sans}
 \usepackage{fontspec}
@@ -130,6 +131,14 @@ fourByteEmpty/.style={draw,fill=blue!10,minimum height=20pt,text depth=10pt,text
 \colorlet{mynumberbg}{numberbg!20}
 \colorlet{mynumbercolor}{numbercolor!40}
 
+\colorlet{delimColor}{red}
+\colorlet{typeColor}{codeblue}
+\colorlet{statusColor}{green1}
+\colorlet{nameColor}{magenta}
+\colorlet{versionColor}{violet}
+\colorlet{copyrightColor}{brown}
+\colorlet{otherColor}{dwmOrange}
+
 \lstdefinestyle{mystyle}%
 {basicstyle=\ttfamily,
  keywordstyle=\ttfamily\color{black},
@@ -193,3 +202,4 @@ fourByteEmpty/.style={draw,fill=blue!10,minimum height=20pt,text depth=10pt,text
   \end{mdframed}
 }
 
+\newcommand{\whiteCheckMark}{\emoji{white-check-mark}}

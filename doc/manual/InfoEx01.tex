@@ -90,26 +90,30 @@ class (in black) and the accessors from the \texttt{Dwm::What::Info} class
 \end{center}
 \end{minipage}
 
-The 67 bytes:
+The 67 bytes: \hfill
 \begin{tabular}{ll}
-  @(\#)            &  4 bytes \\
-  delim            &  2 bytes \\
-  type             &  7 bytes \\
-  delim            &  2 bytes \\
-  status           &  3 bytes \\
-  delim            &  2 bytes \\
-  name             &  7 bytes \\
-  delim            &  2 bytes \\
-  version          &  5 bytes \\
-  delim            &  2 bytes \\
-  copyright        & 18 bytes \\
-  delim            &  2 bytes \\
-  other            & 10 bytes \\
-  null             &  1 byte \\ \hline
-  \textbf{Total} & \textbf{67 bytes}
+  \texttt{@(\#)}      &  4 bytes \\
+  delimiter           &  2 bytes \\
+  \texttt{type}       &  7 bytes \\
+  delimiter           &  2 bytes \\
+  \texttt{status}     &  3 bytes \\
+  delimiter           &  2 bytes \\
+  \texttt{name}       &  7 bytes \\
+  delimiter           &  2 bytes \\
+  \texttt{version}    &  5 bytes \\
+  delimiter           &  2 bytes \\
+  \texttt{copyright}  & 18 bytes \\
+  delimiter           &  2 bytes \\
+  \texttt{other}      & 10 bytes \\
+  null                &  1 byte \\ \hline
+  \textbf{Total}      & \textbf{67 bytes}
 \end{tabular}
 
-And {\em dwmwhat} would print this when scanning a compiled program
+Note that we also store 7 additional bytes to hold the segment lengths (one byte
+per segment).  If the total length of your string exceeds 255 bytes, it will be
+14 bytes (two bytes per segment).
+
+{\em dwmwhat} would print this when scanning a compiled program
 containing such an instance of \texttt{Dwm::What::Info}:
 
 \texttt{
