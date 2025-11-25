@@ -131,6 +131,9 @@ int main(int argc, char *argv[])
          != Dwm::What::DwmWhat_2025_11_14.view().data());
   assert(infoCopy.view() == Dwm::What::DwmWhat_2025_11_14.view());
 #endif
+
+  static constexpr Dwm::What::Info __attribute__((used))
+    infoWithUTF("🤖","✅","utftest","1.1.1", "copyright","other");
   
   return 0;
 }
