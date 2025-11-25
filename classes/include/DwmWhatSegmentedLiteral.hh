@@ -178,8 +178,8 @@ namespace Dwm {
       }
       
     protected:
-      char        _buffer[NumChars()] {};
       SegLenType  _seglengths[sizeof...(SegLen) + 1] {};
+      char        _buffer[NumChars()] {};
     };
     
   }  // namespace What
