@@ -107,5 +107,15 @@
 #define DWM_WHAT_MK_LINE_ARG(x) DWM_WHAT_MK_LINE_ARG2(x)
 #define DWM_WHAT_MK_LINE_ARG2(x) #x
 
+//----------------------------------------------------------------------------
+//!  If all you need is a version string and you're using C instead of C++,
+//!  the following macro can be used to create a string of the same format
+//!  as used by Dwm::What::Info, for example:
+//!
+//!  const char  my_prog_version[] =
+//!     DWM_WHAT_INFO("🤖","✅","myprog","1.0.0","© My Name 2025","my prog");
+//----------------------------------------------------------------------------
+#define DWM_WHAT_INFO(type,status,name,version,copyright,other)         \
+  "@(#) " type " " status " " name " " version " " copyright " " other
 
 #endif  // _DWMWHATMACROS_HH_
