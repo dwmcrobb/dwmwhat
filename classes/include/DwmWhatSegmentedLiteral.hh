@@ -161,7 +161,7 @@ namespace Dwm {
       { return sizeof(SegLenType); }
 
       //----------------------------------------------------------------------
-      //!  
+      //!  Returns true if any segment contains a delimiter.
       //----------------------------------------------------------------------
       constexpr bool delims_in_content() const noexcept
       {
