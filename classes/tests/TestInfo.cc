@@ -46,7 +46,7 @@
 #include <iostream>
 #include <regex>
 
-#include "DwmWhatInfo.hh"
+#include "DwmWhatVersion.hh"
 
 //----------------------------------------------------------------------------
 //!  

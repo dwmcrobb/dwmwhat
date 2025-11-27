@@ -60,7 +60,7 @@
 #include <vector>
 
 #include "DwmWhatStringLiteral.hh"
-#include "DwmWhatInfo.hh"
+#include "DwmWhatVersion.hh"
 
 namespace Dwm {
 

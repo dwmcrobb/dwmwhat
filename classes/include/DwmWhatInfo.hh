@@ -184,24 +184,6 @@ namespace Dwm {
 
     };
 
-    //------------------------------------------------------------------------
-    //!  I name the instance here with the build system, just to avoid
-    //!  potential ODR violations between versions.  Each release gets
-    //!  its own instance name based on the tag.
-    //------------------------------------------------------------------------
-    inline constexpr const Info __attribute__((used))
-    @DWM_WHAT_INSTANCE@(DWM_WHAT_TYPE_EXE DWM_WHAT_TYPE_HDR,
-                        @DWM_WHAT_STATUS@, "dwmwhat",
-                        "@DWM_VERSION@",
-                        DWM_WHAT_SYM_COPYRIGHT " Daniel McRobb 2025",
-                        "@DWM_WHAT_OTHER@");
-
-    //------------------------------------------------------------------------
-    //!  Returns the current instance of Info for Dwm::What.
-    //------------------------------------------------------------------------
-    inline constexpr auto & info() noexcept
-    { return @DWM_WHAT_INSTANCE@; }
-      
   }  // namespace What
 
 }  // namespace Dwm

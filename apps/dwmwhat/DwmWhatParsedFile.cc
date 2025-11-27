@@ -77,7 +77,7 @@ namespace Dwm {
       }
       return rc;
     }
-    
+
     //------------------------------------------------------------------------
     ParsedFile::ParsedFile(std::string_view fileName, bool unique)
     {

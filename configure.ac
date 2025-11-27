@@ -111,5 +111,5 @@ AC_SUBST(DWM_WHAT_OTHER)
 
 AC_CONFIG_FILES([Makefile.vars packaging/dwmwhat.pc
                  packaging/fbsd_manifest packaging/debcontrol doc/Doxyfile
-		 classes/include/DwmWhatInfo.hh])
+		 classes/include/DwmWhatVersion.hh])
 AC_OUTPUT
