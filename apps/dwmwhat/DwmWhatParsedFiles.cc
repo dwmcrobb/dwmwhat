@@ -39,6 +39,10 @@
 //!  @brief NOT YET DOCUMENTED
 //---------------------------------------------------------------------------
 
+extern "C" {
+  #include <unistd.h>
+}
+
 #include "DwmWhatParsedFiles.hh"
 
 namespace Dwm {
@@ -49,7 +53,12 @@ namespace Dwm {
     ParsedFiles::ParsedFiles(int numFiles, char * const files[], bool unique)
     {
       for (int i = 0; i < numFiles; ++i) {
-        _parsedFiles.push_back(ParsedFile(files[i], unique));
+        if (std::string(files[i]) == "-") {
+          _parsedFiles.push_back(ParsedFile(STDIN_FILENO, unique));
+        }
+        else {
+          _parsedFiles.push_back(ParsedFile(files[i], unique));
+        }
       }
     }
 

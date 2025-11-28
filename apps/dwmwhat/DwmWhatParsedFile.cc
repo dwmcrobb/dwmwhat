@@ -51,13 +51,14 @@ extern "C" {
 #include <utility>
 
 #include "DwmWhatParsedFile.hh"
+#include "DwmWhatFileParseState.hh"
 
 namespace Dwm {
 
   namespace What {
 
     //------------------------------------------------------------------------
-    static std::pair<const char *,size_t>
+    static std::string_view
     MapFile(const std::string & fileName)
     {
       std::pair<const char *,size_t>  rc(nullptr,0);
@@ -69,13 +70,13 @@ namespace Dwm {
           rc.first = (const char *)mmap(0, statbuf.st_size, PROT_READ,
                                         MAP_FILE|MAP_SHARED, fd, 0);
           if (rc.first == MAP_FAILED) {
-            rc.first = 0;
-            rc.second = 0;
+            close(fd);
+            return std::string_view(nullptr, 0);
           }
         }
         close(fd);
       }
-      return rc;
+      return std::string_view(rc.first, rc.second);
     }
 
     //------------------------------------------------------------------------
@@ -84,8 +85,8 @@ namespace Dwm {
       _fileName = std::string(fileName);
       
       auto         mappedFile = MapFile(_fileName);
-      auto         map = mappedFile.first;
-      std::size_t  size = mappedFile.second;
+      auto         map = mappedFile.data();
+      std::size_t  size = mappedFile.size();
       if (map && size) {
         std::size_t  i = 0;
         while (i < (size - 5)) {
@@ -104,6 +105,7 @@ namespace Dwm {
             ++i;
           }
         }
+        munmap((void *)mappedFile.data(), mappedFile.size());
       }
       std::sort(_infos.begin(), _infos.end());
       if (unique) {
@@ -112,6 +114,26 @@ namespace Dwm {
       }
     }
 
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    ParsedFile::ParsedFile(int fd, bool unique)
+    {
+      if (0 <= fd) {
+        FileParseState  fps(_infos);
+        char     buf[16384];
+        ssize_t  rc;
+        while ((rc = ::read(fd, buf, 16384)) > 0) {
+          fps.ProcessBuffer(buf, rc);
+        }
+      }
+      std::sort(_infos.begin(), _infos.end());
+      if (unique) {
+        auto last = std::unique(_infos.begin(), _infos.end());
+        _infos.erase(last, _infos.end());
+      }
+    }
+    
     //------------------------------------------------------------------------
     std::ostream & operator << (std::ostream & os, const ParsedFile & pf)
     {

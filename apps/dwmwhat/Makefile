@@ -9,7 +9,7 @@ $(dwm_include_once $(abspath $(my mydir)/../../Makefile.vars))
 $(my CxxFlags    := ${CXXFLAGS} ${PTHREADCXXFLAGS})
 $(my Incs        := -I$(abspath $(my mydir)/../../classes/include))
 $(my Link        := ${LIBTOOL} --quiet --mode=link --tag=CXX ${CXX})
-$(my ObjNames    := dwmwhat.o DwmWhatParsedFiles.o DwmWhatParsedFile.o DwmWhatParsedInfo.o DwmWhatParsedFileLex.o)
+$(my ObjNames    := dwmwhat.o DwmWhatParsedFiles.o DwmWhatParsedFile.o DwmWhatParsedInfo.o DwmWhatFileParseState.o)
 $(my Objs        := $(patsubst %.o,$(my mydir)/%.o,$(my ObjNames)))
 $(my ObjDeps     := $(patsubst %.o,$(my mydir)/deps/%_deps,$(my ObjNames)))
 $(my Targets     := $(my mydir)/dwmwhat)
@@ -45,10 +45,6 @@ ${TARDIR}/${HTMLMAN}/html1/dwmwhat.1.html: $(my mydir)/dwmwhat.1
 	${MANHTML} $< > $<.html
 	${INSTALL} -c -m 644 $<.html $@
 	rm $<.html
-
-$(my mydir)/%Lex.cc: $(my mydir)/%Lex.lex
-	@dwmgmk_quiet "generating lexer from $(dwm_relpwd $<)" \
-	 flex -B -o$@ $<
 
 #  generate dependency rule
 $(eval $(dwm_cppdeps $(my dwmwhat.mydir)/deps,\

@@ -34,18 +34,15 @@
 //===========================================================================
 
 //---------------------------------------------------------------------------
-//!  @file DwmWhatParsedFile.hh
+//!  @file DwmWhatFileParseState.hh
 //!  @author Daniel W. McRobb
 //!  @brief NOT YET DOCUMENTED
 //---------------------------------------------------------------------------
 
-#ifndef _DWMWHATPARSEDFILE_HH_
-#define _DWMWHATPARSEDFILE_HH_
+#ifndef _DWMWHATFILEPARSESTATE_HH_
+#define _DWMWHATFILEPARSESTATE_HH_
 
-#include <cstdio>
 #include <vector>
-#include <string>
-#include <string_view>
 
 #include "DwmWhatParsedInfo.hh"
 
@@ -53,28 +50,30 @@ namespace Dwm {
 
   namespace What {
 
-    class ParsedFile
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    class FileParseState
     {
     public:
-      //----------------------------------------------------------------------
-      //!  
-      //----------------------------------------------------------------------
-      ParsedFile(std::string_view fileName, bool unique = true);
+      FileParseState(std::vector<ParsedInfo> & infos);
+      void ProcessBuffer(const char *buf, size_t bufsiz);
 
-      ParsedFile(int fd, bool unique = true);
-
-      std::string as_json() const;
-      
-      friend std::ostream & operator << (std::ostream & os,
-                                         const ParsedFile & pf);
-      
     private:
-      std::string              _fileName;
-      std::vector<ParsedInfo>  _infos;
+      void (FileParseState::*_state)(const char *buf, size_t bufsize);
+      std::string               _string;
+      std::vector<ParsedInfo> & _infos;
+      
+      void LookingForAtSign(const char *buf, size_t bufsize);
+      void LookingForOpenParen(const char *buf, size_t bufsize);
+      void LookingForHashSign(const char *buf, size_t bufsize);
+      void LookingForCloseParen(const char *buf, size_t bufsize);
+      void LookingForNewlineOrNull(const char *buf, size_t bufsize);
+      
     };
     
   }  // namespace What
 
 }  // namespace Dwm
 
-#endif  // _DWMWHATPARSEDFILE_HH_
+#endif  // _DWMWHATFILEPARSESTATE_HH_
