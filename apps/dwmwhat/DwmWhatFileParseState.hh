@@ -36,7 +36,7 @@
 //---------------------------------------------------------------------------
 //!  @file DwmWhatFileParseState.hh
 //!  @author Daniel W. McRobb
-//!  @brief NOT YET DOCUMENTED
+//!  @brief Dwm::What::FileParseState class declaration
 //---------------------------------------------------------------------------
 
 #ifndef _DWMWHATFILEPARSESTATE_HH_
@@ -51,19 +51,52 @@ namespace Dwm {
   namespace What {
 
     //------------------------------------------------------------------------
-    //!  
+    //!  A small state machine that can be used to find an SCCS identifier
+    //!  string.  We give consecutive chunks of data to the state machine
+    //!  via ProcessBuffer(), and the state machine will populate the @c infos
+    //!  given to it in the constructor with any SCCS identifier strings
+    //!  found in the chunks of data.
+    //!  The only reason this class exists: to support searching for SCCS
+    //!  identifiers in a generic way that externalizes the reading of the
+    //!  data from its original source.  This allows dwmwhat to reasonably
+    //!  search in what is read from stdin, for example.
     //------------------------------------------------------------------------
     class FileParseState
     {
     public:
+      //----------------------------------------------------------------------
+      //!  Construct with a reference to @c infos.  We don't copy @c infos;
+      //!  we keep a reference so we can modify it while processing data.
+      //----------------------------------------------------------------------
       FileParseState(std::vector<ParsedInfo> & infos);
+
+      //----------------------------------------------------------------------
+      //!  Process the next buffer @c buf of size @c bufsiz.
+      //----------------------------------------------------------------------
       void ProcessBuffer(const char *buf, size_t bufsiz);
 
     private:
+      //----------------------------------------------------------------------
+      //!  Pointer to current state.  Always points to one of the member
+      //!  functions below.
+      //----------------------------------------------------------------------
       void (FileParseState::*_state)(const char *buf, size_t bufsize);
+      
+      //----------------------------------------------------------------------
+      //!  String used to hold SCCS identifier string while we're in the
+      //!  process of building it.
+      //----------------------------------------------------------------------
       std::string               _string;
+      
+      //----------------------------------------------------------------------
+      //!  Reference to the infos given to us in the constructor.  We push
+      //!  back on this vector as we find SCCS identifier strings.
+      //----------------------------------------------------------------------
       std::vector<ParsedInfo> & _infos;
       
+      //----------------------------------------------------------------------
+      //!  States, which are just member functions.
+      //----------------------------------------------------------------------
       void LookingForAtSign(const char *buf, size_t bufsize);
       void LookingForOpenParen(const char *buf, size_t bufsize);
       void LookingForHashSign(const char *buf, size_t bufsize);
