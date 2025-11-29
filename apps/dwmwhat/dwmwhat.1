@@ -8,6 +8,7 @@
 .Nm
 .Op Fl v
 .Op Fl V
+.Op Fl a
 .Op Fl j
 .Cm file(s)
 .Sh DESCRIPTION
@@ -25,16 +26,21 @@ Print the version of
 .It Fl V
 Print the version of
 .Xr dwmwhat 1 itself, in JSON form.
+.It Fl a
+When searching files, show all strings (do not deduplicate).
 .It Fl j
 When searching files, use JSON output for found strings.  Strings
 from Dwm::What::Info get special treatment (parsing).
 .El
+.Pp
+Note that
+.Xr dwmwhat 1 can read from stdin by specifying '-' as a \fIfile\fR.
 .Sh EXAMPLES
 View the version information for the installed version of
 .Xr dwmwhat 1 .
 .Bd -literal
 % dwmwhat `which dwmwhat`
-🤖＃ ✅ DwmWhat 0.0.3 ©️  Daniel McRobb 👻 Nov 11 2025  mcplex.net
+🤖＃ ✅ dwmwhat 0.0.3 ©️  Daniel McRobb 👻 Nov 11 2025  mcplex.net
 .Ed
 .Pp
 View the version information for the installed version of
@@ -42,7 +48,7 @@ View the version information for the installed version of
 .Bd -literal
 % dwmwhat -j `which dwmwhat`
 [{"file":"./dwmwhat","pkgs":[{"copyright":"Daniel McRobb 👻",
-"date":"Nov 13 2025","name":"DwmWhat","other":"mcplex.net",
+"date":"Nov 13 2025","name":"dwmwhat","other":"mcplex.net",
 "status":"✅","type":"🤖＃","version":"0.0.3"}]}]
 .Ed
 .Pp
