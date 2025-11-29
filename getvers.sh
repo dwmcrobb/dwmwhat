@@ -22,18 +22,21 @@ SVN_VERSION=""
 DWM_TAG=""
 DWM_VERSION=""
 DWM_STATUS='DWM_WHAT_STATUS_DEV'
+DWM_STATUS_EMOJI='❗'
 
 DwmGetGitTag() {
     local gittag=`git describe --tags --dirty 2>/dev/null`
     if test -z "${gittag}"; then
 	GIT_TAG="${RELEASE_NAME}"
 	DWM_STATUS='DWM_WHAT_STATUS_REL'
+	DWM_STATUS_EMOJI='✅'
 	GIT_VERSION=`echo ${GIT_TAG} | cut -d'-' -f2`
     else
         dirty=`echo "${gittag}" | awk -F '-' '{ if (NF > 2) { print "dirty"; } }'`
         if test -z "${dirty}"; then
 	    GIT_TAG="${gittag}"
 	    DWM_STATUS='DWM_WHAT_STATUS_REL'
+	    DWM_STATUS_EMOJI='✅'
 	    GIT_VERSION=`echo "${gittag}" | awk -F '-' '{print $NF}'`
         else
 	    fakevers=`date +%Y.%m.%d`
@@ -79,7 +82,7 @@ DwmGetTag() {
 
 DwmGetTag dwmwhat
 
-args=`getopt disSv $*`
+args=`getopt dEisSv $*`
 set -- $args
 for i; do
     case "$i" in
@@ -101,6 +104,10 @@ for i; do
 	    break;;
 	-S)
 	    echo "${DWM_STATUS}"
+	    exit 0
+	    break;;
+	-E)
+	    echo "${DWM_STATUS_EMOJI}"
 	    exit 0
 	    break;;
     esac
