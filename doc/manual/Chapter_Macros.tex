@@ -26,3 +26,19 @@ are commonly used.
 \end{table}
 
 \section{Trivial macro for \texttt{Dwm::What::Info}-like string in C}
+The \texttt{DWM\_WHAT\_INFO} macro can be used to create a version
+string in the same form as \texttt{Dwm::What::Info} but using the
+preprocessor.  It can be used when your project can't use C++.  It's
+just a text pasting macro:
+
+\begin{Verbatim}
+#define DWM_WHAT_INFO(type,status,name,version,copyright,other)         \textbackslash{} \\
+  "@(#){\textvisiblespace}" type "{\textvisiblespace}" status "{\textvisiblespace}" name "{\textvisiblespace}" version "{\textvisiblespace}" copyright "{\textvisiblespace}" other
+\end{Verbatim}
+
+An example:
+
+\begin{Verbatim}
+const char  my_version_info[] = \\
+  DWM_WHAT_INFO("\emoji{robot}","\whiteCheckMark","myprog","1.5.2","My Name 2025","my program");
+\end{Verbatim}
