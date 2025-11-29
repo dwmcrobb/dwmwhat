@@ -6,15 +6,15 @@ else
 PKGPCDIR = lib/pkgconfig
 endif
 
-TARTARGS = ${TARDIR}/${PKGPCDIR}/DwmWhat.pc
+TARTARGS = ${TARDIR}/${PKGPCDIR}/dwmwhat.pc
 
 all::
 	echo "nothing to be done for 'all' target."
 
 tarprep: ${TARTARGS}
 
-${TARDIR}/${PKGPCDIR}/DwmWhat.pc: DwmWhat.pc
+${TARDIR}/${PKGPCDIR}/dwmwhat.pc: dwmwhat.pc
 	../install-sh -c -m 444 $< $@
 
 distclean::
-	rm -f debcontrol fbsd_manifest DwmWhat.pc
+	rm -f debcontrol fbsd_manifest dwmwhat.pc
