@@ -37,14 +37,13 @@ namespace Dwm {
     //------------------------------------------------------------------------
     void FileParseState::LookingForAtSign(const char *buf, size_t bufsize)
     {
-      size_t  i = 0;
-      while ((i < bufsize) && ('@' != buf[i])) {
-        ++i;
+      while (bufsize && ('@' != *buf)) {
+        --bufsize;
+        ++buf;
       }
-      if (i < bufsize) {
-        // _string += '@';
+      if (bufsize > 1) {
         _state = &FileParseState::LookingForOpenParen;
-        (this->*_state)(&(buf[i+1]),bufsize - (i+1));
+        (this->*_state)(++buf,--bufsize);
       }
       return;
     }
@@ -107,18 +106,16 @@ namespace Dwm {
     void
     FileParseState::LookingForNewlineOrNull(const char *buf, size_t bufsize)
     {
-      size_t  i = 0;
-      for ( ; i < bufsize; ++i) {
-        if ((buf[i] == '\0') || (buf[i] == '\n')) {
-          break;
-        }
+      while (bufsize && (*buf != '\0') && (*buf != '\n')) {
+        _string += *buf;
+        --bufsize;
+        ++buf;
       }
-      _string += std::string(buf, i);
-      if (i < bufsize) {
+      if (1 < bufsize) {
         _infos.push_back(_string);
         _string.clear();
         _state = &FileParseState::LookingForAtSign;
-        (this->*_state)(&(buf[i]), bufsize-i);
+        (this->*_state)(++buf, --bufsize);
       }
       return;
     }
