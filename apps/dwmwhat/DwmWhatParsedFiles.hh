@@ -36,7 +36,7 @@
 //---------------------------------------------------------------------------
 //!  @file DwmWhatParsedFiles.hh
 //!  @author Daniel W. McRobb
-//!  @brief NOT YET DOCUMENTED
+//!  @brief Dwm::What::ParsedFiles class declaration
 //---------------------------------------------------------------------------
 
 #ifndef _DWMWHATPARSEDFILES_HH_
@@ -49,7 +49,7 @@ namespace Dwm {
   namespace What {
 
     //------------------------------------------------------------------------
-    //!  
+    //!  Encapsulates a vector of ParsedFile objects.
     //------------------------------------------------------------------------
     class ParsedFiles
     {
