@@ -36,7 +36,7 @@
 //---------------------------------------------------------------------------
 //!  @file DwmWhatParsedFiles.cc
 //!  @author Daniel W. McRobb
-//!  @brief NOT YET DOCUMENTED
+//!  @brief Dwm::What::ParsedFiles class implementation
 //---------------------------------------------------------------------------
 
 extern "C" {
