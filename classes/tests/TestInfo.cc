@@ -136,8 +136,8 @@ int main(int argc, char *argv[])
   static constexpr Dwm::What::Info __attribute__((used))
     infoWithUTF("🤖","✅","utftest","1.1.1", "copyright","other");
 
-  const char  c_version_info[] = DWM_WHAT_INFO("🤖","✅","utftest","1.1.1",
-                                               "copyright","other");
+  const char  c_version_info[] =
+    DWM_WHAT_INFO("🤖","✅","utftest","1.1.1","copyright","other");
 
   assert(sizeof(c_version_info) == sizeof(infoWithUTF.buffer()));
   assert(strcmp(c_version_info,infoWithUTF.buffer()) == 0);
