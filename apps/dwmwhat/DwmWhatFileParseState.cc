@@ -42,7 +42,7 @@ namespace Dwm {
         ++i;
       }
       if (i < bufsize) {
-        _string += '@';
+        // _string += '@';
         _state = &FileParseState::LookingForOpenParen;
         (this->*_state)(&(buf[i+1]),bufsize - (i+1));
       }
@@ -56,10 +56,8 @@ namespace Dwm {
     {
       if (buf[0] == '(') {
         _state = &FileParseState::LookingForHashSign;
-        _string += '(';
       }
       else {
-        _string.clear();
         _state = &FileParseState::LookingForAtSign;
       }
       if (bufsize > 1) {
@@ -74,11 +72,9 @@ namespace Dwm {
     void FileParseState::LookingForHashSign(const char *buf, size_t bufsize)
     {
       if (buf[0] == '#') {
-        _string += '#';
         _state = &FileParseState::LookingForCloseParen;
       }
       else {
-        _string.clear();
         _state = &FileParseState::LookingForAtSign;
       }
       if (bufsize > 1) {
@@ -93,11 +89,10 @@ namespace Dwm {
     void FileParseState::LookingForCloseParen(const char *buf, size_t bufsize)
     {
       if (buf[0] == ')') {
-        _string += ')';
+        _string = "@(#)";
         _state = &FileParseState::LookingForNewlineOrNull;
       }
       else {
-        _string.clear();
         _state = &FileParseState::LookingForAtSign;
       }
       if (bufsize > 1) {
@@ -123,12 +118,7 @@ namespace Dwm {
         _infos.push_back(_string);
         _string.clear();
         _state = &FileParseState::LookingForAtSign;
-      }
-      
-      if (_state != &FileParseState::LookingForNewlineOrNull) {
-        if (i < bufsize) {
-          (this->*_state)(&(buf[i]), bufsize-i);
-        }
+        (this->*_state)(&(buf[i]), bufsize-i);
       }
       return;
     }
