@@ -88,22 +88,15 @@ namespace Dwm {
       auto         map = mappedFile.data();
       std::size_t  size = mappedFile.size();
       if (map && size) {
-        std::size_t  i = 0;
-        while (i < (size - 5)) {
-          if ((map[i] == '@') && (map[i+1] == '(') && (map[i+2] == '#')
-              && (map[i+3] == ')')) {
-            std::string::size_type  startidx = i;
-            i += 4;
-            while ((map[i] != '\0') && (map[i] != '\n') && (i < size)) {
-              ++i;
-            }
-            if ((i < size) && (i > (startidx + 4))) {
-              _infos.push_back(ParsedInfo(std::string(&map[startidx], &map[i])));
-            }
-          }
-          else {
-            ++i;
-          }
+        const char  *ptr = map;
+        FileParseState  fps(_infos);
+        while (size > 16384) {
+          fps.ProcessBuffer(ptr, 16384);
+          size -= 16384;
+          ptr += 16384;
+        }
+        if (size) {
+          fps.ProcessBuffer(ptr, size);
         }
         munmap((void *)mappedFile.data(), mappedFile.size());
       }
@@ -124,6 +117,26 @@ namespace Dwm {
         char     buf[16384];
         ssize_t  rc;
         while ((rc = ::read(fd, buf, 16384)) > 0) {
+          fps.ProcessBuffer(buf, rc);
+        }
+      }
+      std::sort(_infos.begin(), _infos.end());
+      if (unique) {
+        auto last = std::unique(_infos.begin(), _infos.end());
+        _infos.erase(last, _infos.end());
+      }
+    }
+
+    //------------------------------------------------------------------------
+    //!  
+    //------------------------------------------------------------------------
+    ParsedFile::ParsedFile(FILE *f, bool unique)
+    {
+      if (f) {
+        FileParseState  fps(_infos);
+        char     buf[16384];
+        ssize_t  rc;
+        while ((rc = ::fread(buf, 1, 16384, f)) > 0) {
           fps.ProcessBuffer(buf, rc);
         }
       }
