@@ -88,7 +88,7 @@ namespace Dwm {
     void FileParseState::LookingForCloseParen(const char *buf, size_t bufsize)
     {
       if (buf[0] == ')') {
-        _string = "@(#)";
+        _string += "@("; _string += "#)";  // split to avoid embedded @(#)
         _state = &FileParseState::LookingForNewlineOrNull;
       }
       else {
