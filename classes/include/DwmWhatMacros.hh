@@ -61,6 +61,7 @@
 #define DWM_WHAT_SYM_FULLHASH          "\xEF\xBC\x83"                   // ＃
 #define DWM_WHAT_SYM_GEAR              "\xE2\x9A\x99"                   // ⚙
 #define DWM_WHAT_SYM_GHOST             "\xF0\x9F\x91\xBB"               // 👻
+#define DWM_WHAT_SYM_GLOBE_AMERICAS    "\xF0\x9F\x8C\x8E"               // 🌎
 #define DWM_WHAT_SYM_HEAVY_CHECK       "\xE2\x9C\x94"                   // ✔
 #define DWM_WHAT_SYM_HEAVY_CIRCLE      "\xE2\xAD\x95"                   // ⭕
 #define DWM_WHAT_SYM_HEAVY_EXCL        "\xE2\x9D\x97"                   // ❗
