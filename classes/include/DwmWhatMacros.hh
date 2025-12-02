@@ -55,7 +55,7 @@
 #define DWM_WHAT_SYM_CONSTRUCT_ZONE    "\xF0\x9F\x9A\xA7"               // 🚧
 #define DWM_WHAT_SYM_COPYRIGHT         "\xC2\xA9"                       // ©
 #define DWM_WHAT_SYM_CYCLONE           "\xF0\x9F\x8C\x80"               // 🌀
-#define DWM_WHAT_SYM_DOG_FACE          "\xEE\x81\x92"                   // 🐶
+#define DWM_WHAT_SYM_DOG_FACE          "\xF0\x9F\x90\xB6"               // 🐶
 #define DWM_WHAT_SYM_DOT               "\xE2\x97\x8F"                   // ●
 #define DWM_WHAT_SYM_FILE_FOLDER       "\xF0\x9F\x93\x81"               // 📁
 #define DWM_WHAT_SYM_FULLHASH          "\xEF\xBC\x83"                   // ＃
