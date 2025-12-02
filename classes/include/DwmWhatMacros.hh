@@ -67,6 +67,7 @@
 #define DWM_WHAT_SYM_HEAVY_PLUS        "\xE2\x9E\x95"                   // ➕
 #define DWM_WHAT_SYM_JACKOLANTERN      "\xF0\x9F\x8E\x83"               // 🎃
 #define DWM_WHAT_SYM_LEFT_MAGNIFY      "\xF0\x9F\x94\x8D"               // 🔍
+#define DWM_WHAT_SYM_LOCK_KEY          "\xF0\x9F\x94\x90"               // 🔐
 #define DWM_WHAT_SYM_OPEN_BOOK         "\xF0\x9F\x93\x96"               // 📖
 #define DWM_WHAT_SYM_OPEN_FOLDER       "\xF0\x9F\x93\x82"               // 📂
 #define DWM_WHAT_SYM_PACKAGE           "\xF0\x9F\x93\xA6"               // 📦
