@@ -7,4 +7,5 @@ Homepage: http://www.mcplex.net
 Package: dwmwhat
 Version: @TAGVERSION@
 Architecture: @DEBARCH@
+Multi-Arch: same
 Description: Tiny C++ header-only library for package info embedded as a string literal in binaries.
