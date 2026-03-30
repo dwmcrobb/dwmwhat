@@ -1,3 +1,7 @@
+2026-03-29  dwm  <dwm@nomnom.mcplex.net>
+
+	* tagged as dwmwhat-0.1.11
+
 2026-03-29  Daniel McRobb  <dwm@thrip.mcplex.net>
 
 	* packaging/debcontrol.in: Set Multi-Arch field.
